@@ -195,3 +195,13 @@ def test_redaction():
     # the company's own support address, dates and version numbers are left alone
     for text in ["write to app@moveinsync.com", "booked on 06-10-2026", "version 12.19.0", "on 12 Oct 2026"]:
         assert one_line(text) == text
+
+
+# --- times are stored in UTC, whatever machine runs the pull ----------------------
+
+def test_review_times_are_converted_to_utc():
+    from ratings.pull import to_utc
+    # the scraper builds times with datetime.fromtimestamp, i.e. in local time;
+    # a known moment must come out as the same UTC time on any machine
+    assert to_utc(datetime.fromtimestamp(1_700_000_000)) == datetime(2023, 11, 14, 22, 13, 20)
+    assert to_utc(datetime.fromtimestamp(1_400_000_000)) == datetime(2014, 5, 13, 16, 53, 20)

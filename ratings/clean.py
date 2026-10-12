@@ -11,9 +11,9 @@ import csv
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from ratings.pull import TIME_FMT, load_config, reviews_path
+from ratings.pull import TIME_FMT, load_config, now_utc, reviews_path
 
 
 def load_reviews(cfg, app_id):
@@ -75,7 +75,7 @@ def check(rows):
     bad_score = sum(1 for r in rows if r["score"] not in (1, 2, 3, 4, 5))
     if bad_score:
         problems.append(f"{bad_score} rows with a score outside 1-5")
-    future = sum(1 for r in rows if r["dt"] > datetime.now())
+    future = sum(1 for r in rows if r["dt"] > now_utc() + timedelta(minutes=5))
     if future:
         problems.append(f"{future} rows dated in the future")
     return problems

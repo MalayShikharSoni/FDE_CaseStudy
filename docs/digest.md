@@ -1,7 +1,7 @@
 # How are our Play Store ratings? (2026-10-11)
 
 **4.64 on the Indian listing**, 4.32 on the lowest listing (United States), 4.75 on iOS.
-In the last 30 days 29.8% of 245 written reviews were 1-2 star, in line with the 12-month figure of 27.0%.
+In the last 30 days 30.0% of 243 written reviews were 1-2 star, in line with the 12-month figure of 27.0%.
 The biggest named problem in the last 90 days is "App won't open or crashes" (14.1% of low-star reviews).
 
 ## Needs attention
@@ -28,8 +28,8 @@ The star mix of newly added ratings appears here once two snapshots a week apart
 
 | Period | Reviews | Average | 1-2 star |
 |---|---|---|---|
-| Last 30 days | 245 | 3.78 | 29.8% |
-| Last 90 days | 722 | 3.82 | 28.4% |
+| Last 30 days | 243 | 3.77 | 30.0% |
+| Last 90 days | 721 | 3.81 | 28.4% |
 | Last 12 months | 2,848 | 3.84 | 27.0% |
 | All time | 24,318 | 3.61 | 30.9% |
 
@@ -60,7 +60,7 @@ The star mix of newly added ratings appears here once two snapshots a week apart
 |---|---|---|---|
 | 12.16.1 | 2026-07-29 | 38 | 34.2% |
 | 12.17.0 | 2026-08-07 | 141 | 29.8% |
-| 12.18.0 | 2026-08-22 | 65 | 20.0% |
+| 12.18.0 | 2026-08-21 | 65 | 20.0% |
 | 12.18.1 | 2026-09-09 | 94 | 26.6% |
 | 12.19.0 | 2026-09-21 | 105 | 34.3% |
 
@@ -82,4 +82,4 @@ The star mix of newly added ratings appears here once two snapshots a week apart
 - R10 (90 days): Make no-shows fair and unsurprising
 - R11 (90 days): Close the booking and address traps
 
-Generated 2026-10-12 19:39:43 from 24,318 reviews. Full report: index.html.
+Generated 2026-10-12 19:53:43 UTC from 24,318 reviews. Full report: index.html.

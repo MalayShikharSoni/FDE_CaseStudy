@@ -21,9 +21,8 @@ import os
 import sys
 import time
 import urllib.request
-from datetime import datetime
 
-from ratings.pull import load_config, one_line
+from ratings.pull import load_config, now_utc, one_line
 
 FIELDS = ["reviewId", "score", "at", "title", "content", "appVersion"]
 MAX_PAGES = 10
@@ -44,7 +43,7 @@ def take_snapshot(ios_id, country):
         "ratings": info.get("userRatingCount"),
         "version": info.get("version"),
         "updated": info.get("currentVersionReleaseDate"),
-        "pulled_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "pulled_at": now_utc().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
 

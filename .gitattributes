@@ -1,0 +1,4 @@
+# Store text files with LF line endings in the repository, whichever machine
+# commits them. Without this, a Windows laptop and GitHub's Linux servers each
+# rewrite every line of the data files.
+* text=auto

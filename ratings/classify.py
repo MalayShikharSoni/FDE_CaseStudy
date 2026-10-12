@@ -22,12 +22,12 @@ import glob
 import json
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import yaml
 
 from ratings.clean import load_ios_reviews, load_reviews
-from ratings.pull import TIME_FMT, load_config
+from ratings.pull import TIME_FMT, load_config, now_utc
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BATCH = 150        # reviews per batch file
@@ -138,7 +138,7 @@ def known_notes(cfg):
 def parse_batch(text, rows, tax, labelled_by):
     """Turn a labeller's output for `rows` into label records.
     Every review must get exactly one valid line, or the whole batch is rejected."""
-    stamp = datetime.now().strftime(TIME_FMT)
+    stamp = now_utc().strftime(TIME_FMT)
     labels = {}
     for line in text.splitlines():
         if not line.strip():

@@ -27,7 +27,7 @@ import yaml
 from ratings import validate
 from ratings.classify import employee_app, in_scope, load_labels, load_taxonomy, window_start
 from ratings.clean import latest_snapshots, load_ios_reviews, load_reviews
-from ratings.pull import TIME_FMT, load_config
+from ratings.pull import TIME_FMT, load_config, now_utc
 
 OUT = os.path.join("docs", "data", "metrics.json")
 MIN_VERSION_REVIEWS = 30   # versions with fewer reviews are too small to judge
@@ -365,7 +365,7 @@ def compute(cfg):
     promoted = promoted_notes(play_low, labels, cfg.get("alerts", {}).get("new_theme_min_reviews", 5))
 
     return {
-        "generated_at": datetime.now().strftime(TIME_FMT),
+        "generated_at": now_utc().strftime(TIME_FMT) + " UTC",
         "app": {"id": app["id"], "name": app["name"], "version": snap["version"],
                 "snapshot_at": snap["pulled_at"]},
         "window": {"from": start.strftime("%Y-%m-%d"), "to": newest.strftime("%Y-%m-%d"),

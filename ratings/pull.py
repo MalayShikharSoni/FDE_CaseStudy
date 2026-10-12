@@ -25,7 +25,7 @@ import random
 import re
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import google_play_scraper as gps
 import yaml
@@ -45,8 +45,20 @@ TIME_FMT = "%Y-%m-%d %H:%M:%S"
 LOG_LINES = []
 
 
+def now_utc():
+    """The current time in UTC. Every stored time is UTC, so a run on a laptop and
+    a run on GitHub's servers produce the same data."""
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def to_utc(dt):
+    """The scraper returns review times in the computer's local timezone. Convert
+    them to UTC, or the same review would get a different time on each machine."""
+    return dt.astimezone(timezone.utc).replace(tzinfo=None)
+
+
 def log(msg):
-    line = f"[{datetime.now().strftime(TIME_FMT)}] {msg}"
+    line = f"[{now_utc().strftime(TIME_FMT)}] {msg}"
     print(line, flush=True)
     LOG_LINES.append(line)
 
@@ -115,20 +127,21 @@ def sweep(app_id, lang, country, score, since, label, store, retries=4):
             break
         reached_cutoff = False
         for r in batch:
-            if r["at"] < since:
+            at = to_utc(r["at"])
+            if at < since:
                 reached_cutoff = True
                 continue
             rid = r["reviewId"]
             is_new = rid not in store
             row = {
                 "reviewId": rid, "app_id": app_id, "lang": lang, "sweep": label,
-                "score": r["score"], "at": r["at"].strftime(TIME_FMT),
+                "score": r["score"], "at": at.strftime(TIME_FMT),
                 "content": one_line(r["content"]),
                 "thumbsUpCount": r["thumbsUpCount"],
                 "reviewCreatedVersion": r.get("reviewCreatedVersion") or "",
                 "appVersion": r.get("appVersion") or "",
                 "replyContent": one_line(r.get("replyContent")),
-                "repliedAt": r["repliedAt"].strftime(TIME_FMT) if r.get("repliedAt") else "",
+                "repliedAt": to_utc(r["repliedAt"]).strftime(TIME_FMT) if r.get("repliedAt") else "",
             }
             if not is_new:
                 # seen before: refresh it (edits, new replies) but keep how we first found it
@@ -181,7 +194,7 @@ def take_snapshot(app_id, country, data_dir):
     info = gps.app(app_id, lang="en", country=country)
     snap = {k: info.get(k) for k in SNAPSHOT_KEYS}
     snap["app_id"] = app_id
-    snap["pulled_at"] = datetime.now().strftime(TIME_FMT)
+    snap["pulled_at"] = now_utc().strftime(TIME_FMT)
     with open(os.path.join(data_dir, "snapshots.jsonl"), "a", encoding="utf-8") as f:
         f.write(json.dumps(snap, default=str) + "\n")
     return snap
@@ -207,7 +220,7 @@ def take_country_snapshots(app_id, cfg):
             "app_id": app_id, "country": country, "score": info["score"],
             "pct_by_star": [round(100 * h / total, 1) for h in hist],
             "country_reviews": info.get("reviews"),
-            "pulled_at": datetime.now().strftime(TIME_FMT),
+            "pulled_at": now_utc().strftime(TIME_FMT),
         })
         polite_sleep()
     with open(os.path.join(cfg["data_dir"], "country_snapshots.jsonl"), "a", encoding="utf-8") as f:

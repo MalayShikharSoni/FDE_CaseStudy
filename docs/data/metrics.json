@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-10-12 19:39:43",
+ "generated_at": "2026-10-12 19:53:43 UTC",
  "app": {
   "id": "com.moveinsync.ets",
   "name": "MoveInSync (employee app)",
   "version": "12.19.0",
-  "snapshot_at": "2026-10-12 19:38:58"
+  "snapshot_at": "2026-10-12 19:42:22"
  },
  "window": {
   "from": "2025-10-11",
@@ -47,7 +47,7 @@
    "pct_1": 11.9,
    "pct_low": 12.7,
    "country_reviews": 100,
-   "pulled_at": "2026-10-12 19:39:00"
+   "pulled_at": "2026-10-12 19:47:35"
   },
   {
    "country": "ph",
@@ -55,7 +55,7 @@
    "pct_1": 10.1,
    "pct_low": 12.6,
    "country_reviews": 281,
-   "pulled_at": "2026-10-12 19:39:02"
+   "pulled_at": "2026-10-12 19:47:37"
   },
   {
    "country": "gb",
@@ -63,7 +63,7 @@
    "pct_1": 10.3,
    "pct_low": 10.3,
    "country_reviews": 26,
-   "pulled_at": "2026-10-12 19:39:06"
+   "pulled_at": "2026-10-12 19:47:42"
   },
   {
    "country": "za",
@@ -71,7 +71,7 @@
    "pct_1": 6.8,
    "pct_low": 8.6,
    "country_reviews": 181,
-   "pulled_at": "2026-10-12 19:39:04"
+   "pulled_at": "2026-10-12 19:47:39"
   },
   {
    "country": "in",
@@ -79,7 +79,7 @@
    "pct_1": 6.4,
    "pct_low": 7.1,
    "country_reviews": 23625,
-   "pulled_at": "2026-10-12 19:38:59"
+   "pulled_at": "2026-10-12 19:47:34"
   },
   {
    "country": "lk",
@@ -87,7 +87,7 @@
    "pct_1": 3.8,
    "pct_low": 3.8,
    "country_reviews": 48,
-   "pulled_at": "2026-10-12 19:39:07"
+   "pulled_at": "2026-10-12 19:47:43"
   },
   {
    "country": "sg",
@@ -95,7 +95,7 @@
    "pct_1": 6.6,
    "pct_low": 6.6,
    "country_reviews": 13,
-   "pulled_at": "2026-10-12 19:39:09"
+   "pulled_at": "2026-10-12 19:47:45"
   }
  ],
  "other_apps": [
@@ -138,35 +138,35 @@
    "pct_5": 64.2
   },
   "last_90": {
-   "n": 722,
-   "avg": 3.82,
+   "n": 721,
+   "avg": 3.81,
    "pct_1": 24.7,
    "pct_low": 28.4,
-   "pct_5": 65.4
+   "pct_5": 65.3
   },
   "last_30": {
-   "n": 245,
-   "avg": 3.78,
-   "pct_1": 26.9,
-   "pct_low": 29.8,
-   "pct_5": 65.7
+   "n": 243,
+   "avg": 3.77,
+   "pct_1": 27.2,
+   "pct_low": 30.0,
+   "pct_5": 65.4
   },
   "monthly": [
    {
     "month": "2024-11",
-    "n": 221,
+    "n": 222,
     "avg": 3.71,
-    "pct_1": 26.7,
-    "pct_low": 29.4,
-    "pct_5": 58.8
+    "pct_1": 26.6,
+    "pct_low": 29.3,
+    "pct_5": 59.0
    },
    {
     "month": "2024-12",
-    "n": 209,
-    "avg": 3.78,
-    "pct_1": 24.9,
-    "pct_low": 27.3,
-    "pct_5": 58.9
+    "n": 208,
+    "avg": 3.77,
+    "pct_1": 25.0,
+    "pct_low": 27.4,
+    "pct_5": 58.7
    },
    {
     "month": "2025-01",
@@ -178,11 +178,11 @@
    },
    {
     "month": "2025-02",
-    "n": 229,
-    "avg": 3.46,
-    "pct_1": 31.4,
-    "pct_low": 36.7,
-    "pct_5": 53.3
+    "n": 230,
+    "avg": 3.47,
+    "pct_1": 31.3,
+    "pct_low": 36.5,
+    "pct_5": 53.5
    },
    {
     "month": "2025-03",
@@ -194,43 +194,43 @@
    },
    {
     "month": "2025-04",
-    "n": 228,
+    "n": 231,
     "avg": 3.84,
-    "pct_1": 23.2,
-    "pct_low": 26.3,
+    "pct_1": 23.4,
+    "pct_low": 26.4,
     "pct_5": 62.3
    },
    {
     "month": "2025-05",
-    "n": 257,
-    "avg": 3.8,
-    "pct_1": 22.6,
-    "pct_low": 28.4,
-    "pct_5": 61.5
+    "n": 253,
+    "avg": 3.79,
+    "pct_1": 22.5,
+    "pct_low": 28.5,
+    "pct_5": 61.3
    },
    {
     "month": "2025-06",
-    "n": 301,
-    "avg": 3.56,
-    "pct_1": 29.2,
-    "pct_low": 33.2,
-    "pct_5": 55.5
+    "n": 302,
+    "avg": 3.55,
+    "pct_1": 29.5,
+    "pct_low": 33.4,
+    "pct_5": 55.3
    },
    {
     "month": "2025-07",
-    "n": 293,
-    "avg": 3.78,
-    "pct_1": 22.5,
-    "pct_low": 25.9,
-    "pct_5": 56.3
+    "n": 295,
+    "avg": 3.79,
+    "pct_1": 22.4,
+    "pct_low": 25.8,
+    "pct_5": 56.6
    },
    {
     "month": "2025-08",
-    "n": 240,
+    "n": 237,
     "avg": 3.67,
-    "pct_1": 27.1,
+    "pct_1": 27.0,
     "pct_low": 30.4,
-    "pct_5": 57.9
+    "pct_5": 57.8
    },
    {
     "month": "2025-09",
@@ -242,19 +242,19 @@
    },
    {
     "month": "2025-10",
-    "n": 297,
+    "n": 300,
     "avg": 3.79,
-    "pct_1": 24.6,
-    "pct_low": 26.9,
-    "pct_5": 61.3
+    "pct_1": 24.3,
+    "pct_low": 26.7,
+    "pct_5": 61.0
    },
    {
     "month": "2025-11",
-    "n": 160,
-    "avg": 3.69,
-    "pct_1": 26.2,
-    "pct_low": 30.0,
-    "pct_5": 57.5
+    "n": 157,
+    "avg": 3.68,
+    "pct_1": 26.8,
+    "pct_low": 30.6,
+    "pct_5": 58.0
    },
    {
     "month": "2025-12",
@@ -266,18 +266,18 @@
    },
    {
     "month": "2026-01",
-    "n": 211,
-    "avg": 3.77,
-    "pct_1": 23.2,
-    "pct_low": 28.4,
+    "n": 214,
+    "avg": 3.78,
+    "pct_1": 22.9,
+    "pct_low": 28.0,
     "pct_5": 60.7
    },
    {
     "month": "2026-02",
-    "n": 207,
-    "avg": 3.74,
-    "pct_1": 27.5,
-    "pct_low": 30.0,
+    "n": 204,
+    "avg": 3.73,
+    "pct_1": 27.9,
+    "pct_low": 30.4,
     "pct_5": 61.8
    },
    {
@@ -290,19 +290,19 @@
    },
    {
     "month": "2026-04",
-    "n": 292,
-    "avg": 4.03,
-    "pct_1": 20.9,
-    "pct_low": 21.9,
-    "pct_5": 69.2
+    "n": 295,
+    "avg": 4.04,
+    "pct_1": 20.7,
+    "pct_low": 21.7,
+    "pct_5": 69.5
    },
    {
     "month": "2026-05",
-    "n": 247,
-    "avg": 4.02,
-    "pct_1": 20.2,
-    "pct_low": 21.5,
-    "pct_5": 68.4
+    "n": 245,
+    "avg": 3.99,
+    "pct_1": 20.8,
+    "pct_low": 22.0,
+    "pct_5": 67.8
    },
    {
     "month": "2026-06",
@@ -314,27 +314,27 @@
    },
    {
     "month": "2026-07",
-    "n": 285,
-    "avg": 4.01,
-    "pct_1": 19.3,
-    "pct_low": 23.2,
-    "pct_5": 69.1
+    "n": 286,
+    "avg": 4.03,
+    "pct_1": 18.9,
+    "pct_low": 22.7,
+    "pct_5": 69.6
    },
    {
     "month": "2026-08",
-    "n": 242,
+    "n": 241,
     "avg": 3.65,
-    "pct_1": 28.5,
-    "pct_low": 31.8,
-    "pct_5": 61.2
+    "pct_1": 28.6,
+    "pct_low": 32.0,
+    "pct_5": 61.0
    },
    {
     "month": "2026-09",
-    "n": 246,
-    "avg": 3.85,
-    "pct_1": 24.8,
-    "pct_low": 27.6,
-    "pct_5": 66.3
+    "n": 245,
+    "avg": 3.84,
+    "pct_1": 24.9,
+    "pct_low": 27.8,
+    "pct_5": 66.1
    },
    {
     "month": "2026-10",
@@ -349,7 +349,7 @@
  "versions": [
   {
    "version": "12.6",
-   "first_seen": "2025-10-14",
+   "first_seen": "2025-10-13",
    "n": 285,
    "avg": 3.81,
    "pct_1": 22.8,
@@ -419,7 +419,7 @@
   },
   {
    "version": "12.9.0",
-   "first_seen": "2026-01-17",
+   "first_seen": "2026-01-16",
    "n": 31,
    "avg": 4.55,
    "pct_1": 9.7,
@@ -460,7 +460,7 @@
   },
   {
    "version": "12.10",
-   "first_seen": "2026-02-18",
+   "first_seen": "2026-02-17",
    "n": 82,
    "avg": 4.11,
    "pct_1": 18.3,
@@ -488,7 +488,7 @@
   },
   {
    "version": "12.11.0",
-   "first_seen": "2026-03-19",
+   "first_seen": "2026-03-18",
    "n": 67,
    "avg": 4.1,
    "pct_1": 19.4,
@@ -642,7 +642,7 @@
   },
   {
    "version": "12.16.0",
-   "first_seen": "2026-07-23",
+   "first_seen": "2026-07-22",
    "n": 89,
    "avg": 3.87,
    "pct_1": 20.2,
@@ -684,7 +684,7 @@
   },
   {
    "version": "12.18.0",
-   "first_seen": "2026-08-22",
+   "first_seen": "2026-08-21",
    "n": 65,
    "avg": 4.11,
    "pct_1": 20.0,
@@ -800,7 +800,7 @@
    "quotes": [
     {
      "reviewId": "760cc5ba-26c9-48c6-8e86-13fdb106d7e7",
-     "date": "2026-07-15",
+     "date": "2026-07-14",
      "score": 1,
      "version": "12.15.0",
      "text": "Complaint Regarding Pathetic Transport Service I would like to raise a complaint regarding the pathetic transport service provided today."
@@ -1096,7 +1096,7 @@
    "quotes": [
     {
      "reviewId": "01b69a5a-3cd8-4493-bc04-073c899ecd83",
-     "date": "2026-04-09",
+     "date": "2026-04-08",
      "score": 1,
      "version": "",
      "text": "Why has the timing changed? When four people were assigned, the cab came at 5:00 AM. Now that there are only two of us, the cab is scheduled for 4:30 AM, which feels completely unfair. and additionally we don't have an opportunity to reject the terms and conditions if you don't like that t&c. only one option \"I AGREE\""
@@ -1313,7 +1313,7 @@
     },
     {
      "reviewId": "5abe2cac-b91b-4df6-902d-a4c36d5d84fd",
-     "date": "2026-06-22",
+     "date": "2026-06-21",
      "score": 1,
      "version": "12.13.1",
      "text": "cab is never assigned on time...always late ..no value of others time...after logout every day we have to wait for 40+ mins for cab the 20 mins distance route...which is totally waste of time...third class"
@@ -1391,7 +1391,7 @@
    "quotes": [
     {
      "reviewId": "59a4dbdd-06a6-4ed1-8a2c-38d2509bb604",
-     "date": "2026-06-13",
+     "date": "2026-06-12",
      "score": 1,
      "version": "12.13.2",
      "text": "drivers and management are extremely rude and they talk in an inappropriate and disrespectful manner. Drivers shout during the conversation. Such behavior is unacceptable and that makes feel very uncomfortable and unsafe"
@@ -1433,7 +1433,7 @@
    "quotes": [
     {
      "reviewId": "d77b60f8-b879-46b4-b998-787ff91f45dd",
-     "date": "2026-05-21",
+     "date": "2026-05-20",
      "score": 1,
      "version": "12.11.1",
      "text": "I am on a waitlisted status. There were no vacant seats and I want to cancel my booking for me to change it to another schedule however I cannot change or cancel it for some reason!"
@@ -1623,7 +1623,7 @@
    "quotes": [
     {
      "reviewId": "824d4e73-9625-4ede-81ce-914062b7730a",
-     "date": "2026-01-29",
+     "date": "2026-01-28",
      "score": 1,
      "version": "12.9.2",
      "text": "Drivers are unable to contact employees via app, shows busy or switched off, should check their services and update for glitch"
@@ -1762,7 +1762,7 @@
     },
     {
      "reviewId": "cd0fae07-d5b9-4095-8b2b-30558a07d736",
-     "date": "2026-05-19",
+     "date": "2026-05-18",
      "score": 1,
      "version": "12.12.2",
      "text": "I am forced to rate every trip which is twice a day. There should be an option to skip the step"
@@ -1884,7 +1884,7 @@
    "quotes": [
     {
      "reviewId": "9dd4ac02-19d4-4650-9a90-f510b523e0ab",
-     "date": "2026-07-24",
+     "date": "2026-07-23",
      "score": 2,
      "version": "12.16.0",
      "text": "Please stop excessively notifying for Play Store reviews after every ride. It's wasting user time by repeated clicks."
@@ -1929,7 +1929,7 @@
     },
     {
      "reviewId": "59a4dbdd-06a6-4ed1-8a2c-38d2509bb604",
-     "date": "2026-06-13",
+     "date": "2026-06-12",
      "score": 1,
      "version": "12.13.2",
      "text": "drivers and management are extremely rude and they talk in an inappropriate and disrespectful manner. Drivers shout during the conversation. Such behavior is unacceptable and that makes feel very uncomfortable and unsafe"
@@ -2005,7 +2005,7 @@
     },
     {
      "reviewId": "eec41d97-5ac6-4612-ad5d-625e9bbd6669",
-     "date": "2026-06-14",
+     "date": "2026-06-13",
      "score": 1,
      "version": "",
      "text": "This rating is for Genpact Move in Sync. Inaccurate ETA and the location is not updated until the driver is at your pickup point. App shows 1 hour, Driver calls and says I'll be there in 5 minutes. Employees think there is enough time to have food, The next minute gets a call from the driver that if the employee doesn't come out in 1-2 minutes, they will put No Show."
@@ -2372,7 +2372,7 @@
   {
    "reviewId": "fb887543-7a35-42b3-9490-f61c28b841d9",
    "source": "play",
-   "date": "2026-09-16",
+   "date": "2026-09-15",
    "score": 1,
    "theme": "driver_behaviour",
    "replied": false,
@@ -2426,7 +2426,7 @@
   {
    "reviewId": "ab22d06f-a3be-49e3-a460-5ef157ec534c",
    "source": "play",
-   "date": "2026-08-07",
+   "date": "2026-08-06",
    "score": 1,
    "theme": "support_unreachable",
    "replied": false,
@@ -2435,7 +2435,7 @@
   {
    "reviewId": "72b21544-5b6e-4ae8-b33e-1c641857b98f",
    "source": "play",
-   "date": "2026-07-31",
+   "date": "2026-07-30",
    "score": 1,
    "theme": "no_show",
    "replied": false,
@@ -2444,7 +2444,7 @@
   {
    "reviewId": "3c7dbf56-0d12-466a-a4de-d4c5452106b1",
    "source": "play",
-   "date": "2026-07-08",
+   "date": "2026-07-07",
    "score": 1,
    "theme": "cab_late_or_missing",
    "replied": false,
@@ -2462,7 +2462,7 @@
   {
    "reviewId": "59a4dbdd-06a6-4ed1-8a2c-38d2509bb604",
    "source": "play",
-   "date": "2026-06-13",
+   "date": "2026-06-12",
    "score": 1,
    "theme": "driver_behaviour",
    "replied": false,
@@ -2471,7 +2471,7 @@
   {
    "reviewId": "1d4bde92-7e53-4eed-8dca-051f11f4d2be",
    "source": "play",
-   "date": "2026-06-09",
+   "date": "2026-06-08",
    "score": 3,
    "theme": "driver_behaviour",
    "replied": false,
@@ -2498,7 +2498,7 @@
   {
    "reviewId": "9a43eec8-6435-4987-84c5-58792ddbeeb4",
    "source": "play",
-   "date": "2026-05-30",
+   "date": "2026-05-29",
    "score": 1,
    "theme": "cab_late_or_missing",
    "replied": false,
@@ -2543,7 +2543,7 @@
   {
    "reviewId": "0c2245c5-dd6f-43da-b799-e26b7b524e94",
    "source": "play",
-   "date": "2026-01-22",
+   "date": "2026-01-21",
    "score": 1,
    "theme": "driver_behaviour",
    "replied": false,
@@ -2579,7 +2579,7 @@
   {
    "reviewId": "dd3ac9a7-c3b6-49dc-9b3b-75142b197935",
    "source": "play",
-   "date": "2025-10-15",
+   "date": "2025-10-14",
    "score": 1,
    "theme": "driver_behaviour",
    "replied": true,
