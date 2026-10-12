@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-10-12 21:31:55 UTC",
+ "generated_at": "2026-10-12 21:42:40 UTC",
  "app": {
   "id": "com.moveinsync.ets",
   "name": "MoveInSync (employee app)",
   "version": "12.19.0",
-  "snapshot_at": "2026-10-12 19:42:22"
+  "snapshot_at": "2026-10-12 21:41:41"
  },
  "window": {
   "from": "2025-10-11",
@@ -12,7 +12,7 @@
   "days": 365
  },
  "ratings": {
-  "ratings": 114874,
+  "ratings": 114875,
   "avg": 4.639,
   "pct_by_star": [
    6.4,
@@ -21,18 +21,18 @@
    6.3,
    85.5
   ],
-  "low_ratings": 8155,
+  "low_ratings": 8154,
   "low_avg": 1.103,
   "avg_without_1_star": 4.886,
   "score": 4.639,
   "histogram": [
-   7316,
+   7315,
    839,
    1224,
    7253,
-   98242
+   98244
   ],
-  "written_reviews": 23625
+  "written_reviews": 23626
  },
  "ios": {
   "score": 4.748,
@@ -47,7 +47,7 @@
    "pct_1": 11.9,
    "pct_low": 12.7,
    "country_reviews": 100,
-   "pulled_at": "2026-10-12 19:47:35"
+   "pulled_at": "2026-10-12 21:41:52"
   },
   {
    "country": "ph",
@@ -55,7 +55,7 @@
    "pct_1": 10.1,
    "pct_low": 12.6,
    "country_reviews": 281,
-   "pulled_at": "2026-10-12 19:47:37"
+   "pulled_at": "2026-10-12 21:41:53"
   },
   {
    "country": "gb",
@@ -63,7 +63,7 @@
    "pct_1": 10.3,
    "pct_low": 10.3,
    "country_reviews": 26,
-   "pulled_at": "2026-10-12 19:47:42"
+   "pulled_at": "2026-10-12 21:41:56"
   },
   {
    "country": "za",
@@ -71,15 +71,15 @@
    "pct_1": 6.8,
    "pct_low": 8.6,
    "country_reviews": 181,
-   "pulled_at": "2026-10-12 19:47:39"
+   "pulled_at": "2026-10-12 21:41:55"
   },
   {
    "country": "in",
    "score": 4.64,
    "pct_1": 6.4,
    "pct_low": 7.1,
-   "country_reviews": 23625,
-   "pulled_at": "2026-10-12 19:47:34"
+   "country_reviews": 23626,
+   "pulled_at": "2026-10-12 21:41:42"
   },
   {
    "country": "lk",
@@ -87,7 +87,7 @@
    "pct_1": 3.8,
    "pct_low": 3.8,
    "country_reviews": 48,
-   "pulled_at": "2026-10-12 19:47:43"
+   "pulled_at": "2026-10-12 21:41:58"
   },
   {
    "country": "sg",
@@ -95,7 +95,7 @@
    "pct_1": 6.6,
    "pct_low": 6.6,
    "country_reviews": 13,
-   "pulled_at": "2026-10-12 19:47:45"
+   "pulled_at": "2026-10-12 21:42:00"
   }
  ],
  "other_apps": [
