@@ -233,3 +233,13 @@ def test_manual_review_decisions_are_recorded(tmp_path):
         classify.resolve(cfg, "zzzz", theme="trip_details")   # no such review
     with pytest.raises(ValueError):
         classify.resolve(cfg, "cccc", theme="not_a_theme")    # no such theme
+
+
+# --- `python run.py --fresh` must never delete anything that cannot be rebuilt ----
+
+def test_fresh_start_only_deletes_generated_outputs():
+    import run
+    assert run.GENERATED, "nothing listed to delete"
+    for path in run.GENERATED:
+        assert path.startswith("docs/"), f"{path} is not an output"      # never the reviews or labels in data/
+    assert "docs/workflow.html" not in run.GENERATED                      # written by hand, not rebuilt

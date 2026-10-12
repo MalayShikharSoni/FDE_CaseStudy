@@ -193,7 +193,11 @@ def import_batches(cfg, labelled_by):
         with open(base + ".ids.json", encoding="utf-8") as f:
             rows = [by_id[i] for i in json.load(f)]
         with open(label_file, encoding="utf-8") as f:
-            labels = parse_batch(f.read(), rows, tax, labelled_by)
+            try:
+                labels = parse_batch(f.read(), rows, tax, labelled_by)
+            except ValueError as exc:
+                # say which file, so the person knows what to fix
+                raise ValueError(f"{os.path.basename(label_file)}: {exc}") from None
         save_labels(cfg, labels)
         for suffix in (".txt", ".ids.json", ".labels.txt"):
             os.remove(base + suffix)
@@ -289,7 +293,12 @@ def main(argv=None):
             ap.error("requeue needs --theme")
         requeue(cfg, args.theme)
     else:
-        import_batches(cfg, args.by)
+        try:
+            import_batches(cfg, args.by)
+        except ValueError as exc:
+            print(f"Rejected: {exc}")
+            print("Nothing from that file was saved. Fix it and run the import again.")
+            sys.exit(1)
 
 
 if __name__ == "__main__":

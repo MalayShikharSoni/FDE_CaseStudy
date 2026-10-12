@@ -46,7 +46,9 @@ python run.py
 `python run.py` pulls new reviews, checks them, computes the metrics and
 rebuilds the report, digest, backlog and manual-review list. It takes under a minute after the first
 run. `python run.py --no-pull` rebuilds from the data already in the repository,
-with no network access.
+with no network access. `python run.py --fresh` deletes the generated report,
+digest, backlog, manual-review list and metrics file first, which shows that
+all of them are produced by the run.
 
 Run the tests with `python -m pytest`.
 

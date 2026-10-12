@@ -4,6 +4,8 @@ Run the whole pipeline with one command.
 
     python run.py             pull new reviews, then rebuild everything
     python run.py --no-pull   rebuild from the data already on disk
+    python run.py --fresh     delete the generated outputs first, then run, to show
+                              that every output is produced by the pipeline
 
 Stages, in order:
     1. pull      new Play reviews, rating snapshots per country, iOS reviews
@@ -17,9 +19,21 @@ If Google Play cannot be reached, the pull is skipped and the rest runs on the
 data already saved, so the report can always be rebuilt.
 """
 import argparse
+import os
 import sys
 
 from ratings import build, classify, clean, ios, llm, metrics, pull
+
+
+# Everything the pipeline writes for people to read. All of it is rebuilt from the
+# files in data/ on every run, so it is always safe to delete.
+GENERATED = [
+    "docs/data/metrics.json",
+    "docs/index.html",
+    "docs/digest.md",
+    "docs/backlog.csv",
+    "docs/manual_review.csv",
+]
 
 
 def step(name):
@@ -29,12 +43,21 @@ def step(name):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--no-pull", action="store_true", help="skip the network; rebuild from saved data")
+    ap.add_argument("--fresh", action="store_true", help="delete the generated outputs before running")
     args = ap.parse_args()
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     except Exception:
         pass
     cfg = pull.load_config()
+
+    if args.fresh:
+        step("0. Fresh start")
+        removed = [path for path in GENERATED if os.path.exists(path)]
+        for path in removed:
+            os.remove(path)
+        print(f"Deleted {len(removed)} generated files: {', '.join(os.path.basename(p) for p in removed)}")
+        print("The reviews and labels in data/ are kept; everything deleted is rebuilt below.")
 
     if not args.no_pull:
         step("1. Pull")
