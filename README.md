@@ -13,6 +13,7 @@ Submitted for the MoveInSync Forward Deployed Engineer case study by Malay Shikh
 | The answer and the action plan | **[The live report](https://malayshikharsoni.github.io/FDE_CaseStudy/)** (source: [docs/index.html](docs/index.html)) |
 | This week's short answer | [docs/digest.md](docs/digest.md) |
 | The plan as importable tickets | [docs/backlog.csv](docs/backlog.csv) |
+| Reviews waiting for a person to look at them | [docs/manual_review.csv](docs/manual_review.csv) |
 | How the pipeline works, file by file, and how to run it end to end | [The pipeline guide](https://malayshikharsoni.github.io/FDE_CaseStudy/workflow.html) (source: [docs/workflow.html](docs/workflow.html)) |
 | How it was done, and its limits | [METHOD.md](METHOD.md) |
 | Every number in the report | [docs/data/metrics.json](docs/data/metrics.json) |
@@ -43,7 +44,7 @@ python run.py
 ```
 
 `python run.py` pulls new reviews, checks them, computes the metrics and
-rebuilds the report, digest and backlog. It takes under a minute after the first
+rebuilds the report, digest, backlog and manual-review list. It takes under a minute after the first
 run. `python run.py --no-pull` rebuilds from the data already in the repository,
 with no network access.
 
@@ -62,7 +63,7 @@ pull  ->  clean  ->  label  ->  validate  ->  metrics  ->  build
 | Label | [ratings/classify.py](ratings/classify.py) | Gives each low-star review a theme, an owner and two flags; each review is labelled once and cached |
 | Validate | [ratings/validate.py](ratings/validate.py) | Compares the labels with a second, separately labelled sample of 120 reviews |
 | Metrics | [ratings/metrics.py](ratings/metrics.py) | Computes every number into one JSON file |
-| Build | [ratings/build.py](ratings/build.py), [ratings/charts.py](ratings/charts.py) | Writes the report, digest and backlog from that file |
+| Build | [ratings/build.py](ratings/build.py), [ratings/charts.py](ratings/charts.py) | Writes the report, digest, backlog and manual-review list from that file |
 
 The rules for labelling are in [ratings/prompt.md](ratings/prompt.md) and the
 themes in [ratings/taxonomy.yaml](ratings/taxonomy.yaml). The action plan's
@@ -91,6 +92,10 @@ pipeline counts that note as a theme of its own and flags it in the digest. A
 person can later give it a written definition in the taxonomy, merge it, or
 leave it. A second flag goes up if unthemed complaints pass 3% of recent
 low-star reviews, which would mean the theme list is going out of date.
+
+Every such review is also marked for manual review: listed one by one in the
+report and in [docs/manual_review.csv](docs/manual_review.csv) until a person
+records a decision with `python -m ratings.classify resolve`.
 
 ## Asking the question again
 

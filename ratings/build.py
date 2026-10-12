@@ -8,6 +8,7 @@ Writes:
     docs/index.html    the report: verdict, causes, action plan, evidence, queues, method
     docs/digest.md     the short weekly answer to "How are our Play Store ratings?"
     docs/backlog.csv   the action plan as rows that can be imported into a ticket tracker
+    docs/manual_review.csv   reviews that fitted no theme and are waiting for a person
 
 No number is typed into these files by hand. The wording of each recommendation
 comes from recommendations.yaml; its counts come from metrics.json.
@@ -218,6 +219,19 @@ def write_backlog(recs, m):
     return path
 
 
+def write_manual_review(m):
+    """The manual-review list as a spreadsheet, for whoever works through it."""
+    path = os.path.join(DOCS, "manual_review.csv")
+    with open(path, "w", newline="", encoding="utf-8-sig") as f:
+        w = csv.writer(f)
+        w.writerow(["Review id", "Store", "Date", "Stars", "What it seems to be about",
+                    "Already counted as a new theme?", "Review text"])
+        for r in m["manual_review"]:
+            w.writerow([r["reviewId"], "App Store" if r["source"] == "ios" else "Play", r["date"], r["score"],
+                        r["note"], "yes" if r["counted_as_new_theme"] else "no", r["text"]])
+    return path
+
+
 def write_digest(recs, m, s, flags, cfg):
     r, rv = m["ratings"], m["reviews"]
     lines = [f"# How are our Play Store ratings? ({m['window']['to']})", ""]
@@ -260,6 +274,12 @@ def write_digest(recs, m, s, flags, cfg):
               f"{un['recent_share_pct']}% in the last 90 days.", ""]
     lines += [f"- {g['note']}: {g['n']} ({g['recent_n']} in the last 90 days)"
               + (" - now counted as its own theme" if g["promoted"] else "") for g in un["groups"]] or ["- None."]
+    mr = m["manual_review"]
+    lines += ["", "## Marked for manual review", "",
+              f"{len(mr)} review{'s' if len(mr) != 1 else ''} fitted no written theme and "
+              f"{'have' if len(mr) != 1 else 'has'} not been looked at by a person. "
+              "They are listed in the report and in manual_review.csv."
+              if mr else "Nothing is waiting: every review either fits a written theme or has been looked at."]
     lines += ["", "## Latest versions", "", "| Version | First seen | Reviews | 1-2 star |", "|---|---|---|---|"]
     for v in m["versions"][-5:]:
         lines.append(f"| {v['version']} | {v['first_seen']} | {v['n']} | {v['pct_low']}%{' (clearly above usual)' if v['worse'] else ''} |")
@@ -309,6 +329,7 @@ def main():
     print(f"wrote {os.path.join(DOCS, 'index.html')}")
     print(f"wrote {write_digest(recs, m, s, flags, cfg)}")
     print(f"wrote {write_backlog(recs, m)}")
+    print(f"wrote {write_manual_review(m)}")
     for a in flags:
         print(f"  ALERT: {a}")
 

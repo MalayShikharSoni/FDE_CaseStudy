@@ -40,6 +40,17 @@ If a specific complaint fits no theme, label it `other` with a short note, as
 the rules describe. Do not stretch a theme to avoid `other`, and do not add a
 theme yourself.
 
+## Marked for manual review
+
+Every review labelled `other` is listed in the report and in
+`docs/manual_review.csv` until a person has looked at it. Do not resolve these
+yourself. If the user gives a decision, record it:
+
+    python -m ratings.classify resolve --id <first characters of the id> --theme <theme>
+
+Leave out `--theme` when they want it kept as `other`. Then run
+`python run.py --no-pull`.
+
 ## Themes created on the go
 
 When enough `other` reviews share a note (the number is `new_theme_min_reviews`
@@ -62,6 +73,7 @@ Read `docs/digest.md` and answer in this order, in a few lines:
 3. Anything under "Needs attention".
 4. The biggest named complaint in the last 90 days and whether it is growing.
 5. How many low-star reviews are waiting for a reply.
+6. How many reviews are marked for manual review, if any.
 
 Give numbers exactly as the digest has them. Say if the data is from a saved run
 because Play was unreachable. Point to `docs/index.html` for the full report.

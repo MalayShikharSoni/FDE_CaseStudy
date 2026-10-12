@@ -54,6 +54,10 @@ The star mix of newly added ratings appears here once two snapshots a week apart
 
 - driver call fails: 5 (0 in the last 90 days) - now counted as its own theme
 
+## Marked for manual review
+
+8 reviews fitted no written theme and have not been looked at by a person. They are listed in the report and in manual_review.csv.
+
 ## Latest versions
 
 | Version | First seen | Reviews | 1-2 star |
@@ -82,4 +86,4 @@ The star mix of newly added ratings appears here once two snapshots a week apart
 - R10 (90 days): Make no-shows fair and unsurprising
 - R11 (90 days): Close the booking and address traps
 
-Generated 2026-10-12 19:53:43 UTC from 24,318 reviews. Full report: index.html.
+Generated 2026-10-12 21:07:08 UTC from 24,318 reviews. Full report: index.html.

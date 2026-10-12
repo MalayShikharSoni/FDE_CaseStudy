@@ -4,7 +4,7 @@ Compute every number the report uses and write them to docs/data/metrics.json.
 
     python -m ratings.metrics
 
-The site, the weekly digest and the backlog are all built from that one file,
+The report, the weekly digest, the backlog and the manual-review list are all built from that one file,
 so a figure cannot differ between them.
 
 Two kinds of numbers, kept apart on purpose:
@@ -25,7 +25,8 @@ from statistics import median
 import yaml
 
 from ratings import validate
-from ratings.classify import employee_app, in_scope, load_labels, load_taxonomy, window_start
+from ratings.classify import (employee_app, in_scope, load_labels, load_taxonomy, needs_manual_review,
+                              window_start)
 from ratings.clean import latest_snapshots, load_ios_reviews, load_reviews
 from ratings.pull import TIME_FMT, load_config, now_utc
 
@@ -311,6 +312,23 @@ def unthemed(play_low, labels, recent_start, promoted=frozenset()):
     }
 
 
+def manual_review_list(labelled, labels, promoted):
+    """Every review that fitted no written theme and that no person has looked
+    at yet, newest first. Covers Play and iOS and all labelled star ratings."""
+    rows = [r for r in labelled if needs_manual_review(labels[r["reviewId"]])]
+    rows.sort(key=lambda r: r["dt"], reverse=True)
+    out = []
+    for r in rows:
+        note = labels[r["reviewId"]].get("note") or "(no note)"
+        out.append({
+            "reviewId": r["reviewId"], "short_id": r["reviewId"][:8], "source": r["source"],
+            "date": r["at"][:10], "score": r["score"], "note": note,
+            "counted_as_new_theme": note in promoted,
+            "text": r["content"][:500],
+        })
+    return out
+
+
 def new_ratings(cfg, app_id, min_days=6):
     """Star mix of ratings added between the oldest and newest snapshot.
     Needs two snapshots at least `min_days` apart, so it is empty on the first runs."""
@@ -400,6 +418,7 @@ def compute(cfg):
                                                    labels, hist, recent_start),
         "reply_queue": reply_queue(window, labels),
         "unthemed": unthemed(play_low, labels, recent_start, promoted),
+        "manual_review": manual_review_list(labelled, labels, promoted),
         "stages": rollup(play_low, labels, lambda lab: tax["by_id"][lab["theme"]]["stage"]),
         "owners": rollup(play_low, labels, lambda lab: lab["owner"]),
         "owners_of_specific": [{"id": k, "n": v, "share_pct": pct(v, len(specific))}

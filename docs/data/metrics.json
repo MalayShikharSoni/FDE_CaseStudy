@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12 19:53:43 UTC",
+ "generated_at": "2026-10-12 21:07:08 UTC",
  "app": {
   "id": "com.moveinsync.ets",
   "name": "MoveInSync (employee app)",
@@ -2273,6 +2273,88 @@
    }
   ]
  },
+ "manual_review": [
+  {
+   "reviewId": "028ff030-f768-44f9-ab4b-cd632defa30d",
+   "short_id": "028ff030",
+   "source": "play",
+   "date": "2026-07-01",
+   "score": 1,
+   "note": "driver call fails",
+   "counted_as_new_theme": true,
+   "text": "whenever the driver call us the audio is not clear"
+  },
+  {
+   "reviewId": "14121444483",
+   "short_id": "14121444",
+   "source": "ios",
+   "date": "2026-05-29",
+   "score": 3,
+   "note": "wording error in app",
+   "counted_as_new_theme": false,
+   "text": "There’s something wrong with your development team :: App is good to use but there’s a grammatical error that I noticed. So when the app is running and if the phone is shaking, something pops up asking “did something went wrong” isn’t it “did something go wrong”? I hope you notice this and rectify it"
+  },
+  {
+   "reviewId": "14107933260",
+   "short_id": "14107933",
+   "source": "ios",
+   "date": "2026-05-26",
+   "score": 1,
+   "note": "driver call fails",
+   "counted_as_new_theme": true,
+   "text": "Worst app in terms of the call feature and the map tracking. Does not tell the correct location :: Call to driver does not connect. Sitting with the driver , call dis not come on driver mobile. Automatically the call gets disconnected saying driver not receiving calls after just 3 rings"
+  },
+  {
+   "reviewId": "da5d8525-bc55-4542-b73d-63ffa6b29927",
+   "short_id": "da5d8525",
+   "source": "play",
+   "date": "2026-05-25",
+   "score": 1,
+   "note": "driver call fails",
+   "counted_as_new_theme": true,
+   "text": "The driver's voice is not audible neither our voice is audible to the driver."
+  },
+  {
+   "reviewId": "dc871c88-187f-4814-8767-e0511d7ae177",
+   "short_id": "dc871c88",
+   "source": "play",
+   "date": "2026-03-02",
+   "score": 3,
+   "note": "safe-reach confirmation",
+   "counted_as_new_theme": false,
+   "text": "sometimes I'm not able to confirm safe reach, if I don't click on notification, it won't pop up again"
+  },
+  {
+   "reviewId": "69dbefc1-7300-4749-90fc-e4976dda2879",
+   "short_id": "69dbefc1",
+   "source": "play",
+   "date": "2026-02-20",
+   "score": 1,
+   "note": "driver call fails",
+   "counted_as_new_theme": true,
+   "text": "very bad, calling issue every time"
+  },
+  {
+   "reviewId": "824d4e73-9625-4ede-81ce-914062b7730a",
+   "short_id": "824d4e73",
+   "source": "play",
+   "date": "2026-01-28",
+   "score": 1,
+   "note": "driver call fails",
+   "counted_as_new_theme": true,
+   "text": "Drivers are unable to contact employees via app, shows busy or switched off, should check their services and update for glitch"
+  },
+  {
+   "reviewId": "ed29631a-b415-43c2-a899-30e783a51859",
+   "short_id": "ed29631a",
+   "source": "play",
+   "date": "2025-10-17",
+   "score": 2,
+   "note": "driver call fails",
+   "counted_as_new_theme": true,
+   "text": "when we try to call the driver call get disconnected after one ring. it happens oftenly"
+  }
+ ],
  "stages": [
   {
    "id": "other",

@@ -205,3 +205,31 @@ def test_review_times_are_converted_to_utc():
     # a known moment must come out as the same UTC time on any machine
     assert to_utc(datetime.fromtimestamp(1_700_000_000)) == datetime(2023, 11, 14, 22, 13, 20)
     assert to_utc(datetime.fromtimestamp(1_400_000_000)) == datetime(2014, 5, 13, 16, 53, 20)
+
+
+# --- manual review of complaints that fit no theme --------------------------------
+
+def test_manual_review_decisions_are_recorded(tmp_path):
+    cfg = {"data_dir": str(tmp_path)}
+    base = {"source": "play", "theme2": "", "owner": "app", "safety": False, "after_update": False}
+    classify.save_labels(cfg, [
+        {"reviewId": "aaaa1111-x", "theme": "other", "note": "driver call fails", **base},
+        {"reviewId": "bbbb2222-x", "theme": "other", "note": "odd one", **base},
+        {"reviewId": "cccc3333-x", "theme": "login_otp", "note": "", **base},
+    ])
+    labels = classify.load_labels(cfg)
+    assert [classify.needs_manual_review(labels[i]) for i in ("aaaa1111-x", "bbbb2222-x", "cccc3333-x")] == [True, True, False]
+
+    # a person decides the first belongs to an existing theme (found by the start of its id)
+    moved = classify.resolve(cfg, "aaaa", theme="trip_details")
+    assert moved["theme"] == "trip_details" and moved["note"] == "" and moved["reviewed_by"] == "manual-review"
+    # and that the second is a one-off: it stays `other`, keeps its note, and is marked as looked at
+    kept = classify.resolve(cfg, "bbbb")
+    assert kept["theme"] == "other" and kept["note"] == "odd one"
+
+    labels = classify.load_labels(cfg)
+    assert not any(classify.needs_manual_review(lab) for lab in labels.values())
+    with pytest.raises(ValueError):
+        classify.resolve(cfg, "zzzz", theme="trip_details")   # no such review
+    with pytest.raises(ValueError):
+        classify.resolve(cfg, "cccc", theme="not_a_theme")    # no such theme

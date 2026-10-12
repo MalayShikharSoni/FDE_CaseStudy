@@ -11,7 +11,7 @@ Stages, in order:
     3. label     themes for new low-star reviews (API if a key is set; otherwise
                  they wait for the play-ratings skill in Claude Code)
     4. metrics   every number, written to docs/data/metrics.json
-    5. build     the report, the weekly digest and the backlog
+    5. build     the report, the weekly digest, the backlog and the manual-review list
 
 If Google Play cannot be reached, the pull is skipped and the rest runs on the
 data already saved, so the report can always be rebuilt.

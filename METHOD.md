@@ -64,6 +64,9 @@ Questions I pushed on:
 - Fixed categories. I questioned what happens to a complaint that fits no
   theme. The labeller now records a short note for it, and a note shared by
   five reviews becomes a theme automatically.
+- Manual review. I asked that those unfitting complaints be listed for a
+  person to check. Each one now appears in the report and in a spreadsheet
+  until someone records a decision on it.
 
 The check set: a second Claude session labelled the 120 reviews, and I then
 reviewed them myself. I say this plainly because the check is only as

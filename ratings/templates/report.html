@@ -343,7 +343,7 @@
 
 <section id="monitor">
   <h2>&ldquo;How are our Play Store ratings?&rdquo;, answered every week</h2>
-  <p>This page is the output of a pipeline, not a one-off analysis (<a href="workflow.html">how it works, stage by stage</a>). One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="{{ digest_href }}">weekly digest</a> and the <a href="backlog.csv">backlog</a>.</p>
+  <p>This page is the output of a pipeline, not a one-off analysis (<a href="workflow.html">how it works, stage by stage</a>). One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="{{ digest_href }}">weekly digest</a>, the <a href="backlog.csv">backlog</a> and the <a href="#manual-review">manual-review list</a>.</p>
   <ul class="plain">
     <li><strong>Weekly:</strong> a scheduled GitHub Action runs the pipeline and commits the results.</li>
     <li><strong>On demand:</strong> in Claude Code, asking &ldquo;How are our Play Store ratings?&rdquo; runs it, labels any new reviews and answers from the digest.</li>
@@ -364,6 +364,27 @@
     <thead><tr><th>What it is about</th><th class="num">Reviews</th><th class="num">Last 90 days</th><th>Example</th></tr></thead>
     <tbody>{% for g in m.unthemed.groups %}<tr><td>{{ g.note }}{% if g.promoted %}<br><span class="tag">now a theme</span>{% endif %}</td><td class="num">{{ g.n }}</td><td class="num">{{ g.recent_n }}</td><td>{{ g.examples[0] }}</td></tr>{% endfor %}</tbody>
   </table></div>
+  {% endif %}
+
+  <h3 id="manual-review">Marked for manual review</h3>
+  {% if m.manual_review %}
+  <p>{{ m.manual_review|length }} review{{ 's' if m.manual_review|length != 1 }} fitted no written theme and {{ 'have' if m.manual_review|length != 1 else 'has' }} not yet been looked at by a person. Each needs one decision: does it belong to an existing theme after all, is it a new problem that deserves its own theme, or is it a one-off? The same list is in <a href="manual_review.csv">manual_review.csv</a>.</p>
+  <div class="panel">
+    {% for q in m.manual_review %}
+    <div class="queue-item">
+      <div class="who">{{ q.score }}-star &middot; {{ q.date }} &middot; {{ 'App Store' if q.source == 'ios' else 'Play' }} &middot; id <code>{{ q.short_id }}</code> &middot; <span class="tag">{{ q.note }}</span>{% if q.counted_as_new_theme %} &middot; already counted as a new theme{% endif %}</div>
+      <div>{{ q.text }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  <p>The person reviewing records the decision with one command, using the id shown, and the review leaves this list on the next run:</p>
+  <ul class="plain">
+    <li>It belongs to an existing theme: <code>python -m ratings.classify resolve --id {{ m.manual_review[0].short_id }} --theme trip_details</code></li>
+    <li>It is a one-off, or the note is right as it stands: <code>python -m ratings.classify resolve --id {{ m.manual_review[0].short_id }}</code></li>
+    <li>It is a new problem: add a theme to <code>ratings/taxonomy.yaml</code>, then resolve the review to it.</li>
+  </ul>
+  {% else %}
+  <p>Nothing is waiting. Every labelled review either fits a written theme or has been looked at by a person.</p>
   {% endif %}
 
   <h3>In production</h3>
@@ -443,7 +464,7 @@
   Generated {{ m.generated_at }} from data to {{ m.window.to }}.
   {% if cfg.repo_url %}Code and data: <a href="{{ cfg.repo_url }}">{{ cfg.repo_url }}</a>. {% endif %}
   <a href="workflow.html">How the pipeline works</a>.
-  Files: <a href="{{ digest_href }}">weekly digest</a>, <a href="backlog.csv">backlog</a>, <a href="data/metrics.json">every number on this page</a>.
+  Files: <a href="{{ digest_href }}">weekly digest</a>, <a href="backlog.csv">backlog</a>, <a href="manual_review.csv">manual-review list</a>, <a href="data/metrics.json">every number on this page</a>.
 </footer>
 </div>
 

@@ -5,6 +5,10 @@ Theme labels for low-star reviews, with a cache so each review is labelled once.
     python -m ratings.classify status    how many reviews are in scope / labelled / pending
     python -m ratings.classify export    write pending reviews to data/pending/batch_NNN.txt
     python -m ratings.classify import    read data/pending/batch_NNN.labels.txt into the cache
+    python -m ratings.classify resolve --id 1a2b3c4d --theme trip_details
+                                         record a person's decision on a review that was
+                                         marked for manual review (leave out --theme to keep
+                                         it as `other` and just mark it as looked at)
     python -m ratings.classify requeue --theme other
                                          drop the labels with that theme so they are labelled
                                          again (used after a theme is added or redefined)
@@ -212,6 +216,40 @@ def requeue(cfg, theme):
     return len(labels) - len(keep)
 
 
+def needs_manual_review(label):
+    """A review is marked for manual review when no written theme fitted it and
+    no person has looked at it yet."""
+    return label["theme"] == "other" and not label.get("reviewed_by")
+
+
+def resolve(cfg, review_id, theme=None, owner=None, by="manual-review"):
+    """Record a person's decision on a review marked for manual review.
+
+    With `theme`, the review moves to that theme. Without it, the review stays
+    `other` (its note is kept) and is only marked as looked at. Either way it
+    leaves the manual-review list. `review_id` may be the first few characters
+    of the id, as shown in the report."""
+    tax = load_taxonomy()
+    labels = load_labels(cfg)
+    matches = [rid for rid in labels if rid.startswith(review_id)]
+    if len(matches) != 1:
+        raise ValueError(f"{review_id!r} matches {len(matches)} labelled reviews; give more of the id")
+    label = dict(labels[matches[0]])
+    if theme:
+        if theme not in tax["by_id"]:
+            raise ValueError(f"unknown theme {theme!r}")
+        label.update(theme=theme, note="", owner=owner or tax["by_id"][theme]["default_owner"])
+        if label.get("theme2") == theme:
+            label["theme2"] = ""
+    elif owner:
+        label["owner"] = owner
+    if label["owner"] not in OWNERS:
+        raise ValueError(f"unknown owner {label['owner']!r}")
+    label.update(reviewed_by=by, reviewed_at=now_utc().strftime(TIME_FMT))
+    save_labels(cfg, [label])   # a later line for the same review replaces the earlier one
+    return label
+
+
 def status(cfg):
     scope = in_scope(cfg)
     done = load_labels(cfg)
@@ -222,9 +260,11 @@ def status(cfg):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["status", "export", "import", "requeue"])
+    ap.add_argument("command", choices=["status", "export", "import", "requeue", "resolve"])
     ap.add_argument("--by", default="claude-code", help="who produced the labels being imported")
-    ap.add_argument("--theme", help="for requeue: the theme whose labels to drop")
+    ap.add_argument("--theme", help="for requeue: the theme whose labels to drop; for resolve: the theme to move the review to")
+    ap.add_argument("--id", help="for resolve: the review id, or its first few characters")
+    ap.add_argument("--owner", choices=OWNERS, help="for resolve: who would have to act, if not the theme's usual owner")
     args = ap.parse_args(argv)
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -235,6 +275,15 @@ def main(argv=None):
         status(cfg)
     elif args.command == "export":
         export_batches(cfg)
+    elif args.command == "resolve":
+        if not args.id:
+            ap.error("resolve needs --id")
+        try:
+            label = resolve(cfg, args.id, args.theme, args.owner)
+        except ValueError as exc:
+            ap.error(str(exc))
+        print(f"{label['reviewId']}: recorded as '{label['theme']}' (owner {label['owner']}), reviewed by a person. "
+              "Run `python run.py --no-pull` to update the report.")
     elif args.command == "requeue":
         if not args.theme:
             ap.error("requeue needs --theme")
