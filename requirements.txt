@@ -1,0 +1,5 @@
+google-play-scraper
+PyYAML
+Jinja2
+pytest
+anthropic

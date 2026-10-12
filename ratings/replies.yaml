@@ -1,0 +1,114 @@
+# Draft replies for the weekly reply queue, one per theme.
+#
+# These are starting points. The person replying edits each one to mention what
+# this reviewer actually said, and removes any promise that is not true yet.
+# Rules for every reply: name the problem, give one concrete next step, never ask
+# for personal or trip details in public, never offer anything for a rating change.
+
+safety: >
+  We are sorry this happened, and we are treating it as a safety incident, not
+  as app feedback. Please write to app@moveinsync.com today with the date and
+  shift (do not post details here) so we can identify the trip and act on it.
+
+themes:
+  login_otp: >
+    Sorry you could not log in. An OTP that never arrives is usually one of two
+    things: a delivery failure, or a number or email that does not match your
+    employer's records. Please write to app@moveinsync.com with your employer's
+    name and we will check which one it is.
+
+  session_logout: >
+    Being logged out again and again is not how the app should behave, and we
+    are sorry it caught you when you needed it. Please update to the latest
+    version; if it still happens, write to app@moveinsync.com with your phone
+    model so we can trace it.
+
+  app_wont_open: >
+    Sorry the app would not open. This should never need a reinstall. Please
+    write to app@moveinsync.com with your phone model and Android or iOS
+    version, and the exact message you see, so we can reproduce it.
+
+  slow_performance: >
+    Sorry the app was slow when you needed it. Please tell us at
+    app@moveinsync.com which screen hangs and your phone model, so we can
+    measure it on the same device.
+
+  booking_flow: >
+    Sorry the booking did not go through as you expected. Please write to
+    app@moveinsync.com with the step where it went wrong, so we can fix that
+    screen and check your booking.
+
+  booking_rules: >
+    Thank you for the feedback. Booking and cancellation cut-offs are set by
+    your employer's transport policy, not by the app, but the app should say so
+    clearly. We are passing this on; your transport desk can confirm the rule.
+
+  address_location: >
+    Sorry your address or pickup point is wrong in the app. Please write to
+    app@moveinsync.com with your employer's name and we will get the location
+    corrected with your transport desk.
+
+  trip_details: >
+    Sorry the trip details were missing or wrong. You should always be able to
+    see your pickup time, cab number and driver. Please tell us at
+    app@moveinsync.com which detail was missing and when, so we can trace it.
+
+  tracking_eta: >
+    Sorry the vehicle location and ETA were wrong. That defeats the point of
+    tracking. Please write to app@moveinsync.com with the date and shift so we
+    can check that trip's location data.
+
+  boarding: >
+    Sorry boarding was harder than it should be. Please tell us at
+    app@moveinsync.com whether it was the OTP or the QR scan and your phone
+    model, so we can reproduce it.
+
+  no_show: >
+    We are sorry you were marked a no-show when you believe you should not have
+    been. Please write to app@moveinsync.com with the date and shift; we will
+    review the trip record with your transport desk.
+
+  cab_late_or_missing: >
+    We are sorry your cab was late or did not come. That is a failure of the
+    service you rely on. Please write to app@moveinsync.com with the date and
+    shift so we can raise it with the transport team for your site.
+
+  routing_time: >
+    Sorry your commute took far longer than it should. Please write to
+    app@moveinsync.com with your shift and pickup area so we can have the route
+    reviewed with your transport desk.
+
+  driver_behaviour: >
+    We are sorry about the way you were treated. Please write to
+    app@moveinsync.com with the date and shift (do not post details here) so we
+    can raise it with the vendor.
+
+  support_unreachable: >
+    Sorry you could not get help when you asked for it. That is on us. Please
+    write to app@moveinsync.com with what you were trying to report and we will
+    pick it up directly.
+
+  forced_prompts: >
+    You are right that the app should not make you do something else before it
+    shows your ride. We have passed this to the product team. Thank you for
+    saying exactly what got in the way.
+
+  ui_design: >
+    Thank you for the feedback on the design. It would help us to know which
+    screen became harder to use; please tell us at app@moveinsync.com.
+
+  feature_request: >
+    Thank you for the suggestion. We have passed it to the product team.
+
+  generic_negative: >
+    We are sorry the app let you down. We would like to fix it, but need to know
+    what went wrong: was it logging in, booking, tracking, or the cab itself?
+    Please reply here or write to app@moveinsync.com.
+
+  not_a_complaint: >
+    Thank you for the feedback. If something did go wrong, please tell us at
+    app@moveinsync.com and we will look into it.
+
+  other: >
+    Thank you for telling us. Please write to app@moveinsync.com with a little
+    more detail so we can look into it properly.

@@ -1,0 +1,66 @@
+# Apps to track. Adding an app here is the only change needed to monitor it.
+apps:
+  - id: com.moveinsync.ets
+    name: MoveInSync (employee app)
+    role: employee
+    ios_id: 962949521   # same app on the App Store, used as a cross-check
+  - id: com.moveinsync.driver.lite
+    name: MoveInSync Partner Lite (driver app)
+    role: driver
+  - id: com.moveinsync.driver.dco
+    name: MoveInSync Driver Partner
+    role: driver
+  - id: field.moveinsync.ets
+    name: MoveInSync Field app
+    role: field
+
+country: in
+langs: [en, hi]
+
+# Play shows a different rating in each country's store. These listings are
+# recorded on every run for the employee app (score and star percentages only).
+countries: [in, us, ph, za, gb, lk, sg]
+
+# First (backfill) pull: all reviews from `since`, plus 1-2 star reviews from
+# `neg_since`. Both are set to "everything": the full history is small enough
+# to pull, and the separate 1-2 star sweeps act as a coverage check on the
+# main sweep. If `neg_since` is ever set earlier than `since`, averages must
+# only use the `since` window, because the older window holds negatives only.
+since: "2010-01-01"
+neg_since: "2010-01-01"
+
+# Later pulls re-read this many days before the newest stored review, so edited
+# reviews and new developer replies are picked up.
+overlap_days: 14
+
+data_dir: data
+
+# Which reviews get a theme label: the app with role `employee` (Play and iOS),
+# rated `label_max_score` stars or lower, written in the last `label_window_days`.
+label_window_days: 365
+label_max_score: 3
+
+# Size of the sample used to check the labeller (data/gold.csv).
+gold_size: 120
+
+# Who labelled that check set. The report states this exactly as set here, so
+# keep it true.
+#   labelled_by: ai_second_session   a separate AI session that had not seen the first labels
+#   labelled_by: human               a person, without sight of the AI's labels
+check_set:
+  labelled_by: ai_second_session
+  human_reviewed: true     # true only if a person then read the sample and corrected it
+  human_changed:           # how many labels that person changed; leave empty if not counted
+
+# When the weekly digest raises a flag.
+alerts:
+  min_reviews: 50             # ignore a 30-day window with fewer reviews than this
+  low_share_jump_points: 5    # 30-day low-star share this many points above the 12-month share
+  theme_min_share: 5          # a theme must be at least this % of recent low-star reviews...
+  theme_growth: 2             # ...and this many times its earlier share
+  other_share_alert: 3        # % of recent low-star reviews that fit no theme: the themes are going stale
+  new_theme_min_reviews: 5    # this many unthemed reviews with the same note: propose a new theme
+
+# Shown on the report.
+author: Malay Shikhar Soni
+repo_url: "https://github.com/MalayShikharSoni/FDE_CaseStudy"

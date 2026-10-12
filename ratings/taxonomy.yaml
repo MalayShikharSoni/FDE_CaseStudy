@@ -1,0 +1,153 @@
+# What a low-star review is about. Drafted from reading ~650 real 1-2 star
+# reviews (200 Play, 2025-10 to 2026-10, plus 450 iOS), not from assumption.
+#
+# Every review gets:
+#   theme         the main complaint (one of the ids below)
+#   theme2        a second complaint if the review clearly has one, else empty
+#   owner         who can fix it: app | ops | policy | unclear
+#   safety        true if the reviewer describes a risk to a person
+#   after_update  true if the reviewer blames an update / new version / new UI
+#
+# `stage` places the theme on the employee journey from the brief.
+# `default_owner` is the usual owner; the labeller overrides it when the review
+# says otherwise (e.g. a no-show caused by a driver not calling is `ops`).
+
+owners:
+  app: Product / engineering can fix it in the app or backend.
+  ops: Transport operations or the cab vendor (late cabs, drivers, allocation).
+  policy: A rule the employer or MoveInSync configured (cut-offs, booking windows, no-show penalties).
+  unclear: The review does not say enough to tell.
+
+themes:
+  # --- getting into the app ---
+  - id: login_otp
+    stage: access
+    default_owner: app
+    definition: Cannot log in or register because the OTP never arrives (SMS, email or WhatsApp), or login is rejected.
+    examples: ["not receiving OTPs to phn number, whatapp or email. i tried nearly 50 times", "can't even register, otp function down"]
+
+  - id: session_logout
+    stage: access
+    default_owner: app
+    definition: Logged out repeatedly, asked to log in every day, or shown "session expired".
+    examples: ["this app will sign out every single day", "always shows 'SESSION EXPIRED. YOU ARE UNAUTHORISED'"]
+
+  - id: app_wont_open
+    stage: access
+    default_owner: app
+    definition: App crashes, shows a blank screen, will not open, needs reinstalling, or wrongly says it was not installed from the Play Store.
+    examples: ["just keeps giving a blank screen everytime i try to open it", "shows unable to open as the app was not downloaded from play store"]
+
+  - id: slow_performance
+    stage: access
+    default_owner: app
+    definition: App is slow, hangs, takes long to load, or uses too much battery or storage. It opens, but badly.
+    examples: ["very slow...app doesnt load most of time", "take too much time to load an application"]
+
+  # --- booking ---
+  - id: booking_flow
+    stage: booking
+    default_owner: app
+    definition: Cannot complete a booking because of an error, a disabled button, a wrong default, or a confusing booking screen.
+    examples: ["Book now button itself disabled even after filling mandatory details", "Booking a shuttle is now a 2 step process previously it used to be 1"]
+
+  - id: booking_rules
+    stage: booking
+    default_owner: policy
+    definition: Unhappy with a booking rule - cut-off time, how far ahead one can book, waitlist handling, cancellation limits.
+    examples: ["wont allow to book for more then 1 week", "this app will only accept 12 hour prior booking"]
+
+  - id: address_location
+    stage: booking
+    default_owner: app
+    definition: Cannot change the home or pickup address, or the app places the address at the wrong spot or a pickup point far from home.
+    examples: ["can't change address", "Address and locations are not matching, different location show's up for the address entered"]
+
+  # --- the trip, as seen in the app ---
+  - id: trip_details
+    stage: trip_info
+    default_owner: app
+    definition: Pickup time, cab number, driver contact or co-passenger details are missing, wrong or keep changing in the app.
+    examples: ["it's not showing car number", "not getting pickup time and vehicle details from last 1 week"]
+
+  - id: tracking_eta
+    stage: tracking
+    default_owner: app
+    definition: Live vehicle location is stale or wrong, the ETA is inaccurate, or tracking will not load.
+    examples: ["whenever you see the location, it shows one or two hours ago", "the ETA keeps increasing until the vehicle is 2-3 stops away"]
+
+  - id: boarding
+    stage: boarding
+    default_owner: app
+    definition: Trouble at the point of boarding - boarding OTP/PIN, QR scan, check-in, or extra steps before the OTP is shown.
+    examples: ["Qr code scanner not working very difficult to scan", "when you click view otp, it pops up the seat belt safely first"]
+
+  - id: no_show
+    stage: no_show
+    default_owner: ops
+    definition: Marked as a no-show unfairly or without warning, or penalised for one.
+    examples: ["driver will not call and mark as no show", "they mark my no show for no reason"]
+
+  # --- the ride itself (not the app) ---
+  - id: cab_late_or_missing
+    stage: ride
+    default_owner: ops
+    definition: Cab arrives late, is not allocated, or never comes.
+    examples: ["cab are always late", "cab allocation is getting delayed on an everyday basis"]
+
+  - id: routing_time
+    stage: ride
+    default_owner: ops
+    definition: Route is too long, passengers are clubbed badly, pickup order makes no sense, or pickup is set far too early.
+    examples: ["my house is 40min from office it take 2.5 hours for me to reach home", "Route selection is not good at all"]
+
+  - id: driver_behaviour
+    stage: ride
+    default_owner: ops
+    definition: Driver is rude, will not wait or call, drives unsafely, or the vehicle is in poor condition.
+    examples: ["drivers don't know how to behave with employees", "every driver exceed speed limit"]
+
+  # --- when something goes wrong ---
+  - id: support_unreachable
+    stage: support
+    default_owner: ops
+    definition: Helpdesk cannot be reached, cuts the call, or complaints and bug reports get no response.
+    examples: ["What's the use of help desk when it's always busy", "raised a bug with screenshot but No response"]
+
+  # --- the app getting in the way ---
+  - id: forced_prompts
+    stage: app_general
+    default_owner: app
+    definition: The app forces something before it lets the user continue - mandatory trip rating, pop-ups that will not close, a disclaimer on every open, repeated permission requests, notification spam.
+    examples: ["I have to mandatorily give a review of the previous ride before i can access current ride details", "why a fresh disclaimer statement every time when you minimize the app"]
+
+  - id: ui_design
+    stage: app_general
+    default_owner: app
+    definition: Dislikes the interface or a redesign in general, without naming a specific broken flow.
+    examples: ["dislike the new update. Bring the old version back", "app needs lot of improvement in UI"]
+
+  # --- everything else ---
+  - id: feature_request
+    stage: other
+    default_owner: app
+    definition: Mainly asks for something the app does not have (chat with driver, laptop version, fingerprint login).
+    examples: ["Have a messaging feature under tracking section", "does not support fingerprint login"]
+
+  - id: generic_negative
+    stage: other
+    default_owner: unclear
+    definition: Negative with no usable detail.
+    examples: ["worst app ever", "not a reliable aap"]
+
+  - id: not_a_complaint
+    stage: other
+    default_owner: unclear
+    definition: The text is positive or neutral despite the low star rating (a mis-tap, or praise with a low score).
+    examples: ["good", "nice app"]
+
+  - id: other
+    stage: other
+    default_owner: unclear
+    definition: A specific complaint that fits none of the themes above. A rising share here means the taxonomy needs a new theme.
+    examples: []

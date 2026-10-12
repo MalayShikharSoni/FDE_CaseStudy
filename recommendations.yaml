@@ -1,0 +1,361 @@
+# The action plan. Written by hand from the evidence; every number shown next
+# to a recommendation is filled in by the pipeline at build time:
+#   themes    -> count, share of low-star reviews and estimated rating effect
+#   patterns  -> how many low-star reviews in the window match the phrase
+# So the text here never states a count itself.
+#
+# horizon: week (start tomorrow, little or no code) | 30 days | 90 days
+# effort:  S (days) | M (a sprint or two) | L (a quarter)
+#
+# We could not log into the app (it needs an employer account). So each ticket
+# says what we checked in public sources, and its first step confirms current
+# behaviour before anything is built.
+
+recommendations:
+  - id: R1
+    title: Reply to every 1-2 star review within 24 hours, with a route to a fix
+    horizon: week
+    owner: Customer support lead, with one engineer on call for app issues
+    effort: S
+    themes: []
+    use_reply_stats: true
+    problem: >
+      Unhappy reviewers are almost never answered. Most developer replies go to
+      people who were already happy.
+    cause: >
+      Replying looks ad hoc and unowned. MoveInSync's own blog credits personal,
+      non-canned replies for an earlier recovery (4.3 back to 4.6), so this is a
+      practice that lapsed, not one that needs inventing.
+    change:
+      - Name one owner for the Play review inbox and set a 24-hour target for 1-2 star reviews.
+      - Use the weekly reply queue this project generates (unanswered low-star reviews, each with a drafted reply and its theme).
+      - "Each reply does three things: names the specific problem, gives one concrete next step (a fix version, or app@moveinsync.com with what to include), and asks the reviewer to update the review once it is sorted."
+      - For reviews with no detail ("worst app"), ask what went wrong. That is a quarter of all low-star reviews we currently learn nothing from.
+    first_step: Tomorrow, work through the newest 20 unanswered low-star reviews in the reply queue.
+    exists_check: Replies exist today but are rare and slow; figures below are from the public reply data on each review.
+    metric: Share of 1-2 star reviews replied to within 24 hours, from under 5% to over 90%.
+    verify: The monitor reports reply rate and reply time weekly. Track how many replied-to reviewers later raise their rating (Play Console shows edited ratings).
+    guardrail: No canned text. Never offer anything in exchange for a rating change; Google prohibits incentivised ratings.
+
+  - id: R2
+    quotes_from_pattern: 0
+    title: Remove the false "not downloaded from Play Store" block on Android
+    horizon: week
+    owner: Android engineering
+    effort: S
+    themes: [app_wont_open]
+    patterns:
+      - label: mention the "not downloaded / installed from Play Store" message
+        regex: "not (been )?(downloaded|installed|install).{0,25}(play ?store|app store|playstore)|play ?store.{0,40}(reinstall|uninstall)|install of the app from the play"
+      - label: name a specific phone or Android version that cannot open the app
+        regex: "android 1[67]|oneplus|pixel|vivo|samsung"
+    problem: >
+      Users who installed from the Play Store are told the app "was not
+      downloaded from Play Store" and locked out until they reinstall, often
+      every few days. "App won't open" is the fastest-growing complaint.
+    cause: >
+      Suspected: an installer-source or Play Integrity check that treats a
+      failed or timed-out check as tampering. The complaints begin in July 2026
+      around version 12.16, which suggests when it was introduced or tightened.
+      Separate crash reports name Android 17, OnePlus 12 and Pixel devices.
+    change:
+      - Make the integrity check fail open. When it cannot get an answer, let the user in and log the event instead of blocking.
+      - Retry in the background, and only block on a definite "tampered" verdict.
+      - Add the check's pass, fail and error rates to release monitoring.
+      - Reproduce the Android 17 and OnePlus 12 crashes from Play Console crash clusters.
+    first_step: Search the Android codebase for the user-facing string, find the check behind it, and pull its failure rate by app version.
+    exists_check: Not documented in the help center. Reviewers quote the message nearly word for word, so the string should be easy to find.
+    metric: Low-star reviews quoting this message fall to zero in the first full month after release.
+    verify: The monitor counts this phrase weekly. Confirm with the crash-free and ANR rates in Play Console vitals.
+    guardrail: If the check exists for a security requirement, keep the logging and server-side verdict; only the lock-out on error goes.
+
+  - id: R3
+    quotes_from_pattern: 0
+    title: Stop putting prompts between the employee and their ride
+    horizon: week
+    owner: Product manager for the employee app, with Android and iOS engineering
+    effort: S
+    themes: [forced_prompts]
+    patterns:
+      - label: object to a forced or repeated trip rating
+        regex: "(forc|mandator|compulsor|skip|always ask|keeps? asking|every (ride|trip)).{0,60}(rat(e|ing)|feedback|review|survey)|(rat(e|ing)|feedback|review|survey).{0,60}(forc|mandator|compulsor|skip|every (ride|trip)|optional)"
+      - label: object to accepting the transport policy or "I agree" repeatedly
+        regex: "i agree|agreement|transport polic|terms and|disclaimer|t&c|policy accept"
+      - label: object to notifications, pop-ups or banners
+        regex: "notification|pop ?-?ups?|banner"
+      - label: object to repeated permission requests
+        regex: "permission|microphone"
+    problem: >
+      Employees open the app in a hurry to find a cab number or an OTP, and the
+      app makes them do something else first: rate the previous trip with no
+      skip, accept the transport policy again, dismiss a banner, or answer a
+      microphone permission request. Some came to the Play Store to give one
+      star specifically because of the forced rating.
+    cause: >
+      Each prompt was probably added for a good local reason (feedback volume,
+      compliance, campaigns). Nobody owns the total. Trip feedback is a
+      configurable setting in the admin dashboard, so some of this may be set
+      per customer.
+    change:
+      - Trip rating gets a visible Skip, and never blocks the current trip card.
+      - Transport policy is accepted once per policy version, not on every open.
+      - A permission that has been declined is not requested again on launch; ask only at the moment the feature is used.
+      - Full-screen banners are removed from app open; the trip card is always the first thing shown.
+      - Set one rule for the app - nothing may appear before the current trip - and review every new prompt against it.
+    first_step: List every screen that can appear between app open and the current trip card, with who owns each. Ship Skip on trip rating first.
+    exists_check: The help center shows trip feedback is switchable per site (Ticket Management Config > Trip Feedback). Check whether "mandatory" is a product default or a customer choice before changing it.
+    metric: Median time from app open to the trip card. Low-star reviews in this theme fall by half within two releases.
+    verify: Theme share in the weekly monitor, plus in-app analytics on prompt views and skips.
+    guardrail: Trip-feedback volume will fall when it becomes optional. Agree that with Ops before shipping; feedback given under compulsion is poor data anyway.
+
+  - id: R4
+    title: Triage every safety-flagged review within 24 hours
+    horizon: week
+    owner: Head of safety or operations, with customer support
+    effort: S
+    themes: []
+    use_safety: true
+    problem: >
+      A small number of reviews describe real risk to a person: abusive or
+      speeding drivers, women left without a cab or a door drop at night, an
+      SOS button or helpdesk that could not be reached. These are few, so a
+      ranking by volume buries them.
+    cause: >
+      Play reviews are not treated as an incident channel, so a safety report
+      made there waits with everything else.
+    change:
+      - The monitor already flags these separately. Route that list to a named safety owner each week, and same-day for new ones.
+      - Reply publicly within 24 hours asking for trip details through a private channel, and open an incident.
+      - Check the specific product claims - SOS not working, pop-ups blocking SOS, forced logout blocking SOS - as P1 bugs.
+    first_step: Read the safety queue in this report today and open incidents for any that name a place, vehicle or date.
+    exists_check: The app has SOS and a helpdesk; reviewers report cases where neither could be reached. We could not test them.
+    metric: Every safety-flagged review has a reply and an incident reference within 24 hours.
+    verify: Weekly count of safety-flagged reviews without a reply, target zero.
+    guardrail: Never ask for personal or trip details in the public reply.
+
+  - id: R5
+    title: Fix login OTP delivery, and tell the user why no OTP came
+    horizon: 30 days
+    owner: Backend / identity engineering, with customer onboarding
+    effort: M
+    themes: [login_otp, session_logout]
+    patterns:
+      - label: mention OTP
+        regex: "otp"
+    problem: >
+      The largest single named complaint is that the login OTP never arrives by
+      SMS, email or WhatsApp, so the employee cannot book or track anything. It
+      is also the second-largest complaint on iOS, so it is not an Android bug.
+      It has run at a steady rate for two years.
+    cause: >
+      Two different problems probably share one symptom. First, delivery
+      failures at the SMS or email provider. Second, the employee is not
+      registered: the help center says OTP depends on the number or email in the
+      employer's records and on profile permissions, and a reviewer points out
+      the app gives no message saying whether the number is registered. An
+      unregistered user just waits for an OTP that will never be sent.
+    change:
+      - "Measure the funnel by channel and by customer: OTP requested, sent, delivered, entered, verified."
+      - When the number or email is not in the employer's records, say so on screen, with who to contact, instead of failing silently.
+      - Fall back automatically to a second channel after a timeout, and show which channel was used.
+      - Keep sessions alive across network drops; a forced logout puts the user back through OTP at the worst moment.
+    first_step: Pull one week of OTP logs and split failures into "never sent (not registered)" and "sent but not delivered". The split decides who fixes it.
+    exists_check: The help center has a troubleshooting article for OTP not received, so the problem is known. Repeated-logout complaints have nearly stopped since late 2025, which suggests an earlier fix there worked.
+    metric: OTP verification success rate, and low-star reviews in this theme.
+    verify: Theme share in the weekly monitor on Play and iOS.
+    guardrail: The "not registered" message must not reveal whether a given number belongs to a customer to someone probing; show it only after a rate-limited attempt.
+
+  - id: R6
+    title: Gate every release on crash rate and early reviews
+    horizon: 30 days
+    owner: Release engineering / QA
+    effort: M
+    themes: [app_wont_open, slow_performance]
+    use_after_update: true
+    patterns:
+      - label: (iOS) describe a crash while tracking or on the map
+        regex: "crash.{0,60}(track|map|locat|zoom)|(track|map|locat|zoom).{0,60}crash"
+        source: ios
+      - label: (iOS) name an older iPhone or iOS version that stopped working
+        regex: "ios ?1[56]|iphone ?(x|8|7|6)"
+        source: ios
+    problem: >
+      The app ships every one to two weeks, and reviewers repeatedly report that
+      an update broke something for them: the app no longer opens on their
+      phone, crashes on the tracking screen, or stopped supporting their iOS
+      version. On iOS, "won't open" is by far the largest complaint.
+    cause: >
+      Suspected: releases go to all users at once, and the test device list
+      does not cover the newest Android version or older iPhones still in use.
+      Dropping iOS 15 and 16 appears to have happened without warning to users.
+    change:
+      - "Use Play staged rollouts: 5%, then 20%, then 100%, with an automatic halt if the crash-free rate or the share of 1-star reviews on the new version crosses a set line."
+      - "Add to the pre-release device list: the newest Android version, the top five devices by user count, and the oldest supported iPhone."
+      - Before dropping an OS version, show an in-app notice for two releases.
+      - Write release notes that say what changed, so support and customers can connect a complaint to a version. Nearly every recent note says only "bug fixes".
+    first_step: Turn on staged rollout for the next release and set the halt thresholds from the last three months of Play Console vitals.
+    exists_check: No version in the last year is provably worse than the baseline on review data alone, because per-version samples are small. Crash and ANR rates in Play Console will show it properly, and we do not have those.
+    metric: Crash-free users per release, and the share of low-star reviews that blame an update.
+    verify: The monitor's per-version table and "after update" flag.
+    guardrail: A halted rollout needs a named person who decides to resume or roll back.
+
+  - id: R7
+    quotes_from_pattern: 0
+    title: Ask for a Play rating at the right moment, starting where the listing is weakest
+    horizon: 30 days
+    owner: Product manager for the employee app
+    effort: M
+    themes: []
+    use_countries: true
+    patterns:
+      - label: complain about being asked to review the app
+        regex: "play ?store review|keeps asking to review|asking (for|to) (rate|review) (the|this) app"
+        all_scores: true
+    problem: >
+      Most riders are satisfied and never rate; people with a problem do. The
+      rating also differs by country, and the listings outside India are lower
+      and rest on far fewer ratings, so a small number of new ratings moves them.
+      Meanwhile at least two reviewers say the app already asks for Play reviews
+      after every ride, and one lowered a 5-star rating to 3 because of it.
+    cause: >
+      The review request appears to be triggered by frequency, not by a good
+      experience, which annoys regular riders and wastes Google's quota for
+      showing the dialog.
+    change:
+      - Use the Play In-App Review API, triggered only by objective success - for example the third consecutive on-time completed trip with no complaint raised.
+      - Cap it at once per user per quarter. Google limits how often the dialog shows anyway.
+      - Prioritise countries where the listing is lowest (see the table), since those averages move fastest.
+      - Do not ask "are you enjoying the app?" first, and do not send only happy users to the store.
+    first_step: Find out what triggers the current review request and how often it fires per user.
+    exists_check: Two reviewers also say an in-app rating screen accepted only high stars. We could not verify this. If it is a pre-screen for the Play prompt, remove it.
+    metric: Rating shown on each country listing, and number of new ratings per week.
+    verify: The monitor records every country listing weekly and, from the second run, the star mix of newly added ratings.
+    guardrail: >
+      Google's guidance: trigger "after a user has experienced enough of your
+      app", "don't prompt the user excessively", and do not "ask the user any
+      questions before or while presenting the rating button or card, including
+      questions about their opinion". The trigger must be an event, never a
+      sentiment check.
+
+  - id: R8
+    title: Give employees a complaint route that works, so the Play Store stops being one
+    horizon: 30 days
+    owner: Product manager for support tooling, with the operations lead
+    effort: M
+    themes: [support_unreachable, cab_late_or_missing, routing_time, driver_behaviour]
+    patterns:
+      - label: mention the helpdesk, helpline or customer support
+        regex: "help ?desk|helpline|customer (care|support|service)|support team|sahayta|saheta|ivr"
+    problem: >
+      About one in five specific complaints is about the service, not the app:
+      late or missing cabs, long routes, driver conduct. MoveInSync cannot fix a
+      vendor's lateness from the app. But many of these reviewers say they tried
+      to complain first and could not: the helpdesk was busy or cut the call, a
+      bug report errored, there was no way to give feedback on a trip.
+    cause: >
+      When the in-app route fails, the public review becomes the complaint form,
+      and the app takes the one star for a vendor's failure.
+    change:
+      - "One button on every trip card: Report a problem with this trip. Pre-filled with the trip, a short list of reasons, optional text."
+      - Each report gets a visible status and a reply, and goes to the customer's transport desk and to the vendor.
+      - Fix the reported failures in the existing channels - the feedback text box, the bug-report submission, helpdesk calls dropping.
+      - Give each customer a monthly view of complaints by vendor, so lateness is managed where it is caused.
+    first_step: Test every existing complaint path in the app end to end and list which ones fail. Reviewers name at least three.
+    exists_check: Trip feedback and a ticketing configuration exist in the admin dashboard. Whether a ticket reaches the employee with a status, we could not see.
+    metric: Share of trip problems reported in-app with a response within 24 hours. Service-owned low-star reviews fall.
+    verify: Owner split in the weekly monitor (app, operations, policy).
+    guardrail: Do not route unhappy users away from the Play Store rating prompt; this is a complaint channel, not a filter on who gets asked to rate.
+
+  - id: R9
+    title: Make tracking and trip details trustworthy
+    horizon: 90 days
+    owner: Product and engineering for tracking
+    effort: L
+    themes: [tracking_eta, trip_details]
+    patterns:
+      - label: mention calling the driver
+        regex: "call"
+      - label: want to see co-passengers or their pickup points
+        regex: "co-? ?(passenger|employee|traveller)|cab ?mates?|clubbed|who all"
+    problem: >
+      Employees plan their morning around the pickup time and the cab's
+      position, and both are often wrong: a location that is an hour stale, an
+      ETA that jumps from 5 minutes to 30, a pickup time that changes overnight,
+      a cab number or co-passenger list that is missing. People miss cabs
+      because of it, and then get marked as no-shows.
+    cause: >
+      Suspected: the position comes from the driver's phone and goes stale
+      without the app saying so; the ETA does not account for stops before the
+      rider; trip details are fetched live each time with no cached copy.
+    change:
+      - Show how old the vehicle position is ("updated 4 min ago") and say so plainly when the driver's phone is offline.
+      - Compute ETA from remaining stops and traffic, and show a range when it is uncertain.
+      - Stop the map from resetting the user's zoom.
+      - Notify when the pickup time changes by more than five minutes.
+      - Keep the last trip card (cab number, driver, OTP) available offline; basements and parking levels have no signal.
+      - Make "call driver" reliable, or say clearly when the employer has disabled it.
+    first_step: Measure ETA error (shown ETA against actual arrival) per customer for one week. It sizes the problem and sets the target.
+    exists_check: The help center says the boarding OTP appears once the driver accepts the trip. An offline copy is not described.
+    metric: Median ETA error, and low-star reviews in these two themes.
+    verify: Theme share in the weekly monitor.
+    guardrail: Some missing details are employer choices (calling disabled by policy). Show the reason instead of a blank.
+
+  - id: R10
+    quotes_from_pattern: 0
+    title: Make no-shows fair and unsurprising
+    horizon: 90 days
+    owner: Product, with operations
+    effort: M
+    themes: [no_show]
+    patterns:
+      - label: mention a no-show
+        regex: "no ?-?show"
+    problem: >
+      Being marked a no-show carries a penalty with some employers (warnings,
+      lost booking rights, salary deductions), and reviewers describe it
+      happening when the cab was late, when the driver never called, or after
+      they missed a check-in without realising. The volume is low, the anger is
+      high.
+    cause: >
+      The help center confirms that at trip end the system marks anyone not
+      signed in as a no-show automatically, and that a driver can mark one too.
+      Nothing warns the employee beforehand.
+    change:
+      - Remind the employee to check in when the vehicle reaches their pickup point; a reviewer asked for exactly this.
+      - Before a driver can mark a no-show, require a logged call attempt through the app and a minimum wait at the pickup point.
+      - Never auto-mark a no-show on a trip where the cab arrived late.
+      - Let the employee dispute a no-show from the trip history, with the GPS trace attached.
+      - Clear old no-show notices from the home screen.
+    first_step: Pull last month's no-shows and count how many were on late trips or had no call attempt. That is the size of the unfair share.
+    exists_check: The help center describes a no-show cut-off and a policy-enforcement mode with warnings and schedule removal. A pre-warning or dispute flow is not described.
+    metric: Disputed no-shows as a share of all no-shows, and low-star reviews mentioning no-show.
+    verify: The monitor counts no-show mentions weekly.
+    guardrail: Penalties are the employer's policy. Change the evidence and the warning, not the customer's rule.
+
+  - id: R11
+    title: Close the booking and address traps
+    horizon: 90 days
+    owner: Product and engineering for booking
+    effort: M
+    themes: [booking_flow, address_location, booking_rules]
+    problem: >
+      Booking mistakes cost a commute: a trip cancelled by an accidental tap
+      with no confirmation, a date that defaults to the wrong day, a shuttle
+      booking that became two steps so people thought they had booked when they
+      had not, an address that cannot be changed or maps to the wrong spot.
+      Separately, employees blame the app for rules their employer set, such as
+      booking cut-offs and how far ahead they can book.
+    cause: >
+      Redesigns shipped without a way back or a warning, and employer rules are
+      enforced without explanation.
+    change:
+      - Confirm before cancelling a trip, especially from a notification.
+      - After any booking, show a clear booked state, and an unmissable "not booked yet" state when a step remains.
+      - Show the date being booked in words ("Mon 14 Oct") and never change it silently.
+      - Let employees request an address or pickup-point change in the app, with status.
+      - When a rule blocks a booking, say whose rule it is and what it is ("Your employer allows bookings up to 12 hours before the shift").
+    first_step: Watch five employees book a shuttle and cancel a trip on the current version; note every hesitation.
+    exists_check: Cut-offs and nodal points are configured per customer. The April 2026 release notes mention "improved booking flows", close to when redesign complaints begin.
+    metric: Booking completion rate, accidental-cancellation rate (cancel then rebook within 10 minutes), and low-star reviews in these themes.
+    verify: Theme share in the weekly monitor.
+    guardrail: Roll booking-flow changes out in stages (see R6) with a way for customers to preview them.

@@ -1,0 +1,38 @@
+name: Weekly ratings refresh
+
+on:
+  schedule:
+    - cron: "30 3 * * 1"   # Mondays 09:00 IST
+  workflow_dispatch:        # also runnable by hand from the Actions tab
+
+permissions:
+  contents: write           # the run commits the refreshed data and report
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - run: python -m pytest -q
+
+      # With the ANTHROPIC_API_KEY secret set, new low-star reviews are labelled
+      # here. Without it, they are counted as waiting and the rest still updates.
+      - run: python run.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Commit the refreshed data and report
+        run: |
+          git config user.name "ratings-bot"
+          git config user.email "ratings-bot@users.noreply.github.com"
+          git add data docs
+          git diff --cached --quiet || git commit -m "Weekly ratings refresh"
+          git push

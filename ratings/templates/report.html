@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MoveInSync Play Store ratings: diagnosis and action plan</title>
+<meta name="description" content="Why the MoveInSync employee app's Play Store rating is where it is, and what to do first.">
+<style>
+  :root {
+    color-scheme: light;
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+    --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --neutral:#c3c2b7;
+    --neg2:#e34948; --neg1:#f0a09f; --mid:#c3c2b7; --pos1:#86b6ef; --pos2:#2a78d6;
+    --accent:#1c5cab; --accent-wash:#eaf2fd; --warn-wash:#fdf3e2; --warn-ink:#7a4b00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink-2:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --neutral:#52514e;
+      --neg2:#e66767; --neg1:#8f3f3f; --mid:#52514e; --pos1:#1c5cab; --pos2:#3987e5;
+      --accent:#86b6ef; --accent-wash:#14263d; --warn-wash:#33260d; --warn-ink:#f2c877;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:880px; margin:0 auto; padding:0 20px 80px; }
+  header.top { padding:44px 0 20px; }
+  .eyebrow { font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:0 0 8px; }
+  h1 { font-size:34px; line-height:1.15; margin:0 0 10px; font-weight:680; letter-spacing:-.01em; text-wrap:balance; }
+  h2 { font-size:23px; line-height:1.25; margin:56px 0 12px; font-weight:660; text-wrap:balance; }
+  h3 { font-size:17px; margin:28px 0 8px; font-weight:650; }
+  p { margin:0 0 14px; max-width:68ch; }
+  .meta { color:var(--ink-2); font-size:14px; }
+  a { color:var(--accent); }
+  nav.toc { position:sticky; top:0; z-index:5; background:var(--page); border-bottom:1px solid var(--border); margin:0 -20px; padding:10px 20px; display:flex; flex-wrap:wrap; gap:6px 18px; font-size:14px; }
+  nav.toc a { text-decoration:none; color:var(--ink-2); }
+  nav.toc a:hover { color:var(--accent); }
+  .lead { font-size:19px; line-height:1.55; max-width:64ch; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0 8px; }
+  .tile { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .tile .label { font-size:13px; color:var(--ink-2); }
+  .tile .value { font-size:30px; font-weight:650; line-height:1.2; margin-top:2px; }
+  .tile.hero .value { font-size:52px; letter-spacing:-.02em; }
+  .tile .note { font-size:13px; color:var(--muted); margin-top:2px; }
+  ol.findings { padding-left:22px; max-width:70ch; }
+  ol.findings li { margin:0 0 10px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px; margin:16px 0; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .card .rid { font-size:12px; font-weight:650; color:var(--accent); letter-spacing:.04em; }
+  .card h3 { margin:4px 0 8px; font-size:16.5px; line-height:1.35; }
+  .card dl { margin:0; font-size:14px; }
+  .card dt { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.05em; margin-top:10px; }
+  .card dd { margin:2px 0 0; }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin:14px 0; }
+  .panel > :last-child { margin-bottom:0; }
+  .note-box { background:var(--warn-wash); color:var(--warn-ink); border-radius:8px; padding:10px 14px; font-size:14.5px; margin:14px 0; max-width:70ch; }
+  .chart { width:100%; min-width:600px; height:auto; display:block; }
+  .chart-box { overflow-x:auto; }
+  figure { margin:16px 0 8px; }
+  figcaption { font-size:13.5px; color:var(--ink-2); margin-top:8px; max-width:70ch; }
+  .legend { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13px; color:var(--ink-2); margin:0 0 10px; }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+  .c-s1 { fill:var(--series-1); } .c-s2 { fill:var(--series-2); } .c-s3 { fill:var(--series-3); }
+  .c-neutral { fill:var(--neutral); } .c-ref { fill:var(--ink-2); }
+  .c-neg2 { fill:var(--neg2); } .c-neg1 { fill:var(--neg1); } .c-mid { fill:var(--mid); }
+  .c-pos1 { fill:var(--pos1); } .c-pos2 { fill:var(--pos2); }
+  .c-grid, .c-stem { stroke:var(--grid); stroke-width:1; }
+  .c-refline { stroke:var(--ink-2); stroke-width:1; }
+  .c-line { fill:none; stroke:var(--series-1); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
+  .c-ring { stroke:var(--surface); stroke-width:2; }
+  .c-hit { fill:transparent; }
+  .c-hover-dot { pointer-events:none; opacity:0; }
+  .c-tick { font-size:11px; fill:var(--muted); font-variant-numeric:tabular-nums; }
+  .c-label { font-size:12.5px; fill:var(--ink); }
+  .c-value { font-size:12px; fill:var(--ink-2); font-variant-numeric:tabular-nums; }
+  [data-tip] { cursor:default; }
+  #tip { position:fixed; z-index:20; pointer-events:none; background:var(--ink); color:var(--page); font-size:13px; line-height:1.4; padding:6px 9px; border-radius:6px; max-width:280px; }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  th, td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--grid); vertical-align:top; }
+  th { font-weight:600; color:var(--ink-2); font-size:12.5px; white-space:nowrap; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  details.table summary, details.ticket summary { cursor:pointer; }
+  details.table { margin:8px 0 0; font-size:14px; }
+  details.table summary { color:var(--ink-2); font-size:13.5px; }
+  details.ticket { background:var(--surface); border:1px solid var(--border); border-radius:10px; margin:10px 0; }
+  details.ticket summary { padding:14px 18px; list-style:none; display:flex; gap:12px; align-items:baseline; }
+  details.ticket summary::-webkit-details-marker { display:none; }
+  details.ticket summary .rid { font-size:12px; font-weight:650; color:var(--accent); letter-spacing:.04em; flex-shrink:0; }
+  details.ticket summary .title { font-weight:620; flex:1; }
+  details.ticket summary .eff { font-size:12.5px; color:var(--muted); flex-shrink:0; }
+  details.ticket summary::after { content:"+"; color:var(--muted); font-size:18px; line-height:1; }
+  details.ticket[open] summary::after { content:"\2212"; }
+  .ticket .body { padding:0 18px 16px; font-size:15px; }
+  .ticket h4 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:16px 0 4px; font-weight:600; }
+  .ticket ul { margin:0; padding-left:20px; }
+  .ticket li { margin:3px 0; }
+  .ticket p { margin:0 0 6px; }
+  blockquote { margin:6px 0; padding:6px 0 6px 12px; border-left:3px solid var(--grid); color:var(--ink-2); font-size:14.5px; overflow-wrap:anywhere; }
+  blockquote cite { display:block; font-style:normal; font-size:12.5px; color:var(--muted); margin-top:2px; }
+  .queue-item { border-top:1px solid var(--grid); padding:12px 0; }
+  .queue-item:first-child { border-top:0; }
+  .queue-item .who { font-size:12.5px; color:var(--muted); }
+  .queue-item .draft { background:var(--accent-wash); border-radius:6px; padding:8px 12px; font-size:14px; margin-top:6px; }
+  .queue-item .draft b { font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-2); display:block; }
+  .tag { display:inline-block; font-size:12px; padding:1px 7px; border-radius:20px; border:1px solid var(--border); color:var(--ink-2); }
+  .tag.safety { background:var(--warn-wash); color:var(--warn-ink); border-color:transparent; }
+  ul.plain { padding-left:20px; max-width:70ch; }
+  ul.plain li { margin:5px 0; }
+  footer { margin-top:60px; padding-top:16px; border-top:1px solid var(--border); font-size:13.5px; color:var(--ink-2); }
+  code { font-size:.92em; background:var(--grid); padding:1px 5px; border-radius:4px; }
+  @media (max-width:600px) { h1 { font-size:27px; } .tile.hero .value { font-size:42px; } .lead { font-size:17px; } }
+  @media print { nav.toc, #tip { display:none; } details.ticket { break-inside:avoid; } body { background:#fff; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+{% set r = m.ratings %}
+{% set rv = m.reviews %}
+{% set rp = m.replies %}
+{% set low_n = m.labelling.play_low %}
+{% set low_country = s.lowest_country %}
+
+<header class="top">
+  <p class="eyebrow">MoveInSync employee app &middot; Play Store ratings</p>
+  <h1>Why the rating is where it is, and what to do first</h1>
+  <p class="meta">{{ rv.pulled|commas }} public reviews up to {{ m.window.to }} &middot; app version {{ m.app.version }} &middot; prepared by {{ cfg.author }}</p>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#answer">Answer</a><a href="#first">Do first</a><a href="#causes">Causes</a>
+  <a href="#plan">Action plan</a><a href="#evidence">Evidence</a><a href="#queues">Reply and safety queues</a>
+  <a href="#monitor">Monitor</a><a href="#method">Method and limits</a>
+</nav>
+
+<section id="answer">
+  <h2>The answer</h2>
+  <p class="lead">The app shows <strong>{{ "%.2f"|format(r.score) }}</strong> on the Indian Play Store, and that figure is not falling.
+  Three things hold it down: a steady stream of one-star ratings ({{ r.pct_by_star[0] }}% of all ratings),
+  store listings outside India that show as low as {{ low_country.score }},
+  and unhappy reviewers who almost never get a reply.</p>
+
+  <div class="tiles">
+    <div class="tile hero"><div class="label">Indian Play listing</div><div class="value">{{ "%.2f"|format(r.score) }}</div><div class="note">{{ "%.2f"|format(r.avg_without_1_star) }} if one-star ratings are left out</div></div>
+    <div class="tile"><div class="label">Lowest listing: {{ low_country.country|country }}</div><div class="value">{{ low_country.score }}</div><div class="note">{{ low_country.pct_1 }}% one-star there</div></div>
+    {% if m.ios %}<div class="tile"><div class="label">Same app on iOS, India</div><div class="value">{{ "%.2f"|format(m.ios.score) }}</div><div class="note">{{ m.ios.ratings|commas }} ratings</div></div>{% endif %}
+    <div class="tile"><div class="label">Low-star reviews answered</div><div class="value">{{ rp.low_pct }}%</div><div class="note">{{ rp.low_replied }} of {{ rp.low_n }} in 12 months</div></div>
+  </div>
+
+  <h3>What the reviews show</h3>
+  <ol class="findings">
+    <li><strong>The rating you see depends on the country you view it from.</strong> Play shows each country its own figure:
+      {% for c in m.countries %}{{ c.country|country }} {{ c.score }}{% if not loop.last %}, {% endif %}{% endfor %}.
+      A customer or colleague outside India sees a lower rating than the team in Bengaluru does.</li>
+    <li><strong>This is not a recent drop.</strong> {{ rv.last_365.pct_low }}% of written reviews in the last 12 months were one or two-star, against {{ rv.lifetime.pct_low }}% over the app's life.
+      No single release is provably worse than the rest.</li>
+    <li><strong>It is mostly the app, not the cabs.</strong> Of low-star reviews that name a problem, {{ s.owner_app_pct }}% describe something product or engineering would fix.
+      {{ s.owner_ops_pct }}% are about late cabs, routes or drivers.</li>
+    <li><strong>Getting into the app is the largest cluster.</strong> Login OTP not arriving, repeated logouts, the app not opening and slowness are {{ s.access_share_pct }}% of low-star reviews.</li>
+    <li><strong>One problem is growing.</strong> &ldquo;{{ s.recent_top.id|theme }}&rdquo; is {{ s.recent_top.recent_share_pct }}% of low-star reviews in the last 90 days, up from {{ s.recent_top.earlier_share_pct }}% before.</li>
+    <li><strong>There is no single fix.</strong> The largest named problem is worth about {{ s.top_theme_lift|signed }} on the Indian rating if fully solved; every named problem together, about {{ s.named_lift|signed }}.
+      So the plan below is a ranked set, not one feature.</li>
+  </ol>
+</section>
+
+<section id="first">
+  <h2>What to do first</h2>
+  <p>These three can start tomorrow. None needs a redesign, and each has a named owner and a first step.</p>
+  <div class="cards">
+    {% for rec in recs[:3] %}
+    <div class="card">
+      <div class="rid">{{ rec.id }}</div>
+      <h3>{{ rec.title }}</h3>
+      <dl>
+        <dt>Why</dt><dd>{{ evidence_line(rec) }}</dd>
+        <dt>Owner</dt><dd>{{ rec.owner }}</dd>
+        <dt>First step</dt><dd>{{ rec.first_step }}</dd>
+      </dl>
+    </div>
+    {% endfor %}
+  </div>
+  <p>The largest engineering item comes next: <a href="#R5">R5, login OTP</a>. The full plan of {{ recs|length }} tickets is <a href="#plan">below</a>, and as a spreadsheet in <a href="backlog.csv">backlog.csv</a>.</p>
+
+  <h3>What I need from MoveInSync to go further</h3>
+  <p>Everything here comes from public data. Four internal sources would turn the estimates into measurements:</p>
+  <ul class="plain">
+    <li><strong>Play Console access:</strong> ratings by country, app version and device, and Android vitals (crash and ANR rates). Public data cannot show how many ratings each country has, or which release crashed.</li>
+    <li><strong>OTP logs for one week:</strong> requested, sent, delivered, verified. This separates delivery failures from unregistered users (ticket R5).</li>
+    <li><strong>Support tickets and the trip-feedback configuration per customer:</strong> to check whether the forced rating is a product default or a customer setting (R3), and to match complaints to reviews.</li>
+    <li><strong>Trip punctuality by customer and vendor:</strong> to tell an inaccurate ETA from a late cab (R8, R9).</li>
+  </ul>
+</section>
+
+<section id="causes">
+  <h2>What low-star reviews are about</h2>
+  <p>{{ low_n }} one and two-star Play reviews from the last 12 months, each labelled with its main complaint and who would have to fix it.
+  {{ m.labelling.specific_pct }}% name a specific problem. {{ s.no_detail_pct }}% say only something like &ldquo;worst app&rdquo;, and a handful are not complaints at all; both are left out of the chart.</p>
+  <figure>
+    <div class="legend" aria-hidden="true">
+      {% for key, cls, name in owner_keys %}<span><i style="background:var(--{{ {'c-s1':'series-1','c-s2':'series-2','c-s3':'series-3','c-neutral':'neutral'}[cls] }})"></i>{{ name }}</span>{% endfor %}
+    </div>
+    <div class="chart-box">{{ charts.themes|safe }}</div>
+    <figcaption>Share of low-star Play reviews by main complaint. Colour shows who would have to act.</figcaption>
+  </figure>
+  <details class="table">
+    <summary>Show as a table, with iOS and the recent trend</summary>
+    <div class="scroll"><table>
+      <thead><tr><th>Complaint</th><th class="num">Reviews</th><th class="num">Share</th><th class="num">Last 90 days</th><th class="num">Before</th><th class="num">iOS share</th><th class="num">Est. rating effect</th></tr></thead>
+      <tbody>
+      {% for t in named_themes %}
+        <tr><td>{{ t.id|theme }}</td><td class="num">{{ t.n }}</td><td class="num">{{ t.share_pct }}%</td><td class="num">{{ t.recent_share_pct }}%</td><td class="num">{{ t.earlier_share_pct }}%</td><td class="num">{{ t.ios_share_pct }}%</td><td class="num">{{ t.rating_lift|signed }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </details>
+  <p style="margin-top:16px">The same complaints on iOS point at the product or the service; a complaint on only one platform points at that app.
+  Login OTP is high on both ({{ m.recommendations.R5.share_pct }}% of low-star Play reviews for OTP and logout together, {{ m.recommendations.R5.ios_share_pct }}% on iOS).
+  On iOS the largest complaint by far is the app not opening or crashing.</p>
+</section>
+
+<section id="plan">
+  <h2>Action plan</h2>
+  <p>Each ticket gives the problem, the evidence, the suspected cause, the change, an owner and how to tell it worked.
+  I could not log into the app, which needs an employer account. So each ticket says what was checked in public sources, and its first step confirms current behaviour before anything is built.</p>
+  {% for key, heading in horizons %}
+  <h3>{{ heading }}</h3>
+  {% for rec in recs if rec.horizon == key %}
+  {% set ev = m.recommendations[rec.id] %}
+  <details class="ticket" id="{{ rec.id }}"{% if loop.first and key == 'week' %} open{% endif %}>
+    <summary><span class="rid">{{ rec.id }}</span><span class="title">{{ rec.title }}</span><span class="eff">Effort {{ rec.effort }}</span></summary>
+    <div class="body">
+      <p>{{ rec.problem }}</p>
+      <h4>Evidence</h4>
+      <ul>
+        {% if rec.themes %}<li>{{ ev.n }} of {{ low_n }} low-star Play reviews in 12 months ({{ ev.share_pct }}%), and {{ ev.ios_share_pct }}% of low-star iOS reviews. Estimated effect on the Indian rating if fully fixed: about {{ ev.rating_lift|signed }}.</li>{% endif %}
+        {% if rec.use_reply_stats %}
+        <li>{{ rp.low_replied }} of {{ rp.low_n }} low-star reviews in 12 months got a developer reply ({{ rp.low_pct }}%).</li>
+        <li>{{ rp.to_positive_pct }}% of all replies went to four and five-star reviews. Median time to reply: {{ rp.median_lag_hours }} hours.</li>
+        <li>{{ m.reply_queue.waiting }} low-star reviews from the last 12 months are still unanswered.</li>
+        {% endif %}
+        {% if rec.use_safety %}<li>{{ m.safety|length }} low-star reviews in 12 months were flagged as describing a risk to a person ({{ s.safety_play }} on Play, of which {{ s.safety_unreplied }} have no reply). They are listed in the <a href="#safety">safety queue</a>.</li>{% endif %}
+        {% if rec.use_after_update %}<li>{{ m.after_update.n }} low-star Play reviews ({{ m.after_update.share_pct }}%) explicitly blame an update or a new version.</li>{% endif %}
+        {% if rec.use_countries %}<li>Rating by listing: {% for c in m.countries %}{{ c.country|country }} {{ c.score }}{% if not loop.last %}, {% endif %}{% endfor %}. Reviews Play counts per country: {% for c in m.countries %}{{ c.country|country }} {{ c.country_reviews|commas }}{% if not loop.last %}, {% endif %}{% endfor %}.</li>{% endif %}
+        {% for p in ev.patterns %}<li>{{ p.n }} of {{ p.of|commas }} {{ p.where }} {{ p.label }}; {{ p.last_90 }} of those in the last 90 days.</li>{% endfor %}
+      </ul>
+      {% if ev.quotes and (rec.themes or rec.quotes_from_pattern is defined) %}
+      {% for q in ev.quotes %}<blockquote>{{ q.text }}<cite>{{ q.score }}-star &middot; {{ q.date }}{% if q.version %} &middot; v{{ q.version }}{% endif %}</cite></blockquote>{% endfor %}
+      {% endif %}
+      <h4>Suspected cause</h4><p>{{ rec.cause }}</p>
+      <h4>Change</h4><ul>{% for c in rec.change %}<li>{{ c }}</li>{% endfor %}</ul>
+      <h4>Owner</h4><p>{{ rec.owner }}</p>
+      <h4>First step</h4><p>{{ rec.first_step }}</p>
+      <h4>Does it already exist?</h4><p>{{ rec.exists_check }}</p>
+      <h4>Success metric</h4><p>{{ rec.metric }}</p>
+      <h4>How to verify</h4><p>{{ rec.verify }}</p>
+      <h4>Guardrail</h4><p>{{ rec.guardrail }}</p>
+    </div>
+  </details>
+  {% endfor %}
+  {% endfor %}
+</section>
+
+<section id="evidence">
+  <h2>Evidence</h2>
+
+  <h3>The rating differs by country</h3>
+  <figure>
+    <div class="chart-box">{{ charts.countries|safe }}</div>
+    <figcaption>Rating shown on each country's Play listing, with the iOS rating for reference. Play reports one global ratings count ({{ r.ratings|commas }}) everywhere, so the number of ratings behind each country's figure is not public. The listings outside India rest on far fewer reviews, which also means a small number of new ratings moves them.</figcaption>
+  </figure>
+
+  <h3>A five-star app with a one-star tail</h3>
+  <figure>
+    <div class="chart-box">{{ charts.stars|safe }}</div>
+    <figcaption>Indian listing, share of ratings by star: {% for p in r.pct_by_star %}{{ loop.index }}-star {{ p }}%{% if not loop.last %}, {% endif %}{% endfor %}. Almost nobody gives two, three or four stars, so the average is decided by how many people give one.</figcaption>
+  </figure>
+
+  <h3>The low-star share is steady</h3>
+  <figure>
+    <div class="chart-box">{{ charts.monthly|safe }}</div>
+    <figcaption>Share of written reviews that are one or two-star, by month. Written reviews are far more negative than ratings as a whole, because unhappy people write and happy people tap five stars and leave. The line moves between about 20% and 35% without a trend.</figcaption>
+  </figure>
+  <details class="table"><summary>Show as a table</summary><div class="scroll"><table>
+    <thead><tr><th>Month</th><th class="num">Reviews</th><th class="num">Average</th><th class="num">1-2 star</th></tr></thead>
+    <tbody>{% for p in rv.monthly %}<tr><td>{{ p.month }}</td><td class="num">{{ p.n }}</td><td class="num">{{ p.avg }}</td><td class="num">{{ p.pct_low }}%</td></tr>{% endfor %}</tbody>
+  </table></div></details>
+
+  <h3>No release is provably worse</h3>
+  <figure>
+    <div class="chart-box">{{ charts.versions|safe }}</div>
+    <figcaption>Share of one and two-star reviews by app version, for versions with at least 30 reviews. Some look bad, but with 30 to 150 reviews each, none is outside what chance would produce around the 12-month figure. Crash rates in Play Console would settle this; review counts cannot.</figcaption>
+  </figure>
+  <details class="table"><summary>Show as a table</summary><div class="scroll"><table>
+    <thead><tr><th>Version</th><th>First seen</th><th class="num">Reviews</th><th class="num">1-2 star</th><th>Most common complaints</th></tr></thead>
+    <tbody>{% for v in m.versions %}<tr><td>{{ v.version }}</td><td>{{ v.first_seen }}</td><td class="num">{{ v.n }}</td><td class="num">{{ v.pct_low }}%</td><td>{% for t in v.top_themes %}{{ t|theme }}{% if not loop.last %}; {% endif %}{% endfor %}</td></tr>{% endfor %}</tbody>
+  </table></div></details>
+
+  <h3>Who gets a reply</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Rating given</th><th class="num">Reviews, last 12 months</th><th class="num">Replied to</th><th class="num">Share</th></tr></thead>
+    <tbody>{% for b in rp.by_score %}<tr><td>{{ b.score }}-star</td><td class="num">{{ b.n|commas }}</td><td class="num">{{ b.replied }}</td><td class="num">{{ b.pct }}%</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <p style="margin-top:10px">MoveInSync's own blog says personal replies helped an earlier recovery from 4.3 to 4.6, and that some one-star reviewers changed to five once their problem was solved. On the public record, that practice has lapsed.</p>
+
+  {% if m.other_apps %}
+  <h3>The other MoveInSync apps</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>App</th><th class="num">Rating</th><th class="num">Ratings</th></tr></thead>
+    <tbody>{% for a in m.other_apps %}<tr><td>{{ a.name }}</td><td class="num">{{ "%.2f"|format(a.score) }}</td><td class="num">{{ a.ratings|commas }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <p style="margin-top:10px">These are tracked but not analysed: none has enough ratings to support a finding. The employee app has {{ r.ratings|commas }}.</p>
+  {% endif %}
+</section>
+
+<section id="queues">
+  <h2>Reply queue</h2>
+  <p>The {{ m.reply_queue.shown|length }} newest low-star Play reviews with no developer reply, of {{ m.reply_queue.waiting }} waiting. Each has a draft to edit, not to paste: the person replying should mention what this reviewer said and remove any promise that is not true yet.</p>
+  <div class="panel">
+    {% for q in m.reply_queue.shown %}
+    <div class="queue-item">
+      <div class="who">{{ q.score }}-star &middot; {{ q.date }}{% if q.version %} &middot; v{{ q.version }}{% endif %} &middot; <span class="tag{% if q.safety %} safety{% endif %}">{% if q.safety %}Safety &middot; {% endif %}{{ q.theme|theme }}</span></div>
+      <div>{{ q.text }}</div>
+      <div class="draft"><b>Draft reply</b>{{ q.draft }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2 id="safety">Safety queue</h2>
+  <p>{{ m.safety|length }} low-star reviews from the last 12 months in which the reviewer describes a risk to a person, or says plainly that the service is unsafe. These are ranked by date, not volume. See ticket <a href="#R4">R4</a>.</p>
+  <div class="panel">
+    {% for q in m.safety %}
+    <div class="queue-item">
+      <div class="who">{{ q.score }}-star &middot; {{ q.date }} &middot; {{ 'App Store' if q.source == 'ios' else 'Play' }} &middot; <span class="tag">{{ q.theme|theme }}</span>{% if q.source == 'play' %} &middot; {{ 'replied' if q.replied else 'no reply' }}{% endif %}</div>
+      <div>{{ q.text }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="monitor">
+  <h2>&ldquo;How are our Play Store ratings?&rdquo;, answered every week</h2>
+  <p>This page is the output of a pipeline, not a one-off analysis. One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="{{ digest_href }}">weekly digest</a> and the <a href="backlog.csv">backlog</a>.</p>
+  <ul class="plain">
+    <li><strong>Weekly:</strong> a scheduled GitHub Action runs the pipeline and commits the results.</li>
+    <li><strong>On demand:</strong> in Claude Code, asking &ldquo;How are our Play Store ratings?&rdquo; runs it, labels any new reviews and answers from the digest.</li>
+    <li><strong>New app:</strong> one entry in <code>config.yaml</code>.</li>
+  </ul>
+  {% if flags %}
+  <div class="note-box"><strong>Flags raised by this run:</strong>
+    <ul style="margin:6px 0 0; padding-left:20px">{% for f in flags %}<li>{{ f }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+  <p>Each run also saves the rating histogram for every listing. From the second weekly run, the difference between two snapshots gives the star mix of <em>newly added ratings</em>, which is the real leading indicator and something written reviews cannot show.
+  {% if m.new_ratings %}Between {{ m.new_ratings.from }} and {{ m.new_ratings.to }}, {{ m.new_ratings.added }} ratings were added, averaging {{ m.new_ratings.avg }}.{% else %}That series starts with this run.{% endif %}</p>
+  <h3>When a complaint fits no theme</h3>
+  <p>The themes start as a written list, so that this month's shares can be compared with last month's. A complaint that fits none is not forced into the nearest one: it is labelled &ldquo;other&rdquo; with a short note saying what it is. When {{ cfg.alerts.new_theme_min_reviews }} reviews share a note, that note becomes a theme by itself: it gets its own line in the chart and tables, marked &ldquo;new&rdquo;, with no one having to add it. The digest flags it so a person can give it a proper definition, merge it, or leave it. A second flag goes up if unthemed complaints pass {{ cfg.alerts.other_share_alert }}% of recent low-star reviews, which would mean the list is going out of date.</p>
+  <p>Right now {{ m.unthemed.n }} of {{ low_n }} low-star Play reviews ({{ m.unthemed.share_pct }}%) fit none of the written themes.</p>
+  {% if m.unthemed.groups %}
+  <div class="scroll"><table>
+    <thead><tr><th>What it is about</th><th class="num">Reviews</th><th class="num">Last 90 days</th><th>Example</th></tr></thead>
+    <tbody>{% for g in m.unthemed.groups %}<tr><td>{{ g.note }}{% if g.promoted %}<br><span class="tag">now a theme</span>{% endif %}</td><td class="num">{{ g.n }}</td><td class="num">{{ g.recent_n }}</td><td>{{ g.examples[0] }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% endif %}
+
+  <h3>In production</h3>
+  <p>Scraping the public page is right for an outside analysis and wrong for a product team that owns the app. Inside MoveInSync the same pipeline should read from the Play Developer Reviews API and Play Console exports, which add ratings without text, per-country counts, device and version data, and crash rates. Only the pull stage changes; cleaning, labelling, metrics and the report stay as they are.</p>
+</section>
+
+<section id="method">
+  <h2>Method and limits</h2>
+  <h3>How this was produced</h3>
+  <ol class="findings">
+    <li><strong>Pull.</strong> Every public review of the employee app on Google Play ({{ rv.pulled|commas }}, back to 2014), the rating shown on {{ m.countries|length }} country listings, and the {{ m.labelling.ios_low }} most recent low-star reviews Apple's public feed exposes for the iOS app. Reviewer names are not stored.</li>
+    <li><strong>Check.</strong> Duplicates, impossible scores and dates, and coverage against the review count Play itself reports.</li>
+    <li><strong>Label.</strong> {{ m.labelling.labelled|commas }} reviews of three stars or fewer from the last 12 months, each given a main complaint from {{ m.themes|rejectattr('provisional')|list|length }} themes, an owner, a safety flag and an &ldquo;after an update&rdquo; flag. The themes were drafted from reading the reviews, not decided beforehand. Labelling was done by Claude, an AI model, working to written rules in the repository.</li>
+    <li><strong>Measure.</strong> Shares, trends, reply rates and an estimate of each theme's effect on the rating.</li>
+    <li><strong>Recommend.</strong> Tickets written from the evidence and checked against MoveInSync's public help center and Google's guidance on review prompts.</li>
+  </ol>
+  <p><strong>Tools:</strong> Python; the open-source <code>google-play-scraper</code> library; Apple's public review feed; Claude Code for writing the pipeline and labelling reviews; pytest for the parts where a silent error would put a wrong number on this page.</p>
+
+  <h3>Was the labelling right?</h3>
+  {% if m.validation %}
+  {% set v = m.validation %}
+  {% set cs = cfg.check_set %}
+  {% if cs.labelled_by == 'human' %}
+  <p>{{ v.n }} reviews were labelled by hand, without sight of the AI's labels, and then compared.</p>
+  {% else %}
+  <p>A second Claude session, which had not seen the first session's labels, labelled a fixed random sample of {{ v.n }} reviews from the same written rules.
+  {% if cs.human_reviewed %}{{ cfg.author }} then reviewed that second set{% if cs.human_changed is not none %}, changing {{ cs.human_changed }} of the {{ v.n }} labels{% endif %}, and the two sets were compared.{% else %}The two sets were then compared. No person has checked either set.{% endif %}</p>
+  {% if cs.human_reviewed %}
+  <div class="note-box"><strong>Read these figures as an upper bound.</strong> Both sets of labels started from the same AI model, and the second was reviewed by a person, not labelled from scratch. Reviewing labels that are already filled in is a weaker test than labelling blind, so a misreading both sessions share can still pass as agreement.</div>
+  {% else %}
+  <div class="note-box"><strong>This measures consistency, not correctness.</strong> Both sets of labels came from the same AI model. If both sessions misread a rule in the same way, that shows up here as agreement. The figures say the rules can be applied repeatably; they overstate how accurate the labels are.</div>
+  {% endif %}
+  {% endif %}
+  <div class="scroll"><table>
+    <thead><tr><th>Measure</th><th class="num">Agreement</th></tr></thead>
+    <tbody>
+      <tr><td>Same main complaint</td><td class="num">{{ v.theme_exact_pct }}%</td></tr>
+      <tr><td>Agree on a complaint (main or second)</td><td class="num">{{ v.theme_either_pct }}%</td></tr>
+      <tr><td>Same journey stage</td><td class="num">{{ v.stage_pct }}%</td></tr>
+      <tr><td>Same owner</td><td class="num">{{ v.owner_pct }}%</td></tr>
+      <tr><td>Same safety flag</td><td class="num">{{ v.safety_pct }}%</td></tr>
+      <tr><td>Agreement beyond chance on the main complaint (Cohen's kappa)</td><td class="num">{{ v.theme_kappa }}</td></tr>
+    </tbody>
+  </table></div>
+  {% if v.themes %}
+  <details class="table"><summary>Agreement by theme, including the weak ones</summary><div class="scroll"><table>
+    <thead><tr><th>Theme</th><th class="num">Check set</th><th class="num">First pass</th><th class="num">Precision</th><th class="num">Recall</th></tr></thead>
+    <tbody>{% for t in v.themes %}<tr><td>{{ t.theme|theme }}</td><td class="num">{{ t.gold }}</td><td class="num">{{ t.labeller }}</td><td class="num">{{ t.precision_pct if t.precision_pct is not none else '-' }}%</td><td class="num">{{ t.recall_pct }}%</td></tr>{% endfor %}</tbody>
+  </table></div></details>
+  {% endif %}
+  {% else %}
+  <div class="note-box"><strong>Not yet verified.</strong> A fixed random sample of {{ cfg.gold_size }} reviews is set aside to be labelled a second time, without sight of the first labels, to measure how often the two agree. Until that result is published here, read the theme shares as the AI's reading of the reviews, not as checked figures.</div>
+  {% endif %}
+
+  <h3>What this cannot show</h3>
+  <ul class="plain">
+    <li><strong>Public data only.</strong> No crash rates, no ratings by version or device, and no count of ratings per country.</li>
+    <li><strong>Reviewers are not a sample of users.</strong> People who write reviews are a small and unhappier group. The themes explain why low ratings happen; they do not measure how many employees are affected.</li>
+    <li><strong>Reviews cannot be split by country.</strong> Play returns the same review list everywhere, so the lower ratings abroad cannot be traced to their own complaints from outside.</li>
+    <li><strong>Rating effects are estimates.</strong> They assume low raters who write nothing have the same complaints as those who do, and they describe where the average settles, not how fast. Play also weights recent ratings in a way it does not publish.</li>
+    <li><strong>{{ s.no_detail_pct }}% of low-star reviews give no reason.</strong> Replying to them (R1) is the only way to learn it.</li>
+    <li><strong>I could not use the app.</strong> It needs an employer account, so no complaint was reproduced first-hand.</li>
+    {% if m.validation and cfg.check_set.labelled_by != 'human' %}<li><strong>The check on the labels is not fully independent.</strong> {% if cfg.check_set.human_reviewed %}The check set was labelled by a second AI session and then reviewed by a person, which is weaker than a person labelling it blind.{% else %}The agreement figures compare two AI sessions, so they cannot catch an error both share.{% endif %}</li>{% endif %}
+  </ul>
+
+  <h3>Questions I would ask in the first week</h3>
+  <ul class="plain">
+    <li><strong>Product:</strong> Which rating are we judged on, the Indian listing or the one a customer abroad sees? What triggers the Play review request today? Is mandatory trip feedback our default or a customer's choice?</li>
+    <li><strong>Engineering:</strong> What check produces the &ldquo;not downloaded from Play Store&rdquo; message, and when did it ship? What are the crash-free rates for the last five releases? Are releases staged?</li>
+    <li><strong>Support:</strong> Who owns the Play review inbox? How many OTP tickets arrive each week, and how do they resolve?</li>
+    <li><strong>Operations:</strong> Which customers and vendors account for most late-cab and no-show complaints?</li>
+    <li><strong>A customer's transport desk:</strong> What do employees ask you that the app should have told them?</li>
+  </ul>
+</section>
+
+<footer>
+  Generated {{ m.generated_at }} from data to {{ m.window.to }}.
+  {% if cfg.repo_url %}Code and data: <a href="{{ cfg.repo_url }}">{{ cfg.repo_url }}</a>. {% endif %}
+  Files: <a href="{{ digest_href }}">weekly digest</a>, <a href="backlog.csv">backlog</a>, <a href="data/metrics.json">every number on this page</a>.
+</footer>
+</div>
+
+<div id="tip" hidden></div>
+<script>
+// Hover text for chart marks. Each mark carries its own text in data-tip.
+(function () {
+  var tip = document.getElementById("tip");
+  function place(e) {
+    var x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
+    var y = e.clientY + 16;
+    if (y + tip.offsetHeight > window.innerHeight - 8) y = e.clientY - tip.offsetHeight - 10;
+    tip.style.left = Math.max(8, x) + "px";
+    tip.style.top = y + "px";
+  }
+  document.addEventListener("mousemove", function (e) {
+    var mark = e.target.closest ? e.target.closest("[data-tip]") : null;
+    document.querySelectorAll(".c-hover-dot").forEach(function (d) { d.style.opacity = 0; });
+    if (!mark) { tip.hidden = true; return; }
+    tip.textContent = mark.getAttribute("data-tip");
+    tip.hidden = false;
+    place(e);
+    var at = mark.getAttribute("data-dot");   // line chart: show a dot on the hovered point
+    if (at) {
+      var dot = mark.parentNode.querySelector(".c-hover-dot"), xy = at.split(",");
+      dot.setAttribute("cx", xy[0]); dot.setAttribute("cy", xy[1]); dot.style.opacity = 1;
+    }
+  });
+})();
+</script>
+</body>
+</html>
