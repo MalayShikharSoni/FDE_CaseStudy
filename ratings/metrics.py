@@ -396,7 +396,8 @@ def compute(cfg):
         "countries": country_table(cfg, app["id"]),
         "other_apps": [{"id": a["id"], "name": a["name"], "role": a["role"],
                         "score": snaps[a["id"]]["score"], "ratings": snaps[a["id"]]["ratings"]}
-                       for a in cfg["apps"] if a["id"] != app["id"] and a["id"] in snaps],
+                       # an app with no ratings yet has no score to show
+                       for a in cfg["apps"] if a["id"] != app["id"] and snaps.get(a["id"], {}).get("score")],
         "reviews": {
             "pulled": len(rows),
             "lifetime": review_stats(rows),

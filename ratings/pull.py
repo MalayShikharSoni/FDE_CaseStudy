@@ -241,12 +241,20 @@ def pull_app(app_id, cfg, full=False):
     log(f"=== {app_id} ===")
     try:
         snap = take_snapshot(app_id, cfg["country"], data_dir)
-        log(f"  Play page: score={snap['score']:.3f} ratings={snap['ratings']} "
+        score = f"{snap['score']:.3f}" if snap.get("score") else "none yet"
+        log(f"  Play page: score={score} ratings={snap['ratings']} "
             f"reviews={snap['reviews']} histogram={snap['histogram']} version={snap['version']}")
     except Exception as exc:
         log(f"  could not read app snapshot ({type(exc).__name__}: {exc}); using cached reviews")
         result["reachable"] = False
         result["total"] = before
+        return result
+
+    if not snap.get("reviews") and not store:
+        # a new app nobody has reviewed: nothing to page through
+        log(f"  {app_id}: no reviews on the Play page yet")
+        write_csv(path, store)
+        result["total"] = 0
         return result
 
     backfill = full or not store

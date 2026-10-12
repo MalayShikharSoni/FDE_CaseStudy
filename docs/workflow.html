@@ -407,7 +407,7 @@ python -m ratings.classify resolve --id 1a2b3c4d                        # a one-
       <tr><td><code>digest.md</code></td><td>The weekly short answer. Rebuilt on every run.</td></tr>
       <tr><td><code>backlog.csv</code></td><td>The action plan as rows. Rebuilt on every run.</td></tr>
       <tr><td><code>manual_review.csv</code></td><td>Reviews that fitted no theme and are waiting for a person to look at them. Rebuilt on every run.</td></tr>
-      <tr><td><code>data/metrics.json</code></td><td>Every number the three files above use.</td></tr>
+      <tr><td><code>data/metrics.json</code></td><td>Every number the other outputs use.</td></tr>
       <tr><td><code>workflow.html</code></td><td>This page. Written by hand, not rebuilt.</td></tr>
       <tr><td><code>.nojekyll</code></td><td>An empty file telling GitHub Pages to serve these files exactly as they are.</td></tr>
     </tbody>
@@ -428,7 +428,28 @@ python -m ratings.classify resolve --id 1a2b3c4d                        # a one-
 <section id="try">
   <h2>Run it yourself, end to end</h2>
   <p>Work through these in order. Each step says what to type, what you should see, and what it proves. Commands are run in a terminal opened in the project folder. You need Python 3.10 or later.</p>
-  <div class="tip">Nothing here can damage the project. The data and outputs are saved in git, so <code>git checkout -- data docs</code> puts them back exactly as they were at any point.</div>
+  <div class="tip">Nothing here can damage the project. The data and outputs are saved in git, so <code>git checkout -- config.yaml data docs</code> puts them back exactly as they were at any point.</div>
+
+  <h3>Everything the project can do, and where to try it</h3>
+  <div class="scroll"><table class="wrap">
+    <thead><tr><th>What it can do</th><th>Step</th></tr></thead>
+    <tbody>
+      <tr><td>Check itself with automated tests</td><td>2</td></tr>
+      <tr><td>Read live ratings and reviews from Google Play</td><td>3</td></tr>
+      <tr><td>Run all six stages with one command</td><td>4</td></tr>
+      <tr><td>Rebuild every output from nothing</td><td>4</td></tr>
+      <tr><td>Produce the report, digest, backlog and manual-review list</td><td>5</td></tr>
+      <tr><td>Keep working with no internet</td><td>6</td></tr>
+      <tr><td>Run any single stage alone</td><td>7</td></tr>
+      <tr><td>Label new reviews, through Claude Code or by hand, and reject bad labels</td><td>8</td></tr>
+      <tr><td>Take a person's decision on a review that fitted no theme</td><td>9</td></tr>
+      <tr><td>Change its behaviour from the settings file</td><td>10</td></tr>
+      <tr><td>Measure how reliable the labels are</td><td>7 and 11</td></tr>
+      <tr><td>Run every week on GitHub and publish the result</td><td>12</td></tr>
+      <tr><td>Be read by anyone, without signing in</td><td>13</td></tr>
+      <tr><td>Track another app; re-download everything; label through the API</td><td>Optional extras</td></tr>
+    </tbody>
+  </table></div>
 
   <div class="step"><div class="num">1</div><div class="body">
     <h3>Set up</h3>
@@ -468,7 +489,7 @@ pip install -r requirements.txt</code></pre>
         <tr><td><code>== 2. Clean ==</code></td><td>A coverage line per app, then <code>clean: OK</code>.</td></tr>
         <tr><td><code>== 3. Label ==</code></td><td><code>in scope / labelled / pending</code>. If pending is above zero, it tells you how many reviews are waiting.</td></tr>
         <tr><td><code>== 4. Metrics ==</code></td><td>The rating, the iOS rating, and the top themes with their shares.</td></tr>
-        <tr><td><code>== 5. Build ==</code></td><td><code>wrote</code> three files, then any <code>ALERT</code> lines.</td></tr>
+        <tr><td><code>== 5. Build ==</code></td><td><code>wrote</code> four files (the report, digest, backlog and manual-review list), then any <code>ALERT</code> lines.</td></tr>
       </tbody>
     </table></div>
     <p><strong>This proves</strong> all six stages run together from one command.</p>
@@ -501,7 +522,9 @@ pip install -r requirements.txt</code></pre>
   <div class="step"><div class="num">7</div><div class="body">
     <h3>Run one stage alone</h3>
     <p>Every stage runs by itself, which is how you find where a problem is:</p>
-    <pre><code>python -m ratings.clean             # data checks and coverage
+    <pre><code>python -m ratings.pull              # fetch new Play reviews and rating snapshots
+python -m ratings.ios               # fetch the iOS rating and recent iOS reviews
+python -m ratings.clean             # data checks and coverage
 python -m ratings.classify status   # how many reviews are labelled or waiting
 python -m ratings.validate          # agreement with the check set
 python -m ratings.metrics           # recompute metrics.json
@@ -516,6 +539,12 @@ python -m ratings.build             # rewrite the report, digest, backlog and ma
 python run.py --no-pull</code></pre>
     <p><strong>You should see</strong> in the Label section that about a dozen reviews are now <code>awaiting theme labels</code>, and the same message in the digest under &ldquo;Needs attention&rdquo;. The rest of the report still builds.</p>
     <p>Now open the project in Claude Code and ask: <em>How are our Play Store ratings?</em> The skill exports the waiting reviews, labels them, imports them, rebuilds, and answers. Run <code>python -m ratings.classify status</code> afterwards and pending is back to zero.</p>
+    <h4>The same thing by hand, without Claude Code</h4>
+    <p>The skill only runs three commands and writes one file, so you can do it yourself. After the <code>requeue</code>:</p>
+    <pre><code>python -m ratings.classify export</code></pre>
+    <p>Open <code>data/pending/batch_001.txt</code>. Each line is a number, a star rating and a review. Create <code>data/pending/batch_001.labels.txt</code> next to it with one line per review, such as <code>1|boarding</code>, using theme names from <code>ratings/taxonomy.yaml</code>. Then:</p>
+    <pre><code>python -m ratings.classify import --by me</code></pre>
+    <p>Try it once with a made-up theme, or with one review left out. <strong>You should see</strong> <code>Rejected:</code> followed by the file and the reason, and nothing is saved. Correct the file and import again.</p>
     <p>To undo the experiment and return to the committed labels:</p>
     <pre><code>git checkout -- data docs</code></pre>
   </div></div>
@@ -531,6 +560,24 @@ python run.py --no-pull</code></pre>
   </div></div>
 
   <div class="step"><div class="num">10</div><div class="body">
+    <h3>Change a setting and watch the result change</h3>
+    <p>Behaviour is controlled from <code>config.yaml</code>, not from the code. Open it and, under <code>alerts</code>, change <code>new_theme_min_reviews</code> from <code>5</code> to <code>6</code>. Then:</p>
+    <pre><code>python run.py --no-pull</code></pre>
+    <p><strong>You should see</strong> the &ldquo;New theme created automatically&rdquo; flag disappear from the run's output. In the report, &ldquo;Driver call fails (new)&rdquo; is gone from the themes chart, because five reviews sharing a note is no longer enough; those reviews are counted under &ldquo;Other&rdquo; again. <strong>This proves</strong> the thresholds are settings someone can tune without touching the code.</p>
+    <p>Put it back: <code>git checkout -- config.yaml data docs</code></p>
+  </div></div>
+
+  <div class="step"><div class="num">11</div><div class="body">
+    <h3>Open the check-set page</h3>
+    <p>Open <code>tools/label_gold.html</code> in a browser. This is the page used to label the 120-review check set. Click a theme, hover over others to read their definitions, tick a flag, press the right arrow. Your work is saved in the browser as you go.</p>
+    <p><strong>Export CSV</strong> downloads a file called <code>gold.csv</code>. Only move it into <code>data/</code> if you mean to replace the existing check set; otherwise delete the download.</p>
+    <p>The page itself is built by a script, so it always matches the current themes and rules:</p>
+    <pre><code>python -m ratings.gold        # rebuild the page
+python -m ratings.validate    # compare the labels with data/gold.csv</code></pre>
+    <p><strong>This proves</strong> the reliability check is something a person can redo, not a number to take on trust.</p>
+  </div></div>
+
+  <div class="step"><div class="num">12</div><div class="body">
     <h3>Run it on GitHub</h3>
     <ol>
       <li>Open the repository's <strong>Actions</strong> tab and choose &ldquo;Weekly ratings refresh&rdquo;.</li>
@@ -544,10 +591,21 @@ python run.py --no-pull</code></pre>
     <p><strong>This proves</strong> the pipeline runs on a machine that is not yours, and that the live report updates without you.</p>
   </div></div>
 
-  <div class="step"><div class="num">11</div><div class="body">
+  <div class="step"><div class="num">13</div><div class="body">
     <h3>Check the public links</h3>
     <p>Open a private or incognito window, so you are not signed in to anything, and open the live report, the repository, the digest and the backlog. Each must load. A link that only works when you are signed in will not work for a reviewer.</p>
   </div></div>
+
+  <h3>Optional extras</h3>
+  <p>These work, but take longer or need something you may not have, so they are not part of the main walkthrough.</p>
+  <div class="scroll"><table class="wrap">
+    <thead><tr><th>To</th><th>Do this</th><th>Know first</th></tr></thead>
+    <tbody>
+      <tr><td>Track another app</td><td>Add an entry under <code>apps</code> in <code>config.yaml</code> with its Play package id, a name and a <code>role</code>, then <code>python run.py</code></td><td>The first run for a new app downloads its whole review history, which can take many minutes for a popular app. An app with no ratings yet is recorded and stays out of the report until it has some.</td></tr>
+      <tr><td>Download everything again</td><td><code>python -m ratings.pull --full</code></td><td>About ten minutes. It refreshes every saved review; it does not lose any.</td></tr>
+      <tr><td>Label through the Claude API</td><td>Set <code>ANTHROPIC_API_KEY</code>, then <code>python -m ratings.llm</code>, or just <code>python run.py</code></td><td>Needs a paid API key. This path is tested with a stand-in only and has not been run against the live service in this project.</td></tr>
+    </tbody>
+  </table></div>
 
   <h3>If something goes wrong</h3>
   <div class="scroll"><table class="wrap">

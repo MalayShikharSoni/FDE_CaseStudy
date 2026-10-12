@@ -86,4 +86,4 @@ The star mix of newly added ratings appears here once two snapshots a week apart
 - R10 (90 days): Make no-shows fair and unsurprising
 - R11 (90 days): Close the booking and address traps
 
-Generated 2026-10-12 21:21:24 UTC from 24,318 reviews. Full report: index.html.
+Generated 2026-10-12 21:31:55 UTC from 24,318 reviews. Full report: index.html.
