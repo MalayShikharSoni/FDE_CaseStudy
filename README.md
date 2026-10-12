@@ -13,6 +13,7 @@ Submitted for the MoveInSync Forward Deployed Engineer case study by Malay Shikh
 | The answer and the action plan | **[The live report](https://malayshikharsoni.github.io/FDE_CaseStudy/)** (source: [docs/index.html](docs/index.html)) |
 | This week's short answer | [docs/digest.md](docs/digest.md) |
 | The plan as importable tickets | [docs/backlog.csv](docs/backlog.csv) |
+| How the pipeline works, file by file, and how to run it end to end | [The pipeline guide](https://malayshikharsoni.github.io/FDE_CaseStudy/workflow.html) (source: [docs/workflow.html](docs/workflow.html)) |
 | How it was done, and its limits | [METHOD.md](METHOD.md) |
 | Every number in the report | [docs/data/metrics.json](docs/data/metrics.json) |
 

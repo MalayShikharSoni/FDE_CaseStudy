@@ -733,7 +733,7 @@ United States 4.32, Philippines 4.49, United Kingdom 4.49, South Africa 4.62, In
 
 <section id="monitor">
   <h2>&ldquo;How are our Play Store ratings?&rdquo;, answered every week</h2>
-  <p>This page is the output of a pipeline, not a one-off analysis. One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy/blob/main/docs/digest.md">weekly digest</a> and the <a href="backlog.csv">backlog</a>.</p>
+  <p>This page is the output of a pipeline, not a one-off analysis (<a href="workflow.html">how it works, stage by stage</a>). One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy/blob/main/docs/digest.md">weekly digest</a> and the <a href="backlog.csv">backlog</a>.</p>
   <ul class="plain">
     <li><strong>Weekly:</strong> a scheduled GitHub Action runs the pipeline and commits the results.</li>
     <li><strong>On demand:</strong> in Claude Code, asking &ldquo;How are our Play Store ratings?&rdquo; runs it, labels any new reviews and answers from the digest.</li>
@@ -810,7 +810,8 @@ Malay Shikhar Soni then reviewed that second set, and the two sets were compared
 
 <footer>
   Generated 2026-10-12 19:53:43 UTC from data to 2026-10-11.
-Code and data: <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy">https://github.com/MalayShikharSoni/FDE_CaseStudy</a>.   Files: <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy/blob/main/docs/digest.md">weekly digest</a>, <a href="backlog.csv">backlog</a>, <a href="data/metrics.json">every number on this page</a>.
+Code and data: <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy">https://github.com/MalayShikharSoni/FDE_CaseStudy</a>.   <a href="workflow.html">How the pipeline works</a>.
+  Files: <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy/blob/main/docs/digest.md">weekly digest</a>, <a href="backlog.csv">backlog</a>, <a href="data/metrics.json">every number on this page</a>.
 </footer>
 </div>
 

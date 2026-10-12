@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the ratings pipeline works</title>
+<meta name="description" content="A walkthrough of the MoveInSync Play Store ratings pipeline: every stage, every file, and how to run it end to end.">
+<style>
+  :root {
+    color-scheme: light;
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --border:rgba(11,11,11,.12); --accent:#1c5cab; --accent-wash:#eaf2fd;
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --warn-wash:#fdf3e2; --warn-ink:#7a4b00; --code:#eeede8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink-2:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --border:rgba(255,255,255,.14); --accent:#86b6ef; --accent-wash:#14263d;
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --warn-wash:#33260d; --warn-ink:#f2c877; --code:#262624;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink); font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:900px; margin:0 auto; padding:0 20px 90px; }
+  header.top { padding:44px 0 18px; }
+  .eyebrow { font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:0 0 8px; }
+  h1 { font-size:34px; line-height:1.15; margin:0 0 10px; font-weight:680; letter-spacing:-.01em; text-wrap:balance; }
+  h2 { font-size:24px; line-height:1.25; margin:60px 0 12px; font-weight:660; text-wrap:balance; padding-top:8px; }
+  h3 { font-size:18px; margin:34px 0 8px; font-weight:650; }
+  h4 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:18px 0 4px; font-weight:600; }
+  p { margin:0 0 14px; max-width:70ch; }
+  ul, ol { max-width:72ch; padding-left:22px; }
+  li { margin:5px 0; }
+  a { color:var(--accent); }
+  .lead { font-size:19px; line-height:1.55; max-width:66ch; }
+  nav.toc { position:sticky; top:0; z-index:5; background:var(--page); border-bottom:1px solid var(--border); margin:0 -20px; padding:10px 20px; display:flex; flex-wrap:wrap; gap:6px 18px; font-size:14px; }
+  nav.toc a { text-decoration:none; color:var(--ink-2); }
+  nav.toc a:hover { color:var(--accent); }
+  code { font:0.9em/1.4 ui-monospace,"Cascadia Code",Consolas,monospace; background:var(--code); padding:1px 5px; border-radius:4px; overflow-wrap:anywhere; }
+  pre { background:var(--code); border-radius:8px; padding:12px 14px; overflow-x:auto; font:14px/1.5 ui-monospace,"Cascadia Code",Consolas,monospace; margin:10px 0 16px; }
+  pre code { background:none; padding:0; font-size:inherit; overflow-wrap:normal; }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin:14px 0; }
+  .panel > :last-child { margin-bottom:0; }
+  .note { background:var(--warn-wash); color:var(--warn-ink); border-radius:8px; padding:10px 14px; font-size:15px; margin:14px 0; max-width:72ch; }
+  .tip { background:var(--accent-wash); border-radius:8px; padding:10px 14px; font-size:15px; margin:14px 0; max-width:72ch; }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:14.5px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--grid); vertical-align:top; }
+  th { font-weight:600; color:var(--ink-2); font-size:13px; white-space:nowrap; }
+  td:first-child { white-space:nowrap; }
+  td.wrapfirst:first-child, table.wrap td:first-child { white-space:normal; }
+
+  /* --- diagrams: boxes and arrows drawn in HTML, so they reflow on a phone --- */
+  .diagram { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 16px 14px; margin:16px 0 8px; overflow-x:auto; }
+  .diagram .cap { font-size:13.5px; color:var(--ink-2); margin-top:12px; max-width:72ch; }
+  .flow { display:flex; align-items:stretch; gap:0; min-width:760px; }
+  .flow.narrow { min-width:560px; }
+  .node { flex:1 1 0; border:1.5px solid var(--border); border-radius:8px; padding:9px 10px; background:var(--page); font-size:13.5px; line-height:1.4; display:flex; flex-direction:column; justify-content:center; }
+  .node b { display:block; font-size:14.5px; }
+  .node small { color:var(--ink-2); font-size:12.5px; }
+  .node.in { border-style:dashed; }
+  .node.s1 { border-color:var(--s1); } .node.s2 { border-color:var(--s2); } .node.s3 { border-color:var(--s3); }
+  .node.out { background:var(--accent-wash); border-color:var(--accent); }
+  .arrow { flex:0 0 26px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:18px; }
+  .lane-label { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:14px 0 6px; }
+  .lane-label:first-child { margin-top:0; }
+  .files { display:flex; min-width:760px; margin-top:6px; }
+  .files div { flex:1 1 0; font-size:12px; color:var(--ink-2); text-align:center; padding:0 4px; }
+  .files span { flex:0 0 26px; }
+  .down { text-align:center; color:var(--muted); font-size:18px; line-height:1; margin:6px 0; }
+  .tree { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; min-width:620px; }
+  .tree .full { grid-column:1 / -1; }
+  .tree .branch { font-size:12.5px; color:var(--muted); text-align:center; text-transform:uppercase; letter-spacing:.05em; }
+  .step { display:grid; grid-template-columns:38px 1fr; gap:0 14px; margin:22px 0; }
+  .step .num { width:34px; height:34px; border-radius:50%; background:var(--accent); color:var(--page); font-weight:650; display:flex; align-items:center; justify-content:center; font-size:15px; }
+  .step h3 { margin:3px 0 6px; }
+  .step .body > :last-child { margin-bottom:0; }
+  footer { margin-top:60px; padding-top:16px; border-top:1px solid var(--border); font-size:13.5px; color:var(--ink-2); }
+  @media (max-width:600px) { h1 { font-size:27px; } .lead { font-size:17px; } }
+  @media print { nav.toc { display:none; } body { background:#fff; } .panel, .diagram, .step { break-inside:avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">MoveInSync Play Store ratings &middot; pipeline guide</p>
+  <h1>How the ratings pipeline works</h1>
+  <p class="lead">This page explains the whole project from the inside: what each stage does and why, what every file is for, and how to run it yourself from start to finish. Read it top to bottom once and you will be able to explain any part of it.</p>
+  <p><a href="index.html">The report</a> is the output. This page is how it gets made.</p>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#big-picture">Big picture</a><a href="#stages">The six stages</a><a href="#themes">How themes work</a>
+  <a href="#numbers">How numbers are worked out</a><a href="#recurring">Asking again</a>
+  <a href="#files">Every file</a><a href="#try">Run it yourself</a><a href="#decisions">Design decisions</a><a href="#words">Words used</a>
+</nav>
+
+<section id="big-picture">
+  <h2>The big picture</h2>
+  <p>MoveInSync asked two things: why is our Play Store rating lower than it should be, and what should we do about it. They also said they would keep asking. So the project is a pipeline, not a one-off analysis. A pipeline is a chain of small programs where each one reads files, does one job, and writes files for the next.</p>
+  <p>Six stages run in order. One command, <code>python run.py</code>, runs them all.</p>
+
+  <div class="diagram">
+    <div class="lane-label">Sources</div>
+    <div class="flow">
+      <div class="node in"><b>Google Play</b><small>public reviews and ratings</small></div>
+      <div class="arrow"></div>
+      <div class="node in"><b>App Store</b><small>iOS reviews, as a cross-check</small></div>
+      <div class="arrow"></div>
+      <div class="node in"><b>config.yaml</b><small>which apps, which countries</small></div>
+      <div class="arrow"></div>
+      <div class="node in"><b>taxonomy.yaml, prompt.md</b><small>themes and labelling rules</small></div>
+      <div class="arrow"></div>
+      <div class="node in"><b>recommendations.yaml</b><small>the action plan's wording</small></div>
+    </div>
+    <div class="down">&darr;</div>
+    <div class="lane-label">Stages</div>
+    <div class="flow">
+      <div class="node s1"><b>1. Pull</b><small>fetch new reviews</small></div><div class="arrow">&rarr;</div>
+      <div class="node s1"><b>2. Clean</b><small>check the data</small></div><div class="arrow">&rarr;</div>
+      <div class="node s2"><b>3. Label</b><small>what is each complaint about</small></div><div class="arrow">&rarr;</div>
+      <div class="node s2"><b>4. Validate</b><small>are the labels reliable</small></div><div class="arrow">&rarr;</div>
+      <div class="node s3"><b>5. Metrics</b><small>compute every number</small></div><div class="arrow">&rarr;</div>
+      <div class="node s3"><b>6. Build</b><small>write the outputs</small></div>
+    </div>
+    <div class="files">
+      <div>reviews_*.csv<br>snapshots.jsonl</div><span></span>
+      <div>(no file; stops the run if data is bad)</div><span></span>
+      <div>labels.jsonl</div><span></span>
+      <div>gold_disagreements.csv</div><span></span>
+      <div>metrics.json</div><span></span>
+      <div>index.html, digest.md, backlog.csv</div>
+    </div>
+    <div class="down">&darr;</div>
+    <div class="lane-label">What people read</div>
+    <div class="flow narrow">
+      <div class="node out"><b>The report</b><small>verdict, causes, action plan, evidence</small></div><div class="arrow"></div>
+      <div class="node out"><b>The weekly digest</b><small>the short answer to &ldquo;how are our ratings?&rdquo;</small></div><div class="arrow"></div>
+      <div class="node out"><b>The backlog</b><small>the plan as rows for a ticket tracker</small></div>
+    </div>
+    <p class="cap">The pipeline. Blue stages gather data, orange stages interpret it, green stages turn it into something to read. Under each stage is the file it writes.</p>
+  </div>
+
+  <p>Three ideas explain most of the design:</p>
+  <ul>
+    <li><strong>Each stage only talks to the next through files.</strong> You can run any stage alone, open its output, and see exactly what it did.</li>
+    <li><strong>Every number is computed once, in one place.</strong> Stage 5 writes <code>metrics.json</code>, and the report, digest and backlog all read from it. A figure cannot be different in two places.</li>
+    <li><strong>The parts that need judgement are written down as files, not buried in code.</strong> The themes, the labelling rules and the recommendations are plain text you can read and change.</li>
+  </ul>
+</section>
+
+<section id="stages">
+  <h2>The six stages</h2>
+
+  <h3>Stage 1: Pull</h3>
+  <p><strong>Job:</strong> fetch public reviews and ratings and save them. <strong>Code:</strong> <code>ratings/pull.py</code> for Play, <code>ratings/ios.py</code> for the App Store.</p>
+  <p>Google has no public API for reading another company's reviews, so this stage uses an open-source library, <code>google-play-scraper</code>, that reads the same data the Play Store web page shows.</p>
+  <h4>What it saves</h4>
+  <ul>
+    <li><strong>Reviews</strong>, one row each, in <code>data/reviews_&lt;app&gt;.csv</code>: the star score, the date, the text, the app version, and any reply from the developer. Reviewer names are never saved.</li>
+    <li><strong>A snapshot</strong> of what the Play page says right now, added to <code>data/snapshots.jsonl</code>: the rating and how many ratings fall on each star.</li>
+    <li><strong>The rating in each country</strong>, added to <code>data/country_snapshots.jsonl</code>. Play shows a different rating depending on which country you view it from.</li>
+    <li><strong>iOS reviews</strong> in <code>data/ios_reviews.csv</code>. Apple's public feed only gives the latest 500 or so.</li>
+  </ul>
+  <h4>First run and later runs</h4>
+  <p>The first run is a <em>backfill</em>: it pages back through every review ever written, which takes several minutes. Every later run is <em>incremental</em>: it re-reads only the last 14 days, picks up anything new or edited, and finishes in under a minute.</p>
+  <h4>Details that matter</h4>
+  <ul>
+    <li><strong>It does not trust an empty answer.</strong> The library returns nothing both when there are no more reviews and when Google blocks the request. So an empty page is retried, and a sweep that stops early is logged as incomplete in <code>data/pull_log.txt</code>.</li>
+    <li><strong>Times are stored in UTC.</strong> The library returns times in the computer's own timezone. Without converting, the same review would get a different time on a laptop in India and on GitHub's servers.</li>
+    <li><strong>Identifying details are removed.</strong> Vehicle numbers, phone numbers and email addresses typed into a review are replaced with a placeholder before saving.</li>
+    <li><strong>If Play cannot be reached, the run continues</strong> on the reviews already saved.</li>
+  </ul>
+
+  <h3>Stage 2: Clean</h3>
+  <p><strong>Job:</strong> make sure the data can be trusted before anything is computed from it. <strong>Code:</strong> <code>ratings/clean.py</code>.</p>
+  <p>It checks for duplicate reviews, scores outside 1 to 5, and dates in the future. It also compares how many reviews were pulled with how many Play itself says exist, and prints that as a coverage percentage. If a check fails, the run stops there with a message, because a report built on bad data is worse than no report.</p>
+  <p>This file also holds the one function every later stage uses to load reviews, so all stages work from the same checked rows.</p>
+
+  <h3>Stage 3: Label</h3>
+  <p><strong>Job:</strong> decide what each low-star review is complaining about. <strong>Code:</strong> <code>ratings/classify.py</code>, with the rules in <code>ratings/prompt.md</code> and the themes in <code>ratings/taxonomy.yaml</code>.</p>
+  <p>This is the one stage a plain script cannot do alone, because it needs reading comprehension. Reviews are short, often mix Hindi and English, and say the same thing in a hundred ways. A language model does the reading. Everything around it is ordinary code that keeps the model honest.</p>
+  <h4>What gets labelled</h4>
+  <p>Reviews of the employee app, on Play and iOS, rated three stars or fewer, written in the last 12 months. Each one gets five things:</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Field</th><th>Meaning</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Theme</td><td>The main complaint, chosen from the written list</td><td><code>login_otp</code></td></tr>
+      <tr><td>Second theme</td><td>A clearly separate second complaint, if there is one</td><td><code>session_logout</code></td></tr>
+      <tr><td>Owner</td><td>Who would have to act: the app team, operations, an employer's policy, or unclear</td><td><code>app</code></td></tr>
+      <tr><td>Safety</td><td>Does the reviewer describe a risk to a person</td><td>yes / no</td></tr>
+      <tr><td>After update</td><td>Does the reviewer blame an update or a new version</td><td>yes / no</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>The labelling loop</h4>
+  <div class="diagram">
+    <div class="flow">
+      <div class="node"><b>Find what is new</b><small>low-star reviews with no label yet</small></div><div class="arrow">&rarr;</div>
+      <div class="node"><b>Export</b><small>numbered batches of 150 as text files</small></div><div class="arrow">&rarr;</div>
+      <div class="node s2"><b>The labeller reads</b><small>the rules, the themes, then each review</small></div><div class="arrow">&rarr;</div>
+      <div class="node"><b>Import, strictly</b><small>one line per review, every theme must exist</small></div><div class="arrow">&rarr;</div>
+      <div class="node out"><b>Cache</b><small>labels.jsonl, one line per review, kept for good</small></div>
+    </div>
+    <p class="cap">A batch is rejected whole if any review is missing, appears twice, or uses a theme that is not on the list. Nothing half-labelled is ever saved. Once a review has a label it is never sent to the labeller again, so a weekly run only labels that week's new reviews.</p>
+  </div>
+  <p>The labeller writes one short line per review. <code>17|login_otp</code> is a complete line: review 17, theme login OTP, everything else at its default. A full line looks like <code>18|no_show|driver_behaviour|ops|1|0</code>.</p>
+  <h4>Who the labeller is</h4>
+  <p>Two labellers can fill the same cache, and both follow the same two files:</p>
+  <ul>
+    <li><strong>Claude Code</strong>, through the <code>play-ratings</code> skill. Every label in this repository was made this way.</li>
+    <li><strong>The Claude API</strong>, through <code>ratings/llm.py</code>, for runs with nobody present. It switches on when an <code>ANTHROPIC_API_KEY</code> is set. It is tested with a stand-in for the API and has not been run against the live service in this project.</li>
+  </ul>
+  <p>With neither available, the run does not fail. It counts the unlabelled reviews, says so, and builds everything else.</p>
+
+  <h3>Stage 4: Validate</h3>
+  <p><strong>Job:</strong> measure how far the labels can be trusted. <strong>Code:</strong> <code>ratings/gold.py</code> and <code>ratings/validate.py</code>.</p>
+  <p><code>gold.py</code> picks a fixed random sample of 120 labelled reviews and builds a small labelling page, <code>tools/label_gold.html</code>. Those 120 are labelled a second time by someone who has not seen the first labels, and saved as <code>data/gold.csv</code>. This second set is called the <em>check set</em>. <code>validate.py</code> then compares the two and reports:</p>
+  <ul>
+    <li>how often they chose the same theme, the same owner, and the same flags;</li>
+    <li><strong>Cohen's kappa</strong>, which is agreement after removing what two labellers would agree on by pure chance (0 is chance, 1 is perfect);</li>
+    <li>for each theme, <strong>precision</strong> (when the first pass said this theme, how often the check set agreed) and <strong>recall</strong> (of the reviews the check set gave this theme, how many the first pass found);</li>
+    <li>every disagreement, written to <code>data/gold_disagreements.csv</code> so each can be read.</li>
+  </ul>
+  <div class="note">In this project the check set was labelled by a second, separate Claude session and then reviewed by the author. That is weaker than a person labelling from scratch, and the report says so. <code>check_set</code> in <code>config.yaml</code> records who labelled it, and the report words itself from that setting.</div>
+
+  <h3>Stage 5: Metrics</h3>
+  <p><strong>Job:</strong> compute every number once. <strong>Code:</strong> <code>ratings/metrics.py</code>. <strong>Output:</strong> <code>docs/data/metrics.json</code>.</p>
+  <p>It reads the reviews, the snapshots and the labels, and writes one file holding everything the outputs need: the rating by country, the trend by month, each theme's share, reply rates, the reply and safety queues, the evidence for each recommendation, and the validation result. How the trickier numbers are worked out is <a href="#numbers">explained below</a>.</p>
+
+  <h3>Stage 6: Build</h3>
+  <p><strong>Job:</strong> turn <code>metrics.json</code> into things people read. <strong>Code:</strong> <code>ratings/build.py</code>, with charts drawn by <code>ratings/charts.py</code> and the page layout in <code>ratings/templates/report.html</code>.</p>
+  <ul>
+    <li><strong>The report</strong>, <code>docs/index.html</code>. A single self-contained page; charts are drawn as SVG by Python, so there is no chart library and no server.</li>
+    <li><strong>The digest</strong>, <code>docs/digest.md</code>. A short page that answers the recurring question and lists anything needing attention.</li>
+    <li><strong>The backlog</strong>, <code>docs/backlog.csv</code>. One row per recommendation, ready to import into a ticket tracker.</li>
+  </ul>
+  <p>The recommendations show how words and numbers are kept apart. <code>recommendations.yaml</code> holds each ticket's wording and names the themes and phrases that are its evidence. It never states a count. The build fills the counts in from <code>metrics.json</code>, so a ticket's evidence updates itself every week.</p>
+</section>
+
+<section id="themes">
+  <h2>How themes work, including new ones</h2>
+  <p>The list of themes was not invented in advance. It was drafted after reading about 650 real low-star reviews, and it lives in <code>ratings/taxonomy.yaml</code>, where each theme has a definition, real examples, a stage of the employee's journey, and a default owner.</p>
+  <p>A fixed list is what makes this month comparable with last month. But a fixed list would be a trap if a new kind of complaint had nowhere to go. So a complaint that fits nothing is never forced into the nearest theme.</p>
+
+  <div class="diagram">
+    <div class="tree">
+      <div class="node full" style="text-align:center"><b>A low-star review arrives</b><small>Does it fit one of the written themes?</small></div>
+      <div class="branch">Yes</div><div class="branch">No</div>
+      <div class="node s3"><b>It gets that theme</b><small>and is counted with the others</small></div>
+      <div class="node s2"><b>It gets &ldquo;other&rdquo; plus a short note</b><small>two to four words saying what it is about, such as &ldquo;driver call fails&rdquo;. A line with &ldquo;other&rdquo; and no note is rejected.</small></div>
+      <div></div><div class="down">&darr;</div>
+      <div></div><div class="node" style="text-align:center"><b>Do 5 reviews share that note?</b></div>
+      <div></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div class="branch">Not yet</div><div class="branch">Yes</div>
+        <div class="node"><b>Stays under &ldquo;other&rdquo;</b><small>listed by note in the digest</small></div>
+        <div class="node out"><b>Becomes its own theme</b><small>automatically, marked &ldquo;new&rdquo;, and flagged in the digest</small></div>
+      </div>
+    </div>
+    <p class="cap">How a new kind of complaint becomes a theme without anyone adding it. Each batch shows the labeller the notes already in use, so the same complaint gets the same wording and can be counted.</p>
+  </div>
+
+  <p>Two guards keep this from turning into noise. The threshold of five means one unusual review is not a category. Reusing notes means &ldquo;driver call fails&rdquo; and &ldquo;calls not connecting&rdquo; do not become two themes.</p>
+  <p>A person can later promote an automatic theme into a written one, with a proper definition, by adding it to the taxonomy file and running <code>python -m ratings.classify requeue --theme other</code>, which sends those reviews back to be labelled again.</p>
+  <p>There is also a second alarm. If complaints that fit no theme pass 3% of recent low-star reviews, the digest says the list is going out of date. Both thresholds are in <code>config.yaml</code>.</p>
+  <div class="note">What this cannot catch: a new problem that looks like an old theme. A new kind of crash is labelled &ldquo;app won't open&rdquo;, not a new theme. It shows up instead as that theme growing, which has its own alert.</div>
+</section>
+
+<section id="numbers">
+  <h2>How the trickier numbers are worked out</h2>
+
+  <h3>Ratings and reviews are different things</h3>
+  <p>A <strong>rating</strong> is a star score. A <strong>review</strong> is a rating that came with written text. Most people who rate write nothing, and the ones who do write are far more often unhappy. The store's rating is made of all ratings. So the pipeline uses reviews only to explain <em>why</em> low ratings happen, and takes the size of the problem from the ratings.</p>
+
+  <h3>The estimated effect of fixing a theme</h3>
+  <p>Each theme has an estimate of how much the rating would rise if that problem went away.</p>
+  <pre><code>effect = theme's share of low-star reviews
+         x  share of all ratings that are 1 or 2 stars
+         x  (4  -  the average of those low ratings)</code></pre>
+  <p>Worked through for login OTP on the Indian listing: it is 7.3% of low-star reviews; 7.1% of all ratings are one or two-star; their average is 1.1. So 0.073 &times; 0.071 &times; (4 &minus; 1.1) = about <strong>+0.015</strong>.</p>
+  <p>Three assumptions sit inside that, and the report states them: people who rate low without writing have the same complaints as those who write; a satisfied person would have given four stars; and the figure is where the average settles in the long run, not how quickly.</p>
+
+  <h3>Is a release worse, or just unlucky?</h3>
+  <p>A version with 38 reviews where 37% are low-star looks bad next to the usual 27%. But with only 38 reviews, that could easily be chance. The pipeline works out a 95% confidence interval for each version's low-star share (the Wilson interval) and flags a version only if even the bottom of that range is above the usual share. Over the last year, none is.</p>
+
+  <h3>The rating of new ratings</h3>
+  <p>Every run saves how many ratings sit on each star. Subtract last week's counts from this week's and you have the stars of ratings added in between, including the silent ones with no text. This series only builds up over time, so it starts from the first run.</p>
+
+  <h3>When the digest raises a flag</h3>
+  <div class="scroll"><table class="wrap">
+    <thead><tr><th>Flag</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Low-star share is up</td><td>The last 30 days are more than 5 points above the last 12 months</td></tr>
+      <tr><td>A theme is growing</td><td>It is at least 5% of recent low-star reviews and at least double its earlier share</td></tr>
+      <tr><td>A release looks bad</td><td>The newest version is clearly above the usual share, by the test above</td></tr>
+      <tr><td>Safety reviews unanswered</td><td>Any safety-flagged Play review has no developer reply</td></tr>
+      <tr><td>Reviews waiting for labels</td><td>Any in-scope review has no theme yet</td></tr>
+      <tr><td>New theme created</td><td>Five reviews share a note</td></tr>
+      <tr><td>Themes going stale</td><td>Unthemed complaints pass 3% of recent low-star reviews</td></tr>
+    </tbody>
+  </table></div>
+  <p>All these thresholds are in the <code>alerts</code> section of <code>config.yaml</code>.</p>
+</section>
+
+<section id="recurring">
+  <h2>Asking the question again</h2>
+  <p>&ldquo;How are our Play Store ratings?&rdquo; gets asked repeatedly, so there are two ways to re-run everything without thinking about it.</p>
+
+  <div class="diagram">
+    <div class="lane-label">Every Monday, with nobody involved</div>
+    <div class="flow">
+      <div class="node in"><b>Schedule</b><small>Mondays 09:00 India time, or the &ldquo;Run workflow&rdquo; button</small></div><div class="arrow">&rarr;</div>
+      <div class="node s1"><b>GitHub's server</b><small>installs Python, runs the tests, runs <code>python run.py</code></small></div><div class="arrow">&rarr;</div>
+      <div class="node"><b>Commit</b><small>saves the refreshed data and report to the repository</small></div><div class="arrow">&rarr;</div>
+      <div class="node out"><b>GitHub Pages</b><small>the live report updates</small></div>
+    </div>
+    <div class="lane-label">Whenever someone asks</div>
+    <div class="flow">
+      <div class="node in"><b>A person in Claude Code</b><small>&ldquo;How are our Play Store ratings?&rdquo;</small></div><div class="arrow">&rarr;</div>
+      <div class="node s2"><b>The play-ratings skill</b><small>runs the pipeline and labels any new reviews</small></div><div class="arrow">&rarr;</div>
+      <div class="node"><b>Rebuild</b><small>report, digest and backlog</small></div><div class="arrow">&rarr;</div>
+      <div class="node out"><b>The answer</b><small>a few lines, read from the digest</small></div>
+    </div>
+    <p class="cap">Two routes to the same result. The weekly job is defined in <code>.github/workflows/weekly.yml</code>; the skill in <code>.claude/skills/play-ratings/SKILL.md</code>.</p>
+  </div>
+
+  <p>The difference between them is labelling. The weekly job can only label new reviews if an API key has been added to the repository as a secret. Without one it still updates every rating figure and reports how many reviews are waiting. The skill labels them itself.</p>
+  <p>Inside MoveInSync, the pull stage should be replaced with the official Play Developer Reviews API and Play Console exports, which add data the public page does not have. Nothing after stage 1 would need to change.</p>
+</section>
+
+<section id="files">
+  <h2>Every file and what it is for</h2>
+
+  <h3>Top level</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>run.py</code></td><td>Runs all six stages in order. The one command you need.</td></tr>
+      <tr><td><code>config.yaml</code></td><td>Settings: which apps and countries to track, how far back to label, alert thresholds, who labelled the check set, the author name and repository address.</td></tr>
+      <tr><td><code>recommendations.yaml</code></td><td>The action plan. Each ticket's wording, plus the themes and phrases that count as its evidence.</td></tr>
+      <tr><td><code>requirements.txt</code></td><td>The Python packages to install.</td></tr>
+      <tr><td><code>README.md</code></td><td>The front page of the repository: what this is, how to run it, how to reuse it.</td></tr>
+      <tr><td><code>METHOD.md</code></td><td>How the analysis was done, which tools were used, the assumptions and the limits.</td></tr>
+      <tr><td><code>.gitignore</code></td><td>Files git should not track: the virtual environment, caches, in-progress label batches.</td></tr>
+      <tr><td><code>.gitattributes</code></td><td>Keeps line endings identical on Windows and Linux, so the weekly job does not rewrite whole files.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><code>ratings/</code> &mdash; the pipeline's code</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>File</th><th>Stage</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>pull.py</code></td><td>1</td><td>Fetches Play reviews and rating snapshots. Handles retries, incremental runs, UTC times and redaction.</td></tr>
+      <tr><td><code>ios.py</code></td><td>1</td><td>Fetches the iOS rating and recent iOS reviews.</td></tr>
+      <tr><td><code>clean.py</code></td><td>2</td><td>Checks the data and reports coverage. Also the shared loader every other stage uses.</td></tr>
+      <tr><td><code>taxonomy.yaml</code></td><td>3</td><td>The list of themes, each with a definition, examples, journey stage and default owner.</td></tr>
+      <tr><td><code>prompt.md</code></td><td>3</td><td>The labelling rules, in plain English. This file is the classifier's instructions.</td></tr>
+      <tr><td><code>classify.py</code></td><td>3</td><td>Decides which reviews need labels, exports batches, strictly checks and imports labels, and manages the cache.</td></tr>
+      <tr><td><code>llm.py</code></td><td>3</td><td>The labeller for unattended runs, using the Claude API when a key is set.</td></tr>
+      <tr><td><code>gold.py</code></td><td>4</td><td>Picks the fixed sample of 120 and builds the labelling page for the check set.</td></tr>
+      <tr><td><code>validate.py</code></td><td>4</td><td>Compares the labels with the check set and lists every disagreement.</td></tr>
+      <tr><td><code>metrics.py</code></td><td>5</td><td>Computes every number and writes <code>metrics.json</code>.</td></tr>
+      <tr><td><code>replies.yaml</code></td><td>5</td><td>A draft reply for each theme, used to build the reply queue.</td></tr>
+      <tr><td><code>charts.py</code></td><td>6</td><td>Draws the charts as SVG.</td></tr>
+      <tr><td><code>build.py</code></td><td>6</td><td>Writes the report, the digest and the backlog, and decides which flags to raise.</td></tr>
+      <tr><td><code>templates/report.html</code></td><td>6</td><td>The layout and wording of the report, with gaps the build fills in.</td></tr>
+      <tr><td><code>templates/label.html</code></td><td>4</td><td>The layout of the check-set labelling page.</td></tr>
+      <tr><td><code>__init__.py</code></td><td></td><td>Empty. It tells Python that <code>ratings</code> is a package, so <code>python -m ratings.pull</code> works.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><code>data/</code> &mdash; what the pipeline stores</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>File</th><th>Written by</th><th>Contents</th></tr></thead>
+    <tbody>
+      <tr><td><code>reviews_&lt;app&gt;.csv</code></td><td>Pull</td><td>One row per Play review, one file per app. Four apps are tracked; only the employee app is analysed in depth.</td></tr>
+      <tr><td><code>ios_reviews.csv</code></td><td>Pull</td><td>Recent iOS reviews of the employee app.</td></tr>
+      <tr><td><code>snapshots.jsonl</code></td><td>Pull</td><td>One line per app per run: what the Play page said at that moment.</td></tr>
+      <tr><td><code>country_snapshots.jsonl</code></td><td>Pull</td><td>One line per country per run: the rating shown on that country's listing.</td></tr>
+      <tr><td><code>ios_snapshots.jsonl</code></td><td>Pull</td><td>One line per run: the iOS rating.</td></tr>
+      <tr><td><code>pull_log.txt</code></td><td>Pull</td><td>A running log of every pull, including any that stopped early.</td></tr>
+      <tr><td><code>labels.jsonl</code></td><td>Label</td><td>The label cache: one line per labelled review, with who labelled it and when.</td></tr>
+      <tr><td><code>gold_sample.csv</code></td><td>Validate</td><td>The 120 reviews chosen for the check set.</td></tr>
+      <tr><td><code>gold.csv</code></td><td>A person</td><td>The check set: those 120 reviews labelled a second time.</td></tr>
+      <tr><td><code>gold_disagreements.csv</code></td><td>Validate</td><td>Every review where the two sets of labels differ.</td></tr>
+      <tr><td><code>pending/</code></td><td>Label</td><td>Batches waiting to be labelled. Temporary, and not kept in the repository.</td></tr>
+    </tbody>
+  </table></div>
+  <p>A <code>.jsonl</code> file is a list with one small record per line. New lines are added at the end, so nothing earlier is lost.</p>
+
+  <h3><code>docs/</code> &mdash; what gets published</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>index.html</code></td><td>The report. Rebuilt on every run.</td></tr>
+      <tr><td><code>digest.md</code></td><td>The weekly short answer. Rebuilt on every run.</td></tr>
+      <tr><td><code>backlog.csv</code></td><td>The action plan as rows. Rebuilt on every run.</td></tr>
+      <tr><td><code>data/metrics.json</code></td><td>Every number the three files above use.</td></tr>
+      <tr><td><code>workflow.html</code></td><td>This page. Written by hand, not rebuilt.</td></tr>
+      <tr><td><code>.nojekyll</code></td><td>An empty file telling GitHub Pages to serve these files exactly as they are.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Everything else</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>tools/label_gold.html</code></td><td>The page for labelling the check set by hand. Open it in a browser; it saves as you go and exports <code>gold.csv</code>.</td></tr>
+      <tr><td><code>tests/test_pipeline.py</code></td><td>Automated tests for the parts where a silent mistake would put a wrong number in the report.</td></tr>
+      <tr><td><code>.github/workflows/weekly.yml</code></td><td>The instructions for GitHub's weekly run.</td></tr>
+      <tr><td><code>.claude/skills/play-ratings/SKILL.md</code></td><td>The instructions Claude Code follows when asked how the ratings are.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="try">
+  <h2>Run it yourself, end to end</h2>
+  <p>Work through these in order. Each step says what to type, what you should see, and what it proves. Commands are run in a terminal opened in the project folder. You need Python 3.10 or later.</p>
+  <div class="tip">Nothing here can damage the project. The data and outputs are saved in git, so <code>git checkout -- data docs</code> puts them back exactly as they were at any point.</div>
+
+  <div class="step"><div class="num">1</div><div class="body">
+    <h3>Set up</h3>
+    <p>If you already have the project with its <code>.venv</code> folder, just switch the environment on:</p>
+    <pre><code>.venv\Scripts\activate          # Windows
+source .venv/bin/activate       # macOS or Linux</code></pre>
+    <p>To test from scratch, as a reviewer would, clone it into a new folder first:</p>
+    <pre><code>git clone https://github.com/MalayShikharSoni/FDE_CaseStudy.git
+cd FDE_CaseStudy
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt</code></pre>
+    <p><strong>You should see</strong> <code>(.venv)</code> at the start of your prompt.</p>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div class="body">
+    <h3>Run the tests</h3>
+    <pre><code>python -m pytest</code></pre>
+    <p><strong>You should see</strong> a row of dots ending in a line like <code>23 passed</code>. <strong>This proves</strong> the label parser, the data checks, the rating arithmetic, redaction and timezone handling all behave as intended.</p>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div class="body">
+    <h3>Check the connection to Google Play</h3>
+    <pre><code>python -m ratings.pull --test</code></pre>
+    <p><strong>You should see</strong> one line per app with its name, rating and number of ratings, then <code>fetched 50 reviews</code> and five sample reviews. Nothing is saved. <strong>This proves</strong> Play is reachable from your machine and the app ids are right.</p>
+    <p>If it says <code>0 reviews returned</code>, Google is blocking or rate-limiting you. Wait a few minutes and try again. The rest of this walkthrough still works with <code>--no-pull</code>.</p>
+  </div></div>
+
+  <div class="step"><div class="num">4</div><div class="body">
+    <h3>Run the whole pipeline</h3>
+    <pre><code>python run.py</code></pre>
+    <p>It takes about a minute. <strong>You should see</strong> five headed sections:</p>
+    <div class="scroll"><table class="wrap">
+      <thead><tr><th>Section</th><th>What to look for</th></tr></thead>
+      <tbody>
+        <tr><td><code>== 1. Pull ==</code></td><td>For each app, <code>incremental: re-reading from</code> a date about two weeks back, then <code>N new, T total</code>. A <code>by country</code> line lists seven ratings.</td></tr>
+        <tr><td><code>== 2. Clean ==</code></td><td>A coverage line per app, then <code>clean: OK</code>.</td></tr>
+        <tr><td><code>== 3. Label ==</code></td><td><code>in scope / labelled / pending</code>. If pending is above zero, it tells you how many reviews are waiting.</td></tr>
+        <tr><td><code>== 4. Metrics ==</code></td><td>The rating, the iOS rating, and the top themes with their shares.</td></tr>
+        <tr><td><code>== 5. Build ==</code></td><td><code>wrote</code> three files, then any <code>ALERT</code> lines.</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>This proves</strong> all six stages run together from one command.</p>
+  </div></div>
+
+  <div class="step"><div class="num">5</div><div class="body">
+    <h3>Look at what it made</h3>
+    <p>Open <code>docs/index.html</code> in a browser and check:</p>
+    <ul>
+      <li>the four figures at the top match the Metrics section you just saw in the terminal;</li>
+      <li>hovering over a bar or a point on a chart shows its value;</li>
+      <li>clicking a ticket in the action plan opens it, with counts and real quotes;</li>
+      <li>the reply queue and the safety queue list real reviews;</li>
+      <li>the footer shows the time you just ran it, in UTC.</li>
+    </ul>
+    <p>Then open <code>docs/digest.md</code> for the short answer, and <code>docs/backlog.csv</code> in Excel to see the plan as rows.</p>
+  </div></div>
+
+  <div class="step"><div class="num">6</div><div class="body">
+    <h3>Prove it works with no internet</h3>
+    <pre><code>python run.py --no-pull</code></pre>
+    <p><strong>You should see</strong> the run start at <code>== 2. Clean ==</code> and finish normally. For a harder test, turn your Wi-Fi off and run plain <code>python run.py</code>: the pull prints that it could not reach Play and is using saved reviews, and the rest still completes. <strong>This proves</strong> the report can always be rebuilt, which matters for a live demo.</p>
+  </div></div>
+
+  <div class="step"><div class="num">7</div><div class="body">
+    <h3>Run one stage alone</h3>
+    <p>Every stage runs by itself, which is how you find where a problem is:</p>
+    <pre><code>python -m ratings.clean             # data checks and coverage
+python -m ratings.classify status   # how many reviews are labelled or waiting
+python -m ratings.validate          # agreement with the check set
+python -m ratings.metrics           # recompute metrics.json
+python -m ratings.build             # rewrite the report, digest and backlog</code></pre>
+    <p>After <code>validate</code>, open <code>data/gold_disagreements.csv</code> to read the reviews where the two label sets differ.</p>
+  </div></div>
+
+  <div class="step"><div class="num">8</div><div class="body">
+    <h3>See the labelling loop in action</h3>
+    <p>New low-star reviews only appear a few at a time, so to watch labelling happen, send a small theme back to be labelled again:</p>
+    <pre><code>python -m ratings.classify requeue --theme boarding
+python run.py --no-pull</code></pre>
+    <p><strong>You should see</strong> in the Label section that about a dozen reviews are now <code>awaiting theme labels</code>, and the same message in the digest under &ldquo;Needs attention&rdquo;. The rest of the report still builds.</p>
+    <p>Now open the project in Claude Code and ask: <em>How are our Play Store ratings?</em> The skill exports the waiting reviews, labels them, imports them, rebuilds, and answers. Run <code>python -m ratings.classify status</code> afterwards and pending is back to zero.</p>
+    <p>To undo the experiment and return to the committed labels:</p>
+    <pre><code>git checkout -- data docs</code></pre>
+  </div></div>
+
+  <div class="step"><div class="num">9</div><div class="body">
+    <h3>Run it on GitHub</h3>
+    <ol>
+      <li>Open the repository's <strong>Actions</strong> tab and choose &ldquo;Weekly ratings refresh&rdquo;.</li>
+      <li>Press <strong>Run workflow</strong>, then <strong>Run workflow</strong> again.</li>
+      <li>After two or three minutes the run shows a green tick. Click into it to read each step's output.</li>
+      <li>On the repository's front page there is a new commit called &ldquo;Weekly ratings refresh&rdquo;.</li>
+      <li>Reload the live report. The time in its footer has changed.</li>
+    </ol>
+    <p>Afterwards, bring that commit down to your own copy before changing anything:</p>
+    <pre><code>git pull</code></pre>
+    <p><strong>This proves</strong> the pipeline runs on a machine that is not yours, and that the live report updates without you.</p>
+  </div></div>
+
+  <div class="step"><div class="num">10</div><div class="body">
+    <h3>Check the public links</h3>
+    <p>Open a private or incognito window, so you are not signed in to anything, and open the live report, the repository, the digest and the backlog. Each must load. A link that only works when you are signed in will not work for a reviewer.</p>
+  </div></div>
+
+  <h3>If something goes wrong</h3>
+  <div class="scroll"><table class="wrap">
+    <thead><tr><th>What you see</th><th>What it means</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td><code>No module named ...</code></td><td>The virtual environment is not switched on, or packages are not installed</td><td>Activate <code>.venv</code>, then <code>pip install -r requirements.txt</code></td></tr>
+      <tr><td><code>No module named 'ratings'</code></td><td>The terminal is not in the project folder</td><td><code>cd</code> into the folder that contains <code>run.py</code></td></tr>
+      <tr><td><code>could not read app snapshot</code></td><td>Play could not be reached</td><td>Nothing; the run continues on saved data. Try again later for fresh reviews</td></tr>
+      <tr><td><code>INCOMPLETE</code> in the pull log</td><td>A sweep stopped early</td><td>Run again; it picks up what was missed</td></tr>
+      <tr><td><code>clean: PROBLEMS FOUND</code></td><td>The data failed a check</td><td>Read the line above it. <code>git checkout -- data</code> restores the last good data</td></tr>
+      <tr><td>An import is rejected</td><td>A label line is missing, repeated or uses an unknown theme</td><td>Fix that line in the <code>.labels.txt</code> file and import again</td></tr>
+      <tr><td><code>git push</code> is rejected</td><td>The weekly job committed since your last pull</td><td><code>git pull</code>, then push again</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="decisions">
+  <h2>Design decisions, and the reasons</h2>
+  <div class="scroll"><table class="wrap">
+    <thead><tr><th>Decision</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>A pipeline of small stages, not one script</td><td>Each stage can be run, read and tested alone. When a number looks wrong, you can find which stage produced it.</td></tr>
+      <tr><td>All numbers in one file</td><td>The report, digest and backlog cannot disagree with each other.</td></tr>
+      <tr><td>Themes and rules in text files</td><td>Someone who is not a programmer can read exactly how reviews are categorised, and change it.</td></tr>
+      <tr><td>A language model labels; code checks</td><td>Reading short, mixed-language reviews needs a model. Strict importing means a model's mistake in format can never reach the data.</td></tr>
+      <tr><td>Each review labelled once and cached</td><td>Weekly runs are fast and cheap, and old labels do not shift under you.</td></tr>
+      <tr><td>No confidence score on labels</td><td>A model's own confidence is not reliable. Agreement with a second labelling is a real measurement.</td></tr>
+      <tr><td>New themes appear automatically at five reviews</td><td>A new problem should not wait for someone to notice it, but one odd review should not become a category.</td></tr>
+      <tr><td>The run never stops for a missing network or key</td><td>A recurring report that fails whenever Google is slow is not a recurring report.</td></tr>
+      <tr><td>Times in UTC, fixed line endings</td><td>The same data must come out whether it runs on a laptop or on GitHub. The first weekly run exposed both problems.</td></tr>
+      <tr><td>Identifying details removed, names never stored</td><td>The reviews are public, but this project republishes them.</td></tr>
+      <tr><td>The report states its own limits</td><td>A reader can only act on findings they know how far to trust.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="words">
+  <h2>Words used</h2>
+  <div class="scroll"><table class="wrap">
+    <thead><tr><th>Word</th><th>Meaning here</th></tr></thead>
+    <tbody>
+      <tr><td>Rating</td><td>A star score from one to five. Most have no text.</td></tr>
+      <tr><td>Review</td><td>A rating that came with written text.</td></tr>
+      <tr><td>Low-star</td><td>One or two stars.</td></tr>
+      <tr><td>Listing</td><td>The app's page in one country's Play Store. Each country shows its own rating.</td></tr>
+      <tr><td>Theme</td><td>What a review is complaining about, such as &ldquo;login OTP never arrives&rdquo;.</td></tr>
+      <tr><td>Owner</td><td>Who would have to act to fix a complaint: the app team, operations, or an employer's policy.</td></tr>
+      <tr><td>Backfill</td><td>The first pull, which fetches the whole history.</td></tr>
+      <tr><td>Incremental</td><td>A later pull, which fetches only what is new.</td></tr>
+      <tr><td>Snapshot</td><td>A saved copy of what the store page said at one moment.</td></tr>
+      <tr><td>Cache</td><td>Saved results that are reused instead of being worked out again. Here, the labels.</td></tr>
+      <tr><td>Check set</td><td>A sample labelled a second time, used to measure how reliable the labels are.</td></tr>
+      <tr><td>Skill</td><td>A set of written instructions Claude Code follows for a particular task.</td></tr>
+      <tr><td>GitHub Action</td><td>A job GitHub runs on its own servers, on a schedule or on demand.</td></tr>
+      <tr><td>GitHub Pages</td><td>GitHub's free hosting, which serves the <code>docs</code> folder as a website.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>
+  Part of the <a href="https://github.com/MalayShikharSoni/FDE_CaseStudy">MoveInSync Play Store ratings</a> project. See also <a href="index.html">the report</a>.
+</footer>
+</div>
+</body>
+</html>

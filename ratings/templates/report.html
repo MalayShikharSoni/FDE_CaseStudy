@@ -343,7 +343,7 @@
 
 <section id="monitor">
   <h2>&ldquo;How are our Play Store ratings?&rdquo;, answered every week</h2>
-  <p>This page is the output of a pipeline, not a one-off analysis. One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="{{ digest_href }}">weekly digest</a> and the <a href="backlog.csv">backlog</a>.</p>
+  <p>This page is the output of a pipeline, not a one-off analysis (<a href="workflow.html">how it works, stage by stage</a>). One command pulls new reviews, checks them, computes every number above and rebuilds the page, the <a href="{{ digest_href }}">weekly digest</a> and the <a href="backlog.csv">backlog</a>.</p>
   <ul class="plain">
     <li><strong>Weekly:</strong> a scheduled GitHub Action runs the pipeline and commits the results.</li>
     <li><strong>On demand:</strong> in Claude Code, asking &ldquo;How are our Play Store ratings?&rdquo; runs it, labels any new reviews and answers from the digest.</li>
@@ -442,6 +442,7 @@
 <footer>
   Generated {{ m.generated_at }} from data to {{ m.window.to }}.
   {% if cfg.repo_url %}Code and data: <a href="{{ cfg.repo_url }}">{{ cfg.repo_url }}</a>. {% endif %}
+  <a href="workflow.html">How the pipeline works</a>.
   Files: <a href="{{ digest_href }}">weekly digest</a>, <a href="backlog.csv">backlog</a>, <a href="data/metrics.json">every number on this page</a>.
 </footer>
 </div>
