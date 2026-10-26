@@ -285,3 +285,30 @@
 [2026-10-19 09:13:50]   all/hi: no reviews returned (none in this language, or blocked)
 [2026-10-19 09:13:50]   all/hi: done, 0 new reviews in 1 pages
 [2026-10-19 09:13:50]   field.moveinsync.ets: 0 new, 8 total
+[2026-10-26 09:16:11] === com.moveinsync.ets ===
+[2026-10-26 09:16:11]   Play page: score=4.641 ratings=115412 reviews=23706 histogram=[7384, 860, 1181, 6979, 99003] version=12.20.0
+[2026-10-26 09:16:12]   incremental: re-reading from 2026-10-03
+[2026-10-26 09:16:12]   all/en: done, 42 new reviews in 1 pages
+[2026-10-26 09:16:12]   all/hi: done, 0 new reviews in 1 pages
+[2026-10-26 09:16:12]   com.moveinsync.ets: 42 new, 24408 total
+[2026-10-26 09:16:25]   by country: in 4.64, us 4.32, ph 4.52, za 4.72, gb 4.49, lk 4.65, sg 4.65
+[2026-10-26 09:16:25] === com.moveinsync.driver.lite ===
+[2026-10-26 09:16:25]   Play page: score=4.245 ratings=712 reviews=112 histogram=[90, 20, 27, 55, 515] version=Varies with device
+[2026-10-26 09:16:25]   incremental: re-reading from 2026-09-24
+[2026-10-26 09:16:25]   all/en: done, 1 new reviews in 1 pages
+[2026-10-26 09:16:25]   all/hi: done, 0 new reviews in 1 pages
+[2026-10-26 09:16:25]   com.moveinsync.driver.lite: 1 new, 112 total
+[2026-10-26 09:16:25] === com.moveinsync.driver.dco ===
+[2026-10-26 09:16:25]   Play page: score=3.679 ratings=56 reviews=8 histogram=[15, 1, 3, 5, 32] version=Varies with device
+[2026-10-26 09:16:25]   incremental: re-reading from 2026-08-07
+[2026-10-26 09:16:26]   all/en: done, 1 new reviews in 1 pages
+[2026-10-26 09:16:36]   all/hi: no reviews returned (none in this language, or blocked)
+[2026-10-26 09:16:36]   all/hi: done, 0 new reviews in 1 pages
+[2026-10-26 09:16:36]   com.moveinsync.driver.dco: 1 new, 8 total
+[2026-10-26 09:16:36] === field.moveinsync.ets ===
+[2026-10-26 09:16:36]   Play page: score=4.083 ratings=24 reviews=8 histogram=[5, 0, 1, 0, 18] version=1.0.93
+[2026-10-26 09:16:36]   incremental: re-reading from 2026-09-22
+[2026-10-26 09:16:36]   all/en: done, 0 new reviews in 1 pages
+[2026-10-26 09:16:46]   all/hi: no reviews returned (none in this language, or blocked)
+[2026-10-26 09:16:46]   all/hi: done, 0 new reviews in 1 pages
+[2026-10-26 09:16:46]   field.moveinsync.ets: 0 new, 8 total
