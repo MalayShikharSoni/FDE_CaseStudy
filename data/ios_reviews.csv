@@ -1,4 +1,12 @@
 ﻿reviewId,score,at,title,content,appVersion
+14736240810,1,2026-10-31 21:07:04,Arrogant and unprofessional,Moveinsync vendor at deutsche india is arrogant and unprofessional towards employees,10.51.0
+14729610018,1,2026-10-30 06:23:33,Never Connect call to transport team,Whenever try to contact transport team the call automatically drop,10.51.0
+14727996282,1,2026-10-29 19:39:45,Help desk is rude response,When we call for help we will get a very bad and rude response,10.51.0
+14719944345,1,2026-10-27 18:47:00,Poor UX and Keeps crashing,"Click a button and the app will crash. It doesn’t hold its last state, if there is no network you can’t get the OTP as app can’t refresh.",10.51.0
+14719662180,1,2026-10-27 16:59:53,Cab,Stupid app shows nothing,10.51.0
+14718142440,1,2026-10-27 08:30:48,Worst service to use,The cab drivers dont even know how to check the exact location and how many people are there in cab wont be there all the wrong information will be updated,10.51.0
+14717208420,1,2026-10-27 03:57:04,Unable to receive OTP through SMS,I am struggling more than a hour and not receiving SMS,10.51.0
+14716100518,3,2026-10-26 19:53:53,Crashing in iOS,"1. After every payment I make in a booking, app will crash and throw error that it is internet error. I have to close the app and then re-login to it. Annoyance to the core. 2. I have already given permission for the app to access my location always. But still it asks  every time whether it can use location as if it is first time.",10.51.0
 14700339939,3,2026-10-23 01:24:08,Emergency,"Add an option to deboard the trip for employees in emergency situations lot of employees faced the situation. After entering pickup OTP  if they had any emergency they are unable to deboard from cab ,so add an option for that . It’s helpful for any kind of emergency.",10.51.0
 14694804339,1,2026-10-21 14:26:43,I hate IGT Solutions Transport,IGT Solutions Transport sucks big time.,10.50.2
 14692516979,5,2026-10-21 02:21:03,Cab is good and drive behaviour and cab condition everything was good,5,10.50.2
@@ -84,7 +92,7 @@
 14170196335,1,2026-06-11 07:52:57,Not at all opening,"App is not at all opening after installation , tried re installation still not working",10.43.2
 14168719364,1,2026-06-10 22:29:15,Rollback to 10.42.4 version,All versions are crashing on iOS 16 including the latest v 10.43.2  Plz rollback to 10.42.4 or check the differences in the coding.   There are many of us still using iOS 16 because apple is no longer releasing updates for older models.   I’m using iOS 16.7.16 (20H392)  The app immediately crashes upon opening.   No screenshot available to share as nothing comes up.   Issue persists since 1 month now.   Plz help!,10.43.2
 14165532919,1,2026-06-10 03:34:47,Horrible routing,Only purpose of this app is to make commute more hectic for people who live farther,10.43.2
-14162951548,1,2026-06-09 10:11:54,Not user friendly,Waste app,10.43.2
+14162951548,5,2026-06-09 10:11:54,Not user friendly,Waste app,10.43.2
 14162840879,1,2026-06-09 09:37:45,iOS 16 Support Required,"Hi Team, please reinstate iOS 16 support urgently. I am unable to book my office cab today",10.43.2
 14162581401,2,2026-06-09 08:19:52,Iphone 13 many buttons are cut off. Always asking for Terms of use and policy acceptance. annoying,Iphone 13 many buttons are cut off. Always asking for Terms of use and policy acceptance. annoying,10.43.2
 14161704555,5,2026-06-09 03:40:43,Review,Good,10.43.1
@@ -175,7 +183,7 @@
 13728792544,1,2026-02-08 16:59:23,App is crashing,Worst app ever used,10.36.0
 13727443410,5,2026-02-08 08:48:56,Feedback,Very good service,10.36.0
 13724054537,1,2026-02-07 10:52:52,Frequent Crashes During Cab Tracking,"The Movinsync app crashes almost every time I try to locate the cab. It becomes very frustrating, especially when you’re in a hurry. The app needs serious stability improvements, as the cab tracking feature is not reliable at all.",10.36.0
-13711508058,1,2026-02-04 03:08:16,App crashing frequently,"Hi, you need to fix this issue as every time I open the app to track the realtime location of my cab, it just crashes, forcing me to start it all over again.",10.36.0
+13711508058,5,2026-02-04 03:08:16,App crashing frequently,"Hi, you need to fix this issue as every time I open the app to track the realtime location of my cab, it just crashes, forcing me to start it all over again.",10.36.0
 13711204887,1,2026-02-04 00:50:20,App crashing,App is crashing intermittently during cab tracking and it’s still not resolved for past two months!,10.36.0
 13710533198,1,2026-02-03 19:24:36,Don’t force microphone access,Don’t force microphone access,10.36.0
 13708050811,1,2026-02-03 04:15:22,App issue,App is getting crashed within a few secs of opening. Specially this is happening in IOS,10.36.0
