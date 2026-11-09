@@ -1,44 +1,44 @@
 {
- "generated_at": "2026-11-02 11:36:00 UTC",
+ "generated_at": "2026-11-09 11:59:11 UTC",
  "app": {
   "id": "com.moveinsync.ets",
   "name": "MoveInSync (employee app)",
-  "version": "12.20.0",
-  "snapshot_at": "2026-11-02 11:35:16"
+  "version": "12.21.0",
+  "snapshot_at": "2026-11-09 11:58:23"
  },
  "window": {
-  "from": "2025-11-01",
-  "to": "2026-11-01",
+  "from": "2025-11-07",
+  "to": "2026-11-07",
   "days": 365
  },
  "ratings": {
-  "ratings": 115723,
-  "avg": 4.64,
+  "ratings": 116000,
+  "avg": 4.644,
   "pct_by_star": [
    6.4,
-   0.8,
+   0.7,
    1.0,
-   6.0,
-   85.8
+   5.9,
+   86.0
   ],
-  "low_ratings": 8305,
-  "low_avg": 1.106,
-  "avg_without_1_star": 4.889,
-  "score": 4.64,
+  "low_ratings": 8254,
+  "low_avg": 1.104,
+  "avg_without_1_star": 4.892,
+  "score": 4.643,
   "histogram": [
-   7424,
-   881,
-   1201,
-   6937,
-   99280
+   7395,
+   859,
+   1159,
+   6877,
+   99710
   ],
-  "written_reviews": 23753
+  "written_reviews": 23799
  },
  "ios": {
-  "score": 4.749,
-  "ratings": 61209,
-  "version": "10.51.0",
-  "gap": 0.109
+  "score": 4.75,
+  "ratings": 61566,
+  "version": "10.52.0",
+  "gap": 0.106
  },
  "countries": [
   {
@@ -47,7 +47,7 @@
    "pct_1": 11.9,
    "pct_low": 12.7,
    "country_reviews": 100,
-   "pulled_at": "2026-11-02 11:35:18"
+   "pulled_at": "2026-11-09 11:58:26"
   },
   {
    "country": "gb",
@@ -55,31 +55,23 @@
    "pct_1": 10.3,
    "pct_low": 10.3,
    "country_reviews": 26,
-   "pulled_at": "2026-11-02 11:35:23"
+   "pulled_at": "2026-11-09 11:58:31"
   },
   {
    "country": "ph",
-   "score": 4.55,
-   "pct_1": 8.2,
-   "pct_low": 10.7,
-   "country_reviews": 283,
-   "pulled_at": "2026-11-02 11:35:20"
+   "score": 4.56,
+   "pct_1": 8.1,
+   "pct_low": 10.5,
+   "country_reviews": 284,
+   "pulled_at": "2026-11-09 11:58:28"
   },
   {
    "country": "in",
    "score": 4.64,
    "pct_1": 6.4,
-   "pct_low": 7.2,
-   "country_reviews": 23753,
-   "pulled_at": "2026-11-02 11:35:17"
-  },
-  {
-   "country": "lk",
-   "score": 4.65,
-   "pct_1": 3.8,
-   "pct_low": 3.8,
-   "country_reviews": 48,
-   "pulled_at": "2026-11-02 11:35:24"
+   "pct_low": 7.1,
+   "country_reviews": 23799,
+   "pulled_at": "2026-11-09 11:58:24"
   },
   {
    "country": "sg",
@@ -87,15 +79,23 @@
    "pct_1": 6.6,
    "pct_low": 6.6,
    "country_reviews": 13,
-   "pulled_at": "2026-11-02 11:35:26"
+   "pulled_at": "2026-11-09 11:58:34"
+  },
+  {
+   "country": "lk",
+   "score": 4.66,
+   "pct_1": 3.8,
+   "pct_low": 3.8,
+   "country_reviews": 48,
+   "pulled_at": "2026-11-09 11:58:32"
   },
   {
    "country": "za",
-   "score": 4.76,
-   "pct_1": 3.9,
-   "pct_low": 4.9,
+   "score": 4.79,
+   "pct_1": 2.9,
+   "pct_low": 3.9,
    "country_reviews": 185,
-   "pulled_at": "2026-11-02 11:35:22"
+   "pulled_at": "2026-11-09 11:58:29"
   }
  ],
  "other_apps": [
@@ -103,15 +103,15 @@
    "id": "com.moveinsync.driver.lite",
    "name": "MoveInSync Partner Lite (driver app)",
    "role": "driver",
-   "score": 4.245098,
-   "ratings": 712
+   "score": 4.28,
+   "ratings": 717
   },
   {
    "id": "com.moveinsync.driver.dco",
    "name": "MoveInSync Driver Partner",
    "role": "driver",
-   "score": 3.724138,
-   "ratings": 58
+   "score": 3.7666667,
+   "ratings": 60
   },
   {
    "id": "field.moveinsync.ets",
@@ -122,34 +122,34 @@
   }
  ],
  "reviews": {
-  "pulled": 24456,
+  "pulled": 24507,
   "lifetime": {
-   "n": 24456,
+   "n": 24507,
    "avg": 3.61,
    "pct_1": 26.1,
    "pct_low": 30.9,
    "pct_5": 53.2
   },
   "last_365": {
-   "n": 2772,
+   "n": 2785,
    "avg": 3.84,
-   "pct_1": 24.1,
-   "pct_low": 27.1,
-   "pct_5": 64.6
+   "pct_1": 23.9,
+   "pct_low": 27.0,
+   "pct_5": 64.8
   },
   "last_90": {
-   "n": 695,
-   "avg": 3.8,
-   "pct_1": 25.8,
-   "pct_low": 28.5,
-   "pct_5": 65.5
+   "n": 694,
+   "avg": 3.83,
+   "pct_1": 25.2,
+   "pct_low": 28.1,
+   "pct_5": 66.1
   },
   "last_30": {
-   "n": 217,
-   "avg": 3.86,
-   "pct_1": 24.4,
-   "pct_low": 27.6,
-   "pct_5": 67.3
+   "n": 213,
+   "avg": 3.87,
+   "pct_1": 23.5,
+   "pct_low": 27.2,
+   "pct_5": 66.7
   },
   "monthly": [
    {
@@ -338,27 +338,27 @@
    },
    {
     "month": "2026-11",
-    "n": 2,
-    "avg": 3.0,
-    "pct_1": 50.0,
-    "pct_low": 50.0,
-    "pct_5": 50.0
+    "n": 53,
+    "avg": 3.79,
+    "pct_1": 24.5,
+    "pct_low": 28.3,
+    "pct_5": 62.3
    }
   ]
  },
  "versions": [
   {
    "version": "12.6",
-   "first_seen": "2025-11-01",
-   "n": 121,
-   "avg": 3.72,
-   "pct_1": 25.6,
-   "pct_low": 28.9,
-   "pct_5": 57.9,
+   "first_seen": "2025-11-07",
+   "n": 88,
+   "avg": 3.9,
+   "pct_1": 21.6,
+   "pct_low": 23.9,
+   "pct_5": 62.5,
    "worse": false,
    "top_themes": [
-    "address_location",
-    "booking_rules"
+    "booking_rules",
+    "booking_flow"
    ]
   },
   {
@@ -713,11 +713,11 @@
   {
    "version": "12.19.0",
    "first_seen": "2026-09-21",
-   "n": 122,
-   "avg": 3.77,
-   "pct_1": 27.9,
-   "pct_low": 30.3,
-   "pct_5": 65.6,
+   "n": 123,
+   "avg": 3.78,
+   "pct_1": 27.6,
+   "pct_low": 30.1,
+   "pct_5": 65.9,
    "worse": false,
    "top_themes": [
     "app_wont_open",
@@ -727,16 +727,27 @@
   {
    "version": "12.20.0",
    "first_seen": "2026-10-06",
-   "n": 99,
-   "avg": 3.86,
-   "pct_1": 23.2,
-   "pct_low": 27.3,
-   "pct_5": 66.7,
+   "n": 107,
+   "avg": 3.9,
+   "pct_1": 22.4,
+   "pct_low": 26.2,
+   "pct_5": 67.3,
    "worse": false,
    "top_themes": [
     "forced_prompts",
     "tracking_eta"
    ]
+  },
+  {
+   "version": "12.21.0",
+   "first_seen": "2026-10-23",
+   "n": 42,
+   "avg": 3.86,
+   "pct_1": 21.4,
+   "pct_low": 28.6,
+   "pct_5": 64.3,
+   "worse": false,
+   "top_themes": []
   }
  ],
  "replies": {
@@ -744,8 +755,8 @@
    {
     "score": 1,
     "n": 667,
-    "replied": 20,
-    "pct": 3.0
+    "replied": 19,
+    "pct": 2.8
    },
    {
     "score": 2,
@@ -755,41 +766,41 @@
    },
    {
     "score": 3,
-    "n": 66,
+    "n": 67,
     "replied": 1,
     "pct": 1.5
    },
    {
     "score": 4,
-    "n": 164,
+    "n": 163,
     "replied": 3,
     "pct": 1.8
    },
    {
     "score": 5,
-    "n": 1791,
-    "replied": 35,
-    "pct": 2.0
+    "n": 1804,
+    "replied": 34,
+    "pct": 1.9
    }
   ],
-  "replies": 63,
+  "replies": 61,
   "low_n": 751,
-  "low_replied": 24,
-  "low_pct": 3.2,
-  "to_positive_pct": 60.3,
+  "low_replied": 23,
+  "low_pct": 3.1,
+  "to_positive_pct": 60.7,
   "median_lag_hours": 43.5
  },
  "labelling": {
-  "in_scope": 1003,
-  "labelled": 953,
-  "pending": 50,
+  "in_scope": 1000,
+  "labelled": 934,
+  "pending": 66,
   "by": {
-   "claude-code": 953
+   "claude-code": 934
   },
-  "play_low": 715,
-  "ios_low": 156,
-  "specific": 517,
-  "specific_pct": 72.3
+  "play_low": 701,
+  "ios_low": 153,
+  "specific": 505,
+  "specific_pct": 72.0
  },
  "themes": [
   {
@@ -797,19 +808,19 @@
    "stage": "other",
    "definition": "Negative with no usable detail.",
    "provisional": false,
-   "n": 192,
-   "mentions": 192,
-   "share_pct": 26.9,
+   "n": 190,
+   "mentions": 190,
+   "share_pct": 27.1,
    "share_of_specific_pct": null,
    "owners": {
-    "unclear": 182,
+    "unclear": 180,
     "ops": 10
    },
    "after_update": 5,
    "safety": 1,
-   "recent_share_pct": 22.8,
-   "earlier_share_pct": 28.0,
-   "ios_share_pct": 10.3,
+   "recent_share_pct": 22.1,
+   "earlier_share_pct": 28.4,
+   "ios_share_pct": 10.5,
    "rating_lift": 0.056,
    "quotes": [
     {
@@ -840,18 +851,18 @@
    "stage": "access",
    "definition": "Cannot log in or register because the OTP never arrives (SMS, email or WhatsApp), or login is rejected.",
    "provisional": false,
-   "n": 53,
-   "mentions": 57,
+   "n": 52,
+   "mentions": 56,
    "share_pct": 7.4,
    "share_of_specific_pct": 10.3,
    "owners": {
-    "app": 53
+    "app": 52
    },
    "after_update": 0,
    "safety": 0,
-   "recent_share_pct": 6.8,
+   "recent_share_pct": 6.9,
    "earlier_share_pct": 7.6,
-   "ios_share_pct": 12.2,
+   "ios_share_pct": 12.4,
    "rating_lift": 0.015,
    "quotes": [
     {
@@ -884,16 +895,16 @@
    "provisional": false,
    "n": 52,
    "mentions": 55,
-   "share_pct": 7.3,
-   "share_of_specific_pct": 10.1,
+   "share_pct": 7.4,
+   "share_of_specific_pct": 10.3,
    "owners": {
     "app": 52
    },
    "after_update": 2,
    "safety": 0,
-   "recent_share_pct": 13.6,
-   "earlier_share_pct": 5.4,
-   "ios_share_pct": 32.7,
+   "recent_share_pct": 14.5,
+   "earlier_share_pct": 5.6,
+   "ios_share_pct": 33.3,
    "rating_lift": 0.015,
    "quotes": [
     {
@@ -920,23 +931,66 @@
    ]
   },
   {
+   "id": "support_unreachable",
+   "stage": "support",
+   "definition": "Helpdesk cannot be reached, cuts the call, or complaints and bug reports get no response.",
+   "provisional": false,
+   "n": 43,
+   "mentions": 67,
+   "share_pct": 6.1,
+   "share_of_specific_pct": 8.5,
+   "owners": {
+    "ops": 29,
+    "app": 14
+   },
+   "after_update": 0,
+   "safety": 3,
+   "recent_share_pct": 6.9,
+   "earlier_share_pct": 5.9,
+   "ios_share_pct": 4.6,
+   "rating_lift": 0.013,
+   "quotes": [
+    {
+     "reviewId": "e074d3ae-507e-40ba-9620-d2f1ea56878a",
+     "date": "2026-03-17",
+     "score": 1,
+     "version": "12.10.2",
+     "text": "Worst Transport App ever, none of the teams have coordination, Routing Team is pethic, tracking team and Helpdesk will not help at all, instead they will blame each other teams. No point in writing email or raising complaint, they behave the same."
+    },
+    {
+     "reviewId": "e30ca486-7919-4d63-8528-4527738f0469",
+     "date": "2026-07-16",
+     "score": 2,
+     "version": "12.14.1",
+     "text": "Not worth it - worst ever employee complaints are ignoring by transportation & Cab owners worst facilities."
+    },
+    {
+     "reviewId": "47c8b1a4-8e38-485f-a218-bf694c976652",
+     "date": "2026-04-20",
+     "score": 1,
+     "version": "12.11.2",
+     "text": "Helpdesk is completely useless, they cut the call without even resolving the issue"
+    }
+   ]
+  },
+  {
    "id": "trip_details",
    "stage": "trip_info",
    "definition": "Pickup time, cab number, driver contact or co-passenger details are missing, wrong or keep changing in the app.",
    "provisional": false,
-   "n": 43,
-   "mentions": 52,
-   "share_pct": 6.0,
-   "share_of_specific_pct": 8.3,
+   "n": 40,
+   "mentions": 49,
+   "share_pct": 5.7,
+   "share_of_specific_pct": 7.9,
    "owners": {
-    "app": 42,
+    "app": 39,
     "policy": 1
    },
    "after_update": 3,
    "safety": 1,
-   "recent_share_pct": 2.5,
-   "earlier_share_pct": 7.1,
-   "ios_share_pct": 0.6,
+   "recent_share_pct": 2.1,
+   "earlier_share_pct": 6.7,
+   "ios_share_pct": 0.7,
    "rating_lift": 0.012,
    "quotes": [
     {
@@ -963,66 +1017,23 @@
    ]
   },
   {
-   "id": "support_unreachable",
-   "stage": "support",
-   "definition": "Helpdesk cannot be reached, cuts the call, or complaints and bug reports get no response.",
-   "provisional": false,
-   "n": 43,
-   "mentions": 68,
-   "share_pct": 6.0,
-   "share_of_specific_pct": 8.3,
-   "owners": {
-    "ops": 29,
-    "app": 14
-   },
-   "after_update": 0,
-   "safety": 3,
-   "recent_share_pct": 6.8,
-   "earlier_share_pct": 5.8,
-   "ios_share_pct": 4.5,
-   "rating_lift": 0.012,
-   "quotes": [
-    {
-     "reviewId": "e074d3ae-507e-40ba-9620-d2f1ea56878a",
-     "date": "2026-03-17",
-     "score": 1,
-     "version": "12.10.2",
-     "text": "Worst Transport App ever, none of the teams have coordination, Routing Team is pethic, tracking team and Helpdesk will not help at all, instead they will blame each other teams. No point in writing email or raising complaint, they behave the same."
-    },
-    {
-     "reviewId": "e30ca486-7919-4d63-8528-4527738f0469",
-     "date": "2026-07-16",
-     "score": 2,
-     "version": "12.14.1",
-     "text": "Not worth it - worst ever employee complaints are ignoring by transportation & Cab owners worst facilities."
-    },
-    {
-     "reviewId": "47c8b1a4-8e38-485f-a218-bf694c976652",
-     "date": "2026-04-20",
-     "score": 1,
-     "version": "12.11.2",
-     "text": "Helpdesk is completely useless, they cut the call without even resolving the issue"
-    }
-   ]
-  },
-  {
    "id": "tracking_eta",
    "stage": "tracking",
    "definition": "Live vehicle location is stale or wrong, the ETA is inaccurate, or tracking will not load.",
    "provisional": false,
-   "n": 41,
-   "mentions": 49,
-   "share_pct": 5.7,
-   "share_of_specific_pct": 7.9,
+   "n": 39,
+   "mentions": 47,
+   "share_pct": 5.6,
+   "share_of_specific_pct": 7.7,
    "owners": {
-    "app": 41
+    "app": 39
    },
    "after_update": 2,
    "safety": 0,
-   "recent_share_pct": 6.8,
-   "earlier_share_pct": 5.4,
-   "ios_share_pct": 4.5,
-   "rating_lift": 0.012,
+   "recent_share_pct": 6.9,
+   "earlier_share_pct": 5.2,
+   "ios_share_pct": 4.6,
+   "rating_lift": 0.011,
    "quotes": [
     {
      "reviewId": "6c2c9546-09f9-460d-a61a-0fbe76078cd9",
@@ -1054,16 +1065,16 @@
    "provisional": false,
    "n": 39,
    "mentions": 42,
-   "share_pct": 5.5,
-   "share_of_specific_pct": 7.5,
+   "share_pct": 5.6,
+   "share_of_specific_pct": 7.7,
    "owners": {
     "app": 39
    },
    "after_update": 2,
    "safety": 1,
-   "recent_share_pct": 4.9,
+   "recent_share_pct": 5.5,
    "earlier_share_pct": 5.6,
-   "ios_share_pct": 5.8,
+   "ios_share_pct": 5.9,
    "rating_lift": 0.011,
    "quotes": [
     {
@@ -1094,18 +1105,18 @@
    "stage": "ride",
    "definition": "Route is too long, passengers are clubbed badly, pickup order makes no sense, or pickup is set far too early.",
    "provisional": false,
-   "n": 34,
-   "mentions": 39,
-   "share_pct": 4.8,
-   "share_of_specific_pct": 6.6,
+   "n": 33,
+   "mentions": 38,
+   "share_pct": 4.7,
+   "share_of_specific_pct": 6.5,
    "owners": {
-    "ops": 34
+    "ops": 33
    },
    "after_update": 0,
    "safety": 1,
-   "recent_share_pct": 8.0,
+   "recent_share_pct": 8.3,
    "earlier_share_pct": 3.8,
-   "ios_share_pct": 4.5,
+   "ios_share_pct": 3.9,
    "rating_lift": 0.01,
    "quotes": [
     {
@@ -1138,16 +1149,16 @@
    "provisional": false,
    "n": 31,
    "mentions": 39,
-   "share_pct": 4.3,
-   "share_of_specific_pct": 6.0,
+   "share_pct": 4.4,
+   "share_of_specific_pct": 6.1,
    "owners": {
     "app": 31
    },
    "after_update": 3,
    "safety": 0,
-   "recent_share_pct": 3.7,
-   "earlier_share_pct": 4.5,
-   "ios_share_pct": 3.2,
+   "recent_share_pct": 3.4,
+   "earlier_share_pct": 4.7,
+   "ios_share_pct": 3.3,
    "rating_lift": 0.009,
    "quotes": [
     {
@@ -1178,18 +1189,18 @@
    "stage": "access",
    "definition": "App is slow, hangs, takes long to load, or uses too much battery or storage. It opens, but badly.",
    "provisional": false,
-   "n": 29,
-   "mentions": 37,
-   "share_pct": 4.1,
-   "share_of_specific_pct": 5.6,
+   "n": 28,
+   "mentions": 36,
+   "share_pct": 4.0,
+   "share_of_specific_pct": 5.5,
    "owners": {
-    "app": 29
+    "app": 28
    },
    "after_update": 2,
    "safety": 0,
-   "recent_share_pct": 3.1,
-   "earlier_share_pct": 4.3,
-   "ios_share_pct": 5.1,
+   "recent_share_pct": 3.4,
+   "earlier_share_pct": 4.1,
+   "ios_share_pct": 4.6,
    "rating_lift": 0.008,
    "quotes": [
     {
@@ -1223,14 +1234,14 @@
    "n": 24,
    "mentions": 33,
    "share_pct": 3.4,
-   "share_of_specific_pct": 4.6,
+   "share_of_specific_pct": 4.8,
    "owners": {
     "ops": 24
    },
    "after_update": 0,
    "safety": 2,
-   "recent_share_pct": 3.1,
-   "earlier_share_pct": 3.4,
+   "recent_share_pct": 2.8,
+   "earlier_share_pct": 3.6,
    "ios_share_pct": 2.6,
    "rating_lift": 0.007,
    "quotes": [
@@ -1265,15 +1276,15 @@
    "n": 24,
    "mentions": 34,
    "share_pct": 3.4,
-   "share_of_specific_pct": 4.6,
+   "share_of_specific_pct": 4.8,
    "owners": {
     "app": 24
    },
    "after_update": 5,
    "safety": 0,
-   "recent_share_pct": 4.3,
-   "earlier_share_pct": 3.1,
-   "ios_share_pct": 1.9,
+   "recent_share_pct": 3.4,
+   "earlier_share_pct": 3.4,
+   "ios_share_pct": 2.0,
    "rating_lift": 0.007,
    "quotes": [
     {
@@ -1304,19 +1315,19 @@
    "stage": "access",
    "definition": "Logged out repeatedly, asked to log in every day, or shown \"session expired\".",
    "provisional": false,
-   "n": 23,
-   "mentions": 29,
-   "share_pct": 3.2,
+   "n": 22,
+   "mentions": 28,
+   "share_pct": 3.1,
    "share_of_specific_pct": 4.4,
    "owners": {
-    "app": 23
+    "app": 22
    },
    "after_update": 1,
    "safety": 1,
-   "recent_share_pct": 0.6,
-   "earlier_share_pct": 4.0,
+   "recent_share_pct": 0.7,
+   "earlier_share_pct": 3.8,
    "ios_share_pct": 0.0,
-   "rating_lift": 0.007,
+   "rating_lift": 0.006,
    "quotes": [
     {
      "reviewId": "6855f79d-f54e-4ce7-9a7f-213677cec9d1",
@@ -1342,63 +1353,20 @@
    ]
   },
   {
-   "id": "address_location",
-   "stage": "booking",
-   "definition": "Cannot change the home or pickup address, or the app places the address at the wrong spot or a pickup point far from home.",
-   "provisional": false,
-   "n": 18,
-   "mentions": 20,
-   "share_pct": 2.5,
-   "share_of_specific_pct": 3.5,
-   "owners": {
-    "app": 15,
-    "policy": 3
-   },
-   "after_update": 0,
-   "safety": 0,
-   "recent_share_pct": 1.2,
-   "earlier_share_pct": 2.9,
-   "ios_share_pct": 4.5,
-   "rating_lift": 0.005,
-   "quotes": [
-    {
-     "reviewId": "cabdc55e-7cc9-476b-8798-94fee5d7ff0b",
-     "date": "2026-05-03",
-     "score": 1,
-     "version": "12.12.0",
-     "text": "address change is very awful through app. how can someone browse on phone to map address search feature is also not there"
-    },
-    {
-     "reviewId": "6c48eb66-fb39-4046-a2f5-09f5c78c8694",
-     "date": "2025-11-05",
-     "score": 1,
-     "version": "12.6",
-     "text": "Your service is very poor. Even after confirmation, my new location wasn’t pinned. The driver marked me “no show” while I was at the correct spot. Support staff were rude, laughed, told me to inform my manager, and hung up. Service is too slow — still my location not updated."
-    },
-    {
-     "reviewId": "28444777-0ec6-4902-bb49-81e1af54b32b",
-     "date": "2026-04-16",
-     "score": 1,
-     "version": "12.11.2",
-     "text": "way more downgrade rather than shift can.Chamging an address requires too much effort as u can not recognize where u want to locate"
-    }
-   ]
-  },
-  {
    "id": "booking_rules",
    "stage": "booking",
    "definition": "Unhappy with a booking rule - cut-off time, how far ahead one can book, waitlist handling, cancellation limits.",
    "provisional": false,
    "n": 16,
    "mentions": 18,
-   "share_pct": 2.2,
-   "share_of_specific_pct": 3.1,
+   "share_pct": 2.3,
+   "share_of_specific_pct": 3.2,
    "owners": {
     "policy": 16
    },
    "after_update": 0,
    "safety": 0,
-   "recent_share_pct": 1.2,
+   "recent_share_pct": 1.4,
    "earlier_share_pct": 2.5,
    "ios_share_pct": 1.3,
    "rating_lift": 0.005,
@@ -1427,6 +1395,49 @@
    ]
   },
   {
+   "id": "address_location",
+   "stage": "booking",
+   "definition": "Cannot change the home or pickup address, or the app places the address at the wrong spot or a pickup point far from home.",
+   "provisional": false,
+   "n": 16,
+   "mentions": 18,
+   "share_pct": 2.3,
+   "share_of_specific_pct": 3.2,
+   "owners": {
+    "app": 13,
+    "policy": 3
+   },
+   "after_update": 0,
+   "safety": 0,
+   "recent_share_pct": 0.7,
+   "earlier_share_pct": 2.7,
+   "ios_share_pct": 3.9,
+   "rating_lift": 0.005,
+   "quotes": [
+    {
+     "reviewId": "cabdc55e-7cc9-476b-8798-94fee5d7ff0b",
+     "date": "2026-05-03",
+     "score": 1,
+     "version": "12.12.0",
+     "text": "address change is very awful through app. how can someone browse on phone to map address search feature is also not there"
+    },
+    {
+     "reviewId": "28444777-0ec6-4902-bb49-81e1af54b32b",
+     "date": "2026-04-16",
+     "score": 1,
+     "version": "12.11.2",
+     "text": "way more downgrade rather than shift can.Chamging an address requires too much effort as u can not recognize where u want to locate"
+    },
+    {
+     "reviewId": "59b2d93c-4120-4fa4-acd3-8576f5d770d7",
+     "date": "2026-02-25",
+     "score": 1,
+     "version": "",
+     "text": "Useless app showing wrong locations to both Drivers and Employees. This app doesn't even deserves that 1 star, -5 totally."
+    }
+   ]
+  },
+  {
    "id": "driver_behaviour",
    "stage": "ride",
    "definition": "Driver is rude, will not wait or call, drives unsafely, or the vehicle is in poor condition.",
@@ -1434,13 +1445,13 @@
    "n": 14,
    "mentions": 18,
    "share_pct": 2.0,
-   "share_of_specific_pct": 2.7,
+   "share_of_specific_pct": 2.8,
    "owners": {
     "ops": 14
    },
    "after_update": 0,
    "safety": 6,
-   "recent_share_pct": 4.3,
+   "recent_share_pct": 4.8,
    "earlier_share_pct": 1.3,
    "ios_share_pct": 1.3,
    "rating_lift": 0.004,
@@ -1473,18 +1484,18 @@
    "stage": "no_show",
    "definition": "Marked as a no-show unfairly or without warning, or penalised for one.",
    "provisional": false,
-   "n": 12,
-   "mentions": 18,
-   "share_pct": 1.7,
-   "share_of_specific_pct": 2.3,
+   "n": 11,
+   "mentions": 16,
+   "share_pct": 1.6,
+   "share_of_specific_pct": 2.2,
    "owners": {
     "app": 3,
-    "ops": 8,
+    "ops": 7,
     "policy": 1
    },
    "after_update": 0,
    "safety": 1,
-   "recent_share_pct": 1.9,
+   "recent_share_pct": 1.4,
    "earlier_share_pct": 1.6,
    "ios_share_pct": 0.0,
    "rating_lift": 0.003,
@@ -1519,16 +1530,16 @@
    "provisional": false,
    "n": 11,
    "mentions": 18,
-   "share_pct": 1.5,
-   "share_of_specific_pct": 2.1,
+   "share_pct": 1.6,
+   "share_of_specific_pct": 2.2,
    "owners": {
     "app": 11
    },
    "after_update": 0,
    "safety": 0,
-   "recent_share_pct": 1.2,
+   "recent_share_pct": 1.4,
    "earlier_share_pct": 1.6,
-   "ios_share_pct": 1.9,
+   "ios_share_pct": 2.0,
    "rating_lift": 0.003,
    "quotes": [
     {
@@ -1561,14 +1572,14 @@
    "provisional": false,
    "n": 6,
    "mentions": 11,
-   "share_pct": 0.8,
+   "share_pct": 0.9,
    "share_of_specific_pct": 1.2,
    "owners": {
     "app": 6
    },
    "after_update": 2,
    "safety": 0,
-   "recent_share_pct": 1.2,
+   "recent_share_pct": 1.4,
    "earlier_share_pct": 0.7,
    "ios_share_pct": 2.6,
    "rating_lift": 0.002,
@@ -1603,14 +1614,14 @@
    "provisional": false,
    "n": 6,
    "mentions": 6,
-   "share_pct": 0.8,
+   "share_pct": 0.9,
    "share_of_specific_pct": null,
    "owners": {
     "unclear": 6
    },
    "after_update": 0,
    "safety": 0,
-   "recent_share_pct": 1.9,
+   "recent_share_pct": 2.1,
    "earlier_share_pct": 0.5,
    "ios_share_pct": 0.0,
    "rating_lift": 0.002,
@@ -1632,7 +1643,7 @@
    "safety": 0,
    "recent_share_pct": 0.0,
    "earlier_share_pct": 0.7,
-   "ios_share_pct": 0.6,
+   "ios_share_pct": 0.7,
    "rating_lift": 0.001,
    "quotes": [
     {
@@ -1663,21 +1674,21 @@
   },
   "R2": {
    "n": 52,
-   "share_pct": 7.3,
-   "ios_share_pct": 32.7,
+   "share_pct": 7.4,
+   "ios_share_pct": 33.3,
    "rating_lift": 0.015,
    "patterns": [
     {
      "label": "mention the \"not downloaded / installed from Play Store\" message",
      "n": 9,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 3
     },
     {
      "label": "name a specific phone or Android version that cannot open the app",
      "n": 7,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 6
     }
@@ -1708,35 +1719,35 @@
   },
   "R3": {
    "n": 39,
-   "share_pct": 5.5,
-   "ios_share_pct": 5.8,
+   "share_pct": 5.6,
+   "ios_share_pct": 5.9,
    "rating_lift": 0.011,
    "patterns": [
     {
      "label": "object to a forced or repeated trip rating",
      "n": 12,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 3
     },
     {
      "label": "object to accepting the transport policy or \"I agree\" repeatedly",
      "n": 8,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 1
     },
     {
      "label": "object to notifications, pop-ups or banners",
      "n": 24,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 6
     },
     {
      "label": "object to repeated permission requests",
      "n": 5,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 2
     }
@@ -1774,17 +1785,17 @@
    "quotes": []
   },
   "R5": {
-   "n": 76,
+   "n": 74,
    "share_pct": 10.6,
-   "ios_share_pct": 12.2,
+   "ios_share_pct": 12.4,
    "rating_lift": 0.022,
    "patterns": [
     {
      "label": "mention OTP",
      "n": 51,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
-     "last_90": 11
+     "last_90": 10
     }
    ],
    "quotes": [
@@ -1812,22 +1823,22 @@
    ]
   },
   "R6": {
-   "n": 81,
-   "share_pct": 11.3,
-   "ios_share_pct": 37.8,
+   "n": 80,
+   "share_pct": 11.4,
+   "ios_share_pct": 37.9,
    "rating_lift": 0.024,
    "patterns": [
     {
      "label": "(iOS) describe a crash while tracking or on the map",
      "n": 12,
-     "of": 156,
+     "of": 153,
      "where": "low-star iOS reviews",
      "last_90": 0
     },
     {
      "label": "(iOS) name an older iPhone or iOS version that stopped working",
      "n": 12,
-     "of": 156,
+     "of": 153,
      "where": "low-star iOS reviews",
      "last_90": 1
     }
@@ -1865,7 +1876,7 @@
     {
      "label": "complain about being asked to review the app",
      "n": 1,
-     "of": 2772,
+     "of": 2785,
      "where": "Play reviews of any rating",
      "last_90": 0
     }
@@ -1881,15 +1892,15 @@
    ]
   },
   "R8": {
-   "n": 115,
-   "share_pct": 16.1,
-   "ios_share_pct": 12.8,
-   "rating_lift": 0.033,
+   "n": 114,
+   "share_pct": 16.3,
+   "ios_share_pct": 12.4,
+   "rating_lift": 0.034,
    "patterns": [
     {
      "label": "mention the helpdesk, helpline or customer support",
-     "n": 31,
-     "of": 715,
+     "n": 30,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 8
     }
@@ -1919,24 +1930,24 @@
    ]
   },
   "R9": {
-   "n": 84,
-   "share_pct": 11.7,
-   "ios_share_pct": 5.1,
-   "rating_lift": 0.024,
+   "n": 79,
+   "share_pct": 11.3,
+   "ios_share_pct": 5.2,
+   "rating_lift": 0.023,
    "patterns": [
     {
      "label": "mention calling the driver",
-     "n": 40,
-     "of": 715,
+     "n": 39,
+     "of": 701,
      "where": "low-star Play reviews",
      "last_90": 7
     },
     {
      "label": "want to see co-passengers or their pickup points",
      "n": 5,
-     "of": 715,
+     "of": 701,
      "where": "low-star Play reviews",
-     "last_90": 1
+     "last_90": 0
     }
    ],
    "quotes": [
@@ -1964,17 +1975,17 @@
    ]
   },
   "R10": {
-   "n": 12,
-   "share_pct": 1.7,
+   "n": 11,
+   "share_pct": 1.6,
    "ios_share_pct": 0.0,
    "rating_lift": 0.003,
    "patterns": [
     {
      "label": "mention a no-show",
-     "n": 20,
-     "of": 715,
+     "n": 18,
+     "of": 701,
      "where": "low-star Play reviews",
-     "last_90": 4
+     "last_90": 3
     }
    ],
    "quotes": [
@@ -2002,9 +2013,9 @@
    ]
   },
   "R11": {
-   "n": 65,
-   "share_pct": 9.1,
-   "ios_share_pct": 9.0,
+   "n": 63,
+   "share_pct": 9.0,
+   "ios_share_pct": 8.5,
    "rating_lift": 0.019,
    "patterns": [],
    "quotes": [
@@ -2033,7 +2044,7 @@
   }
  },
  "reply_queue": {
-  "waiting": 693,
+  "waiting": 680,
   "shown": [
    {
     "reviewId": "7a6441a0-2383-4dd7-83f7-8d54c4af8111",
@@ -2320,97 +2331,97 @@
  "stages": [
   {
    "id": "other",
-   "n": 213,
-   "share_pct": 29.8
+   "n": 211,
+   "share_pct": 30.1
   },
   {
    "id": "access",
-   "n": 157,
+   "n": 154,
    "share_pct": 22.0
   },
   {
    "id": "ride",
-   "n": 72,
+   "n": 71,
    "share_pct": 10.1
-  },
-  {
-   "id": "booking",
-   "n": 65,
-   "share_pct": 9.1
   },
   {
    "id": "app_general",
    "n": 63,
-   "share_pct": 8.8
+   "share_pct": 9.0
+  },
+  {
+   "id": "booking",
+   "n": 63,
+   "share_pct": 9.0
   },
   {
    "id": "support",
    "n": 43,
-   "share_pct": 6.0
+   "share_pct": 6.1
   },
   {
    "id": "trip_info",
-   "n": 43,
-   "share_pct": 6.0
-  },
-  {
-   "id": "tracking",
-   "n": 41,
+   "n": 40,
    "share_pct": 5.7
   },
   {
+   "id": "tracking",
+   "n": 39,
+   "share_pct": 5.6
+  },
+  {
    "id": "no_show",
-   "n": 12,
-   "share_pct": 1.7
+   "n": 11,
+   "share_pct": 1.6
   },
   {
    "id": "boarding",
    "n": 6,
-   "share_pct": 0.8
+   "share_pct": 0.9
   }
  ],
  "owners": [
   {
    "id": "app",
-   "n": 387,
-   "share_pct": 54.1
+   "n": 377,
+   "share_pct": 53.8
   },
   {
    "id": "unclear",
-   "n": 188,
-   "share_pct": 26.3
+   "n": 186,
+   "share_pct": 26.5
   },
   {
    "id": "ops",
-   "n": 119,
-   "share_pct": 16.6
+   "n": 117,
+   "share_pct": 16.7
   },
   {
    "id": "policy",
    "n": 21,
-   "share_pct": 2.9
+   "share_pct": 3.0
   }
  ],
  "owners_of_specific": [
   {
    "id": "app",
-   "n": 387,
-   "share_pct": 74.9
+   "n": 377,
+   "share_pct": 74.7
   },
   {
    "id": "ops",
-   "n": 109,
-   "share_pct": 21.1
+   "n": 107,
+   "share_pct": 21.2
   },
   {
    "id": "policy",
    "n": 21,
-   "share_pct": 4.1
+   "share_pct": 4.2
   }
  ],
  "after_update": {
   "n": 27,
-  "share_pct": 3.8
+  "share_pct": 3.9
  },
  "safety": [
   {

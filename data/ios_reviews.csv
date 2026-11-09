@@ -1,4 +1,6 @@
 ﻿reviewId,score,at,title,content,appVersion
+14748188932,1,2026-11-03 19:02:17,Persistent Microphone Permission Pop-Up,"I don’t want to provide microphone permissions to this app. However, at every single launch of the app, the developer is presenting a pop-up to grant microphone permission. This is a dark pattern and disables me from having a seamless app experience.",10.51.0
+14743156967,5,2026-11-02 12:47:44,Service,Good,10.51.0
 14736240810,1,2026-10-31 21:07:04,Arrogant and unprofessional,Moveinsync vendor at deutsche india is arrogant and unprofessional towards employees,10.51.0
 14729610018,1,2026-10-30 06:23:33,Never Connect call to transport team,Whenever try to contact transport team the call automatically drop,10.51.0
 14727996282,1,2026-10-29 19:39:45,Help desk is rude response,When we call for help we will get a very bad and rude response,10.51.0
@@ -328,7 +330,7 @@
 12689287268,1,2025-05-23 10:06:08,Horrible experience,Really bad customer support,10.24.0
 12687199247,5,2025-05-22 21:51:47,OTP Issue,While trying to register not getting OTP at all,10.24.0
 12685162529,5,2025-05-22 08:52:54,Good app,"Good app but driver side needs to be improved , driver didn’t know number has to entered before otp and delayed due to same",10.24.0
-12678665068,1,2025-05-20 14:55:36,Lag,App lags so bad it freezes the mobile (iphone13) Please do the needful.,10.23.0
+12678665068,5,2025-05-20 14:55:36,Lag,App lags so bad it freezes the mobile (iphone13) Please do the needful.,10.23.0
 12678179225,1,2025-05-20 11:49:25,App not working for past 3 days,You guys should definitely shut your company.,10.23.0
 12674393461,1,2025-05-19 10:52:54,Highly unreliable,App crashes a lot. Have been try login but unable. Not receiving the otp,10.23.0
 12673781085,3,2025-05-19 07:31:58,Crashing issue,"App is crashing repeatedly while I’m checking the status of my cab  and automatically, it’s throwing me out please fix it as soon as possible. It’s so annoying.",10.23.0
